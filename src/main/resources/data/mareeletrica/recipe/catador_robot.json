@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["IGI", "RCR", "IPI"], "key": {"I": {"item": "minecraft:iron_ingot"}, "G": {"item": "minecraft:light_blue_stained_glass_pane"}, "R": {"item": "minecraft:redstone"}, "C": {"item": "minecraft:chest"}, "P": {"item": "minecraft:piston"}}, "result": {"id": "mareeletrica:catador_robot", "count": 1}}

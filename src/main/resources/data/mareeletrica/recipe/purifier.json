@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["ACA","PMP","ACA"],"key":{"A":{"item":"mareeletrica:reinforced_alloy"},"C":{"item":"mareeletrica:superconducting_coil"},"P":{"item":"mareeletrica:pressure_chamber"},"M":{"item":"mareeletrica:control_module"}},"result":{"id":"mareeletrica:purifier","count":1}}

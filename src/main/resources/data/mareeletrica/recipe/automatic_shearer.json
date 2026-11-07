@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["ISI","CMC","IHI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"S":{"item":"minecraft:shears"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"},"H":{"item":"minecraft:hopper"}},"result":{"id":"mareeletrica:automatic_shearer","count":1}}

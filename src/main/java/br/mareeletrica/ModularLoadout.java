@@ -1,0 +1,26 @@
+package br.mareeletrica;
+import java.util.*;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CustomData;
+import net.neoforged.neoforge.items.ItemStackHandler;
+/** One validated module format per family, with a one-time lossless legacy conversion. */
+public class ModularLoadout extends ItemStackHandler {
+ public final Player player;public final ItemStack gun;public final WeaponFamily family;private boolean loading=true;
+ public ModularLoadout(Player p,ItemStack g,int size){super(size);player=p;gun=g;family=WeaponFamily.of(g);if(family==null){loading=false;return;}var tag=RifleLoadout.tag(g);boolean migrate=!p.level().isClientSide&&tag.getInt("ArmoryFormat")<21;var returns=new ArrayList<ItemStack>();var list=tag.getList(family.modules(),Tag.TAG_COMPOUND);for(int i=0;i<list.size();i++){var e=list.getCompound(i);int slot=e.getInt("Slot");var s=ItemStack.parseOptional(p.registryAccess(),e.getCompound("Item"));if(slot<0||slot>=size){if(migrate&&!s.isEmpty())returns.add(s);continue;}if(migrate&&!s.isEmpty())s=convert(slot,s,returns);if(isItemValid(slot,s)){if(migrate&&s.getCount()>1)returns.add(s.copyWithCount(s.getCount()-1));stacks.set(slot,s.copyWithCount(1));}else if(migrate&&!s.isEmpty())returns.add(s);}loading=false;if(migrate){persist();for(var s:returns)give(p,s);}}
+ private ItemStack convert(int slot,ItemStack s,List<ItemStack> returns){if(isItemValid(slot,s))return s;if(slot==family.reserve()&&s.is(family.ammo())){int n=Math.min(s.getCount(),family.capacity);if(s.getCount()>n)returns.add(s.copyWithCount(s.getCount()-n));return MagazineItem.make(family,n);}int value=0;WeaponModuleItem.Type type=null;if(s.getItem() instanceof SmgAttachmentItem a){value=a.value;type=a.optic?WeaponModuleItem.Type.OPTIC:WeaponModuleItem.Type.SKIN;}if(s.getItem() instanceof RifleAttachmentItem a){value=a.value;type=switch(a.type){case SCOPE->WeaponModuleItem.Type.OPTIC;case SUPPRESSOR->WeaponModuleItem.Type.SUPPRESSOR;case STICKER->WeaponModuleItem.Type.SKIN;default->null;};}if(type!=null&&moduleSlot(type)==slot){int v=type==WeaponModuleItem.Type.OPTIC?nearest(value):type==WeaponModuleItem.Type.SKIN?1+Math.floorMod(value-1,6):Math.clamp(value,1,3);return new ItemStack(ArmoryParts.module(family,type,v));}return s;}
+ private int nearest(int value){int best=0;for(int i=1;i<3;i++)if(Math.abs(family.zooms[i]-value)<Math.abs(family.zooms[best]-value))best=i;return best+1;}
+ private int moduleSlot(WeaponModuleItem.Type t){return t==WeaponModuleItem.Type.OPTIC?0:t==WeaponModuleItem.Type.SUPPRESSOR?1:family==WeaponFamily.SNIPER?3:2;}
+ @Override public int getSlotLimit(int slot){return 1;}
+ @Override public boolean isItemValid(int slot,ItemStack s){if(family==null||s.isEmpty())return false;if(slot==family.reserve())return s.getItem() instanceof MagazineItem m&&m.family==family;if(s.getItem() instanceof WeaponModuleItem m)return m.family==family&&moduleSlot(m.type)==slot;if(family==WeaponFamily.SNIPER&&s.getItem() instanceof RifleAttachmentItem a)return slot==0&&a.type==RifleAttachmentItem.Type.SCOPE||slot==2&&a.type==RifleAttachmentItem.Type.BIPOD;return false;}
+ @Override protected void onContentsChanged(int slot){if(!loading){if(family==WeaponFamily.SNIPER&&slot==0){var t=RifleLoadout.tag(gun);for(String k:new String[]{"ZeroRange","Windage","Elevation"})t.putInt(k,0);write(t);}persist();}}
+ public void persist(){if(loading||family==null||gun.isEmpty())return;var t=RifleLoadout.tag(gun);var list=new ListTag();for(int i=0;i<getSlots();i++)if(!stacks.get(i).isEmpty()){var e=new CompoundTag();e.putInt("Slot",i);e.put("Item",stacks.get(i).save(player.registryAccess()));list.add(e);}t.put(family.modules(),list);t.putInt("ArmoryFormat",21);t.putBoolean("HasOptic",!stacks.get(0).isEmpty());t.putBoolean("ArsenalOptic",!stacks.get(0).isEmpty());t.putInt("OpticVariant",stacks.get(0).getItem() instanceof WeaponModuleItem m?m.variant:3);for(String k:new String[]{"ScopeZoom","ArsenalZoom","SmgZoom"})t.putInt(k,module(0,1));t.putInt("Suppressor",module(1,0));int skin=module(family==WeaponFamily.SNIPER?3:2,0);for(String k:new String[]{"Sticker","ArsenalSkin","SmgSkin"})t.putInt(k,skin);t.putBoolean("Bipod",family==WeaponFamily.SNIPER&&!stacks.get(2).isEmpty());write(t);}
+ private int module(int slot,int fallback){var i=stacks.get(slot).getItem();return i instanceof WeaponModuleItem m?m.value:i instanceof RifleAttachmentItem a?a.value:fallback;}
+ protected void write(CompoundTag t){gun.set(DataComponents.CUSTOM_DATA,CustomData.of(t));player.getInventory().setChanged();}
+ public void rounds(int n){Magazines.rounds(gun,n);player.getInventory().setChanged();}
+ public static boolean hasOptic(ItemStack s){var t=RifleLoadout.tag(s);return t.getBoolean("HasOptic")||t.getBoolean("ArsenalOptic")||!t.contains("ArmoryFormat")&&t.getInt("ScopeZoom")>0;}
+ public static void give(Player p,ItemStack s){if(!s.isEmpty()&&!p.getInventory().add(s))p.drop(s,false);}
+ public static ModularLoadout of(Player p,ItemStack s){var f=WeaponFamily.of(s);return f==WeaponFamily.SNIPER?new RifleLoadout(p,s):f==WeaponFamily.SMG?new SmgLoadout(p,s):new GunLoadout(p,s);}
+}

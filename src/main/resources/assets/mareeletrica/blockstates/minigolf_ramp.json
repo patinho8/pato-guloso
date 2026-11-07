@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"mareeletrica:block/minigolf_ramp"},"facing=east":{"model":"mareeletrica:block/minigolf_ramp","y":90},"facing=south":{"model":"mareeletrica:block/minigolf_ramp","y":180},"facing=west":{"model":"mareeletrica:block/minigolf_ramp","y":270}}}

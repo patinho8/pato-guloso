@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["PP", "PI", "PP"], "key": {"P": {"item": "mareeletrica:iron_plate"}, "I": {"item": "minecraft:iron_block"}}, "result": {"id": "mareeletrica:bunker_door", "count": 1}}

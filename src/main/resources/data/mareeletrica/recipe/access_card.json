@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["PRP"], "key": {"P": {"item": "minecraft:paper"}, "R": {"item": "minecraft:redstone"}}, "result": {"id": "mareeletrica:access_card", "count": 1}}

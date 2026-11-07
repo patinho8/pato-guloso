@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":[" O ","DMD"," E "],"key":{"O":{"item":"minecraft:obsidian"},"D":{"item":"minecraft:diamond"},"M":{"item":"mareeletrica:dimensional_matrix"},"E":{"item":"minecraft:echo_shard"}},"result":{"id":"mareeletrica:singularity_seed","count":1}}

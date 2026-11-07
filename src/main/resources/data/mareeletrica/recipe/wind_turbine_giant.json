@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["PWP", "WCW", "PIP"], "key": {"W": {"item": "minecraft:white_concrete"}, "P": {"item": "mareeletrica:iron_plate"}, "C": {"item": "mareeletrica:wind_turbine_medium"}, "I": {"item": "minecraft:iron_block"}}, "result": {"id": "mareeletrica:wind_turbine_giant", "count": 1}}

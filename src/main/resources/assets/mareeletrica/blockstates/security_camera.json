@@ -1,0 +1,27 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mareeletrica:block/security_camera"
+  },
+  "facing=south": {
+   "model": "mareeletrica:block/security_camera",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mareeletrica:block/security_camera",
+   "y": 270
+  },
+  "facing=east": {
+   "model": "mareeletrica:block/security_camera",
+   "y": 90
+  },
+  "facing=up": {
+   "model": "mareeletrica:block/security_camera",
+   "x": 270
+  },
+  "facing=down": {
+   "model": "mareeletrica:block/security_camera",
+   "x": 90
+  }
+ }
+}

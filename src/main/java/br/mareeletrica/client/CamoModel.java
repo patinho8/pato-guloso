@@ -1,0 +1,23 @@
+package br.mareeletrica.client;
+import br.mareeletrica.*;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.*;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.extensions.common.*;
+import java.util.EnumMap;
+/** Fitted hood, jacket, cargo pockets, kneepads and boots follow vanilla poses. */
+public final class CamoModel extends HumanoidModel<LivingEntity> {
+ private static final EnumMap<EquipmentSlot,CamoModel> MODELS=new EnumMap<>(EquipmentSlot.class);
+ private static float extra;private static final EnumMap<EquipmentSlot,CamoModel> OVERLAY=new EnumMap<>(EquipmentSlot.class);
+ private CamoModel(EquipmentSlot slot,float ex){super(mesh(slot,ex));}
+ public static HumanoidModel<LivingEntity> overlay(EquipmentSlot slot){return OVERLAY.computeIfAbsent(slot,s->new CamoModel(s,.85F));}
+ private static CubeListBuilder box(int u,int v,float x,float y,float z,float w,float h,float d,float inflate){return CubeListBuilder.create().texOffs(u,v).addBox(x,y,z,w,h,d,new CubeDeformation(inflate+extra));}
+ private static ModelPart mesh(EquipmentSlot slot,float ex){extra=ex;var mesh=new MeshDefinition();var root=mesh.getRoot();for(String part:new String[]{"head","hat","body"})root.addOrReplaceChild(part,CubeListBuilder.create(),PartPose.ZERO);root.addOrReplaceChild("right_arm",CubeListBuilder.create(),PartPose.offset(-5,2,0));root.addOrReplaceChild("left_arm",CubeListBuilder.create(),PartPose.offset(5,2,0));root.addOrReplaceChild("right_leg",CubeListBuilder.create(),PartPose.offset(-1.9F,12,0));root.addOrReplaceChild("left_leg",CubeListBuilder.create(),PartPose.offset(1.9F,12,0));
+ if(slot==EquipmentSlot.HEAD){var h=root.getChild("head");h.addOrReplaceChild("hood_top",box(0,0,-4,-8,-4,8,1,8,.27F),PartPose.ZERO);h.addOrReplaceChild("hood_back",box(0,12,-4,-7,3,8,7,1,.25F),PartPose.ZERO);h.addOrReplaceChild("hood_left",box(22,0,-4,-7,-3,1,7,6,.28F),PartPose.ZERO);h.addOrReplaceChild("hood_right",box(38,0,3,-7,-3,1,7,6,.28F),PartPose.ZERO);h.addOrReplaceChild("brim",box(0,24,-4.4F,-7.6F,-5.2F,8.8F,.6F,2.8F,0),PartPose.ZERO);h.addOrReplaceChild("back_strap",box(80,0,-4.3F,-3.3F,3.6F,8.6F,.8F,.5F,0),PartPose.ZERO);}
+ if(slot==EquipmentSlot.CHEST){var b=root.addOrReplaceChild("body",box(0,32,-4,0,-2,8,11,4,.26F),PartPose.ZERO);b.addOrReplaceChild("vest",box(40,32,-3.8F,1,-2.5F,7.6F,8,1,.1F),PartPose.ZERO);for(int side:new int[]{-1,1}){b.addOrReplaceChild("strap"+side,box(80,4,side*2.55F-.4F,.2F,-2.85F,.8F,9,.35F,0),PartPose.ZERO);b.addOrReplaceChild("pouch"+side,box(60,48,side*1.85F-1.35F,5,-3.2F,2.7F,3.1F,1.3F,0),PartPose.ZERO);b.addOrReplaceChild("flap"+side,box(60,55,side*1.85F-1.4F,5,-3.45F,2.8F,.7F,1.5F,0),PartPose.ZERO);}b.addOrReplaceChild("backpack",box(80,20,-3,2,2.3F,6,7,1.5F,0),PartPose.ZERO);for(boolean left:new boolean[]{false,true}){float x=left?-1:-3;var a=root.addOrReplaceChild(left?"left_arm":"right_arm",box(24,32,x,-2,-2,4,10.5F,4,.22F),PartPose.offset(left?5:-5,2,0));a.addOrReplaceChild("elbow",box(80,42,x-.15F,3,1.8F,4.3F,2.3F,.7F,0),PartPose.ZERO);a.addOrReplaceChild("cuff",box(80,50,x-.2F,7,-2.2F,4.4F,1.2F,4.4F,0),PartPose.ZERO);}}
+ if(slot==EquipmentSlot.LEGS){root.addOrReplaceChild("body",box(0,64,-4,9.8F,-2,8,2.2F,4,.22F),PartPose.ZERO);root.getChild("body").addOrReplaceChild("buckle",box(80,60,-.8F,10.1F,-2.55F,1.6F,1.1F,.5F,0),PartPose.ZERO);for(boolean left:new boolean[]{false,true}){var leg=root.addOrReplaceChild(left?"left_leg":"right_leg",box(left?24:0,74,-2,0,-2,4,10,4,.18F),PartPose.offset(left?1.9F:-1.9F,12,0));leg.addOrReplaceChild("kneepad",box(60,64,-1.7F,5.3F,-2.65F,3.4F,2.7F,1,0),PartPose.ZERO);leg.addOrReplaceChild("cargo",box(60,74,left?1.5F:-2.6F,1.4F,-1.3F,1.1F,3.6F,2.7F,0),PartPose.ZERO);}}
+ if(slot==EquipmentSlot.FEET)for(boolean left:new boolean[]{false,true}){var leg=root.getChild(left?"left_leg":"right_leg");leg.addOrReplaceChild("boot",box(0,96,-2,8,-2.8F,4,4,5,.22F),PartPose.ZERO);leg.addOrReplaceChild("sole",box(24,96,-2.25F,11.45F,-3.1F,4.5F,.8F,5.5F,0),PartPose.ZERO);leg.addOrReplaceChild("laces",box(60,88,-.8F,8.4F,-3.03F,1.6F,2.2F,.3F,0),PartPose.ZERO);}return LayerDefinition.create(mesh,128,128).bakeRoot();}
+ public static void register(RegisterClientExtensionsEvent event){event.registerItem(new IClientItemExtensions(){@Override public HumanoidModel<?> getHumanoidArmorModel(LivingEntity living,ItemStack stack,EquipmentSlot slot,HumanoidModel<?> original){return MODELS.computeIfAbsent(slot,s->new CamoModel(s,0F));}},Camouflage.items().stream().map(java.util.function.Supplier::get).toArray(net.minecraft.world.item.Item[]::new));}
+}

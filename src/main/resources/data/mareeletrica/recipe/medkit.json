@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "equipment", "pattern": ["WRW", "BSB", "WWW"], "key": {"W": {"item": "minecraft:white_wool"}, "R": {"item": "minecraft:red_dye"}, "B": {"item": "mareeletrica:bandage"}, "S": {"item": "mareeletrica:syringe"}}, "result": {"id": "mareeletrica:medkit", "count": 1}}

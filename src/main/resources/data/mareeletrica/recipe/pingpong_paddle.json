@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":[" R"," P","S "],"key":{"R":{"item":"minecraft:red_wool"},"P":{"tag":"minecraft:planks"},"S":{"item":"minecraft:stick"}},"result":{"id":"mareeletrica:pingpong_paddle","count":1}}

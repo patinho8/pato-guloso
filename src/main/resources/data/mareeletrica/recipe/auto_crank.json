@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["ICI","PMP","IBI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"C":{"item":"mareeletrica:copper_coil"},"P":{"item":"minecraft:piston"},"M":{"item":"mareeletrica:control_module"},"B":{"item":"minecraft:iron_block"}},"result":{"id":"mareeletrica:auto_crank","count":1}}

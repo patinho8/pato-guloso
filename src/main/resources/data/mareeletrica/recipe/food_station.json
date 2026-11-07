@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IBI","HMH","ICI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"B":{"item":"minecraft:bread"},"H":{"item":"minecraft:hopper"},"M":{"item":"mareeletrica:control_module"},"C":{"item":"mareeletrica:copper_coil"}},"result":{"id":"mareeletrica:food_station","count":1}}

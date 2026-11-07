@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/barrage_launcher"}, "facing=south": {"model": "mareeletrica:block/barrage_launcher"}, "facing=east": {"model": "mareeletrica:block/barrage_launcher"}, "facing=west": {"model": "mareeletrica:block/barrage_launcher"}}}

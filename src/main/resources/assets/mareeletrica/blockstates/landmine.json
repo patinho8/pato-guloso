@@ -1,0 +1,1 @@
+{"variants": {"armed=false,triggered=false": {"model": "mareeletrica:block/landmine_off"}, "armed=false,triggered=true": {"model": "mareeletrica:block/landmine_off"}, "armed=true,triggered=false": {"model": "mareeletrica:block/landmine_on"}, "armed=true,triggered=true": {"model": "mareeletrica:block/landmine_on"}}}

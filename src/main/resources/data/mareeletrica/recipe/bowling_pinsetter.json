@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["WRW", "PDP", "PPP"], "key": {"W": {"item": "minecraft:white_wool"}, "R": {"item": "minecraft:red_dye"}, "D": {"item": "minecraft:dispenser"}, "P": {"item": "minecraft:spruce_planks"}}, "result": {"id": "mareeletrica:bowling_pinsetter", "count": 1}}

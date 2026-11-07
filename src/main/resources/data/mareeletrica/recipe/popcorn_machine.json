@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["GGG", "GFG", "RIR"], "key": {"G": {"item": "minecraft:glass"}, "F": {"item": "minecraft:furnace"}, "R": {"item": "minecraft:red_dye"}, "I": {"item": "minecraft:iron_ingot"}}, "result": {"id": "mareeletrica:popcorn_machine", "count": 1}}

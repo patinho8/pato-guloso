@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["YPY", "PMP", "IPI"], "key": {"Y": {"item": "minecraft:yellow_concrete"}, "P": {"item": "mareeletrica:iron_plate"}, "M": {"item": "mareeletrica:control_module"}, "I": {"item": "minecraft:piston"}}, "result": {"id": "mareeletrica:vehicle_lift", "count": 1}}

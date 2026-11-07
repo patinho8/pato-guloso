@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/fireworks_show"}, "facing=east": {"model": "mareeletrica:block/fireworks_show", "y": 90}, "facing=south": {"model": "mareeletrica:block/fireworks_show", "y": 180}, "facing=west": {"model": "mareeletrica:block/fireworks_show", "y": 270}}}

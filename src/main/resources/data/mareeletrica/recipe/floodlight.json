@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IGI","CLC","IRI"],"key":{"I":{"item":"minecraft:iron_ingot"},"G":{"item":"minecraft:glass"},"C":{"item":"minecraft:copper_ingot"},"L":{"item":"minecraft:glowstone"},"R":{"item":"minecraft:redstone"}},"result":{"id":"mareeletrica:floodlight","count":1}}

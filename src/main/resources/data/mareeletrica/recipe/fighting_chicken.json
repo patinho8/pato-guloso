@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shapeless", "category": "misc", "ingredients": [{"item": "minecraft:egg"}, {"item": "minecraft:feather"}, {"item": "minecraft:iron_ingot"}, {"item": "minecraft:blaze_powder"}, {"tag": "c:seeds"}], "result": {"id": "mareeletrica:fighting_chicken", "count": 1}}

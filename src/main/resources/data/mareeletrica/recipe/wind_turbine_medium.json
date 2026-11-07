@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["WPW", "PCP", " I "], "key": {"W": {"item": "minecraft:white_wool"}, "P": {"item": "mareeletrica:iron_plate"}, "C": {"item": "mareeletrica:wind_turbine_small"}, "I": {"item": "minecraft:iron_block"}}, "result": {"id": "mareeletrica:wind_turbine_medium", "count": 1}}

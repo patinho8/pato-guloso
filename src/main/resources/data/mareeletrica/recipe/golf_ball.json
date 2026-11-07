@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": [" Q ", "QSQ", " Q "], "key": {"Q": {"item": "minecraft:quartz"}, "S": {"item": "minecraft:slime_ball"}}, "result": {"id": "mareeletrica:golf_ball", "count": 4}}

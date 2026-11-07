@@ -1,0 +1,1 @@
+Código de produção completo em src. O JAR em INSTALAR já está pronto para jogar. Java 21 / NeoForge 1.21.1. Compilar: COMPILAR_WINDOWS.bat ou Gradle 8.10.2 build. Testes e evidências de 0.21.0 em tests/evidence_0.21.0. Gerador de modelos em tools/generate_armory21.py.

@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["GOG","CMC","IRI"],"key":{"G":{"item":"minecraft:glass"},"O":{"item":"minecraft:observer"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"},"I":{"item":"mareeletrica:iron_plate"},"R":{"item":"minecraft:comparator"}},"result":{"id":"mareeletrica:presence_sensor","count":1}}

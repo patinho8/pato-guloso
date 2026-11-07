@@ -1,0 +1,1 @@
+{"criteria":{"obtain":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":"minecraft:copper_ingot"}]}}},"rewards":{"recipes":["mareeletrica:rover_remote"]}}

@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IRI","CMC","ICI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"R":{"item":"mareeletrica:ore_scanner"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"}},"result":{"id":"mareeletrica:explorer_base","count":1}}

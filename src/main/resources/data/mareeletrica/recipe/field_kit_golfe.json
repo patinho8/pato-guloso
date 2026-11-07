@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["MHM", "MCM", "MMM"], "key": {"M": {"item": "minecraft:moss_block"}, "H": {"item": "mareeletrica:golf_hole"}, "C": {"item": "mareeletrica:golf_club"}}, "result": {"id": "mareeletrica:field_kit_golfe", "count": 1}}

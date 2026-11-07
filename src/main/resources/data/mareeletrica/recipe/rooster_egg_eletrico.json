@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shapeless", "category": "misc", "ingredients": [{"item": "mareeletrica:fighting_chicken"}, {"item": "minecraft:redstone"}], "result": {"id": "mareeletrica:rooster_egg_eletrico", "count": 1}}

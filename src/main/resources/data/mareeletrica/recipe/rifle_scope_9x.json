@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":[" I ","GSG"," A "],"key":{"I":{"item":"mareeletrica:iron_plate"},"G":{"item":"minecraft:glass"},"S":{"item":"mareeletrica:rifle_scope_8x"},"A":{"item":"minecraft:amethyst_shard"}},"result":{"id":"mareeletrica:rifle_scope_9x","count":1}}

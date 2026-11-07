@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":[" I ","CSC"," M "],"key":{"I":{"item":"mareeletrica:iron_plate"},"C":{"item":"minecraft:chain"},"S":{"item":"mareeletrica:servo_motor"},"M":{"item":"mareeletrica:control_module"}},"result":{"id":"mareeletrica:pull_hook","count":1}}

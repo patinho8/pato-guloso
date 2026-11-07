@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":[" I ","IGI"," I "],"key":{"I":{"item":"minecraft:iron_ingot"},"G":{"item":"minecraft:gunpowder"}},"result":{"id":"mareeletrica:cannonball","count":6}}

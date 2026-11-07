@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IDI","CMC","ISI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"D":{"item":"minecraft:diamond"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"},"S":{"item":"mareeletrica:sea_turbine"}},"result":{"id":"mareeletrica:pressure_turbine","count":1}}

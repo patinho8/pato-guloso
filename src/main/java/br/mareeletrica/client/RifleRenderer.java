@@ -1,0 +1,16 @@
+package br.mareeletrica.client;
+import br.mareeletrica.*;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.*;
+import net.minecraft.world.item.*;
+/** The same modules are visible in hand, third person, inventory and as dropped items. */
+public final class RifleRenderer extends BlockEntityWithoutLevelRenderer {
+ public RifleRenderer(){super(Minecraft.getInstance().getBlockEntityRenderDispatcher(),Minecraft.getInstance().getEntityModels());}
+ public static String part(String base,int skin){return skin>0?base+"_skin_"+skin:base;}
+ public static void parts(ItemStack stack,PoseStack pose,MultiBufferSource b,int light,boolean supported){parts(stack,pose,b,light,supported,false);}
+ public static void parts(ItemStack stack,PoseStack pose,MultiBufferSource b,int light,boolean supported,boolean firstPerson){if(WeaponFamily.of(stack)!=null){ArmoryRenderer.parts(stack,pose,b,light,supported,firstPerson);return;}if(stack.getItem() instanceof GunItem){GunRenderer.parts(stack,pose,b,light,firstPerson);return;}if(stack.is(MareEletrica.SMG.get())){smgParts(stack,pose,b,light,firstPerson);return;}int skin=RifleLoadout.sticker(stack);DmtGearLayer.model(part("rifle_body",skin),pose,b,light);DmtGearLayer.model(part("rifle_optic_"+RifleLoadout.zoom(stack),skin),pose,b,light);int silencer=RifleLoadout.suppressor(stack);if(silencer>0)DmtGearLayer.model(part("rifle_silencer_"+silencer,skin),pose,b,light);if(RifleLoadout.bipod(stack))DmtGearLayer.model(part(supported?"rifle_bipod_open":"rifle_bipod_folded",skin),pose,b,light);if(skin>0&&skin<=6)DmtGearLayer.model("rifle_decal_"+skin,pose,b,light);}
+ public static void smgParts(ItemStack stack,PoseStack pose,MultiBufferSource b,int light,boolean firstPerson){int skin=SmgLoadout.skin(stack);DmtGearLayer.model(part("smg_body",skin),pose,b,light);if(!firstPerson||!SniperClient.scoped())DmtGearLayer.model(part("smg_optic_"+SmgLoadout.zoom(stack),skin),pose,b,light);pose.pushPose();pose.translate(0,0,firstPerson?SniperClient.kick*.11:0);DmtGearLayer.model("smg_bolt",pose,b,light);pose.popPose();pose.pushPose();pose.translate(0,firstPerson?-SniperClient.reloadAmount(stack)*.45:0,0);DmtGearLayer.model(part("smg_magazine",skin),pose,b,light);pose.popPose();int silencer=RifleLoadout.suppressor(stack);if(silencer>0){pose.pushPose();pose.translate(0,0,.3);pose.translate(.5,.55,0);pose.scale(.7F,.7F,.65F);pose.translate(-.5,-.55,0);DmtGearLayer.model(part(skin>0?"smg_silencer_"+silencer:"rifle_silencer_"+silencer,skin),pose,b,light);pose.popPose();}}
+ @Override public void renderByItem(ItemStack stack,ItemDisplayContext ctx,PoseStack pose,MultiBufferSource b,int light,int overlay){pose.pushPose();boolean first=ctx==ItemDisplayContext.FIRST_PERSON_LEFT_HAND||ctx==ItemDisplayContext.FIRST_PERSON_RIGHT_HAND;if(first){pose.translate(0,-SniperClient.kick*.03,SniperClient.kick*.30);pose.mulPose(Axis.XP.rotationDegrees(SniperClient.kick*19));}boolean open=first?ProneSystem.supported(Minecraft.getInstance().player):(ctx==ItemDisplayContext.THIRD_PERSON_LEFT_HAND||ctx==ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)&&RifleLoadout.tag(stack).getBoolean("BipodDeployed");parts(stack,pose,b,light,open);pose.popPose();}
+}

@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["III","ODO","III"],"key":{"I":{"item":"minecraft:iron_ingot"},"O":{"item":"minecraft:obsidian"},"D":{"item":"minecraft:diamond"}},"result":{"id":"mareeletrica:reinforced_alloy","count":4}}

@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IBI","GMG","IRI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"B":{"item":"minecraft:book"},"G":{"item":"minecraft:grindstone"},"M":{"item":"mareeletrica:control_module"},"R":{"item":"minecraft:redstone"}},"result":{"id":"mareeletrica:disenchanter","count":1}}

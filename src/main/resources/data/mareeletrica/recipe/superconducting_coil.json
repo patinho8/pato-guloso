@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["CCC","IRI","CCC"],"key":{"C":{"item":"minecraft:copper_ingot"},"I":{"item":"mareeletrica:iron_plate"},"R":{"item":"minecraft:redstone"}},"result":{"id":"mareeletrica:superconducting_coil","count":2}}

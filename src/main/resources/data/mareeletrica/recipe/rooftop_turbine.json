@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["PPP", "PCP", " I "], "key": {"P": {"item": "mareeletrica:iron_plate"}, "C": {"item": "mareeletrica:copper_coil"}, "I": {"item": "minecraft:iron_ingot"}}, "result": {"id": "mareeletrica:rooftop_turbine", "count": 1}}

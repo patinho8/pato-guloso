@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":["IIB"," MC","  S"],"key":{"I":{"item":"mareeletrica:iron_plate"},"B":{"item":"mareeletrica:reinforced_alloy"},"M":{"item":"mareeletrica:servo_motor"},"C":{"item":"mareeletrica:control_module"},"S":{"item":"minecraft:gray_dye"}},"result":{"id":"mareeletrica:glock","count":1}}

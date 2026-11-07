@@ -1,0 +1,1 @@
+{"loader": "neoforge:obj", "model": "mareeletrica:models/block/armory21_ak47_new_body.obj", "flip_v": true, "textures": {"metal": "mareeletrica:block/ak47_new_metal_4", "wood": "mareeletrica:block/ak47_new_wood_4", "mag": "mareeletrica:block/ak47_new_mag_4", "particle": "mareeletrica:block/ak47_new_metal_4"}}

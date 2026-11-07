@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/bowling_gutter"}, "facing=east": {"model": "mareeletrica:block/bowling_gutter", "y": 90}, "facing=south": {"model": "mareeletrica:block/bowling_gutter", "y": 180}, "facing=west": {"model": "mareeletrica:block/bowling_gutter", "y": 270}}}

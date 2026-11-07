@@ -1,0 +1,1 @@
+Atualização 0.21.0 concluída. JAR final em INSTALAR. Código verificado em cliente real. Fonte, recursos, scripts e evidências incluídos. Detalhes e limites da evidência em tests/evidence_0.21.0/VALIDACAO_FINAL.md.

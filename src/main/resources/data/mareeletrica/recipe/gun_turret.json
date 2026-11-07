@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "equipment", "pattern": ["IGI", " I ", "I I"], "key": {"I": {"item": "minecraft:iron_ingot"}, "G": {"item": "mareeletrica:m249"}}, "result": {"id": "mareeletrica:gun_turret", "count": 1}}

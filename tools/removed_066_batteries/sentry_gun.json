@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "equipment", "pattern": ["BBP", "PMP", " I "], "key": {"B": {"item": "minecraft:iron_bars"}, "P": {"item": "mareeletrica:iron_plate"}, "M": {"item": "mareeletrica:control_module"}, "I": {"item": "minecraft:iron_block"}}, "result": {"id": "mareeletrica:sentry_gun", "count": 1}}

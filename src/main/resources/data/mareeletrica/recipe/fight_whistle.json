@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": [" N ", "NIN"], "key": {"N": {"item": "minecraft:iron_nugget"}, "I": {"item": "minecraft:gold_ingot"}}, "result": {"id": "mareeletrica:fight_whistle", "count": 1}}

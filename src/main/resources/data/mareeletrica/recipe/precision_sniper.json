@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["IIS","CML"," I "],"key":{"I":{"item":"mareeletrica:reinforced_alloy"},"S":{"item":"minecraft:spyglass"},"C":{"item":"mareeletrica:control_module"},"M":{"item":"mareeletrica:servo_motor"},"L":{"item":"minecraft:black_dye"}},"result":{"id":"mareeletrica:precision_sniper","count":1}}

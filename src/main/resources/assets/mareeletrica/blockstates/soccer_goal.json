@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/soccer_goal"}, "facing=east": {"model": "mareeletrica:block/soccer_goal", "y": 90}, "facing=south": {"model": "mareeletrica:block/soccer_goal", "y": 180}, "facing=west": {"model": "mareeletrica:block/soccer_goal", "y": 270}}}

@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/basketball_hoop"}, "facing=east": {"model": "mareeletrica:block/basketball_hoop", "y": 90}, "facing=south": {"model": "mareeletrica:block/basketball_hoop", "y": 180}, "facing=west": {"model": "mareeletrica:block/basketball_hoop", "y": 270}}}

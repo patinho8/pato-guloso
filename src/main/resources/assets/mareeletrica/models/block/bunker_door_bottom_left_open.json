@@ -1,0 +1,1 @@
+{"parent": "minecraft:block/door_bottom_left_open", "textures": {"bottom": "mareeletrica:block/bunker_door_bottom", "top": "mareeletrica:block/bunker_door_top"}}

@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["PCP", "RIR", "PCP"], "key": {"P": {"item": "mareeletrica:iron_plate"}, "C": {"item": "mareeletrica:copper_coil"}, "R": {"item": "minecraft:yellow_dye"}, "I": {"item": "mareeletrica:cable"}}, "result": {"id": "mareeletrica:transformer_medium", "count": 2}}

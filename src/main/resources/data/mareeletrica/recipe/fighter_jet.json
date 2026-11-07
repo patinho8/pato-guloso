@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "equipment", "pattern": [" P ", "PMP", "CEC"], "key": {"P": {"item": "mareeletrica:iron_plate"}, "M": {"item": "mareeletrica:control_module"}, "C": {"item": "mareeletrica:copper_coil"}, "E": {"item": "minecraft:blast_furnace"}}, "result": {"id": "mareeletrica:fighter_jet", "count": 1}}

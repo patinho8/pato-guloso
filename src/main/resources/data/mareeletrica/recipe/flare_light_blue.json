@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shapeless", "category": "misc", "ingredients": [{"item": "minecraft:gunpowder"}, {"item": "minecraft:redstone"}, {"item": "minecraft:glowstone_dust"}, {"item": "minecraft:paper"}, {"item": "minecraft:light_blue_dye"}], "result": {"id": "mareeletrica:flare", "count": 4, "components": {"minecraft:custom_data": {"Color": 5}}}}

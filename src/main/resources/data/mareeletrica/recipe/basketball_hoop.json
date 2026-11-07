@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["WOW", " I ", " I "], "key": {"W": {"item": "minecraft:white_concrete"}, "O": {"item": "minecraft:orange_dye"}, "I": {"item": "minecraft:iron_bars"}}, "result": {"id": "mareeletrica:basketball_hoop", "count": 1}}

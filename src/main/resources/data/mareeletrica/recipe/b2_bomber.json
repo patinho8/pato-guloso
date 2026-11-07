@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["III", "BJB", "III"], "key": {"I": {"item": "minecraft:iron_block"}, "B": {"item": "mareeletrica:jet_bomb"}, "J": {"item": "mareeletrica:fighter_jet"}}, "result": {"id": "mareeletrica:b2_bomber", "count": 1}}

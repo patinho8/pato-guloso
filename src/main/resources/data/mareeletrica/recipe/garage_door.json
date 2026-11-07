@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["PPP", "PSP", "PPP"], "key": {"P": {"item": "mareeletrica:iron_plate"}, "S": {"item": "minecraft:iron_door"}}, "result": {"id": "mareeletrica:garage_door", "count": 1}}

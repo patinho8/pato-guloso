@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/vehicle_garage"}, "facing=east": {"model": "mareeletrica:block/vehicle_garage", "y": 90}, "facing=south": {"model": "mareeletrica:block/vehicle_garage", "y": 180}, "facing=west": {"model": "mareeletrica:block/vehicle_garage", "y": 270}}}

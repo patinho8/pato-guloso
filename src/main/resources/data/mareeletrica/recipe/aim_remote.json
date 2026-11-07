@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["  I"," CM"," IC"],"key":{"I":{"item":"minecraft:iron_nugget"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"}},"result":{"id":"mareeletrica:aim_remote","count":1}}

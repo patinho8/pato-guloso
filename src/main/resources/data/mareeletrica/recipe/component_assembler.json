@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["PCP","GTG","PRP"],"key":{"P":{"item":"mareeletrica:iron_plate"},"C":{"item":"mareeletrica:copper_coil"},"G":{"item":"mareeletrica:gold_contact"},"T":{"item":"minecraft:crafting_table"},"R":{"item":"minecraft:redstone"}},"result":{"id":"mareeletrica:component_assembler","count":1}}

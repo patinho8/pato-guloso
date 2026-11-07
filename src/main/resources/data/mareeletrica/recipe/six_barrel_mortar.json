@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["III","III","CMC"],"key":{"I":{"item":"mareeletrica:iron_plate"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"}},"result":{"id":"mareeletrica:six_barrel_mortar","count":1}}

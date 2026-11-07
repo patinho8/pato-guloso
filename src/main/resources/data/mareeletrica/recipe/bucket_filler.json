@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IBI","CMC","IDI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"B":{"item":"minecraft:bucket"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"},"D":{"item":"minecraft:dispenser"}},"result":{"id":"mareeletrica:bucket_filler","count":1}}

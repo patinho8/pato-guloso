@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/casino_blackjack", "y": 0}, "facing=east": {"model": "mareeletrica:block/casino_blackjack", "y": 90}, "facing=south": {"model": "mareeletrica:block/casino_blackjack", "y": 180}, "facing=west": {"model": "mareeletrica:block/casino_blackjack", "y": 270}}}

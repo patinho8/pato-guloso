@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["RSB", "WWW"], "key": {"R": {"item": "minecraft:red_wool"}, "B": {"item": "minecraft:blue_wool"}, "S": {"item": "minecraft:string"}, "W": {"item": "minecraft:white_wool"}}, "result": {"id": "mareeletrica:rooster_ring", "count": 1}}

@@ -1,0 +1,1 @@
+{"criteria":{"obtain":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":"minecraft:honey_bottle"}]}}},"rewards":{"recipes":["mareeletrica:honey_water"]}}

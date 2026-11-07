@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":[" I ","CGC"],"key":{"I":{"item":"minecraft:iron_nugget"},"C":{"item":"minecraft:copper_ingot"},"G":{"item":"minecraft:gunpowder"}},"result":{"id":"mareeletrica:revolver_round","count":16}}

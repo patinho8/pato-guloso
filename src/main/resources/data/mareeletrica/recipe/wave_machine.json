@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["PRP","PSP","PRP"],"key":{"P":{"item":"minecraft:prismarine_bricks"},"R":{"item":"minecraft:redstone"},"S":{"item":"minecraft:piston"}},"result":{"id":"mareeletrica:wave_machine","count":1}}

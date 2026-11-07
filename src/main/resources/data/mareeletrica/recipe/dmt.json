@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":["ILI","CMC","IEI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"L":{"item":"minecraft:leather"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"},"E":{"item":"minecraft:ender_pearl"}},"result":{"id":"mareeletrica:dmt","count":1}}

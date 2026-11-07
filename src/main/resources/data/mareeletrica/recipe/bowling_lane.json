@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["SSS", "PPP"], "key": {"S": {"item": "minecraft:honeycomb"}, "P": {"item": "minecraft:birch_planks"}}, "result": {"id": "mareeletrica:bowling_lane", "count": 6}}

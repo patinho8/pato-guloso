@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IGI","RCR","IGI"],"key":{"I":{"item":"minecraft:iron_ingot"},"G":{"item":"minecraft:gold_ingot"},"R":{"item":"minecraft:redstone_block"},"C":{"item":"mareeletrica:core_small"}},"result":{"id":"mareeletrica:core_medium","count":1}}

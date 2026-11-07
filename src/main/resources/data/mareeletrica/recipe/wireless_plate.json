@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["APA","CQC","APA"],"key":{"A":{"item":"mareeletrica:iron_plate"},"P":{"item":"minecraft:iron_ingot"},"C":{"item":"mareeletrica:cable"},"Q":{"item":"mareeletrica:control_module"}},"result":{"id":"mareeletrica:wireless_plate","count":2}}

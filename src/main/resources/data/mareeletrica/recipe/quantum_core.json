@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["SAS","MQM","SAS"],"key":{"S":{"item":"mareeletrica:plasma_cell"},"A":{"item":"mareeletrica:reinforced_alloy"},"M":{"item":"mareeletrica:dimensional_matrix"},"Q":{"item":"mareeletrica:singularity_seed"}},"result":{"id":"mareeletrica:quantum_core","count":1}}

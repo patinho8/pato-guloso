@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IPI","CRC","IPI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"P":{"item":"minecraft:oak_planks"},"C":{"item":"mareeletrica:copper_coil"},"R":{"item":"mareeletrica:water_wheel"}},"result":{"id":"mareeletrica:giant_water_wheel","count":1}}

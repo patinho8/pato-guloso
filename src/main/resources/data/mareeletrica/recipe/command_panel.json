@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["GGG", "RMR", "PPP"], "key": {"G": {"item": "minecraft:glass_pane"}, "R": {"item": "minecraft:redstone"}, "M": {"item": "mareeletrica:control_module"}, "P": {"item": "mareeletrica:iron_plate"}}, "result": {"id": "mareeletrica:command_panel", "count": 1}}

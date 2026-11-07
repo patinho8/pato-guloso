@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["G", "P"], "key": {"G": {"item": "minecraft:glowstone_dust"}, "P": {"item": "mareeletrica:iron_plate"}}, "result": {"id": "mareeletrica:runway_light", "count": 4}}

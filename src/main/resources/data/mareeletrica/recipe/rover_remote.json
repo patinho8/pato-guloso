@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":[" AS","CMC"," I "],"key":{"A":{"item":"minecraft:amethyst_shard"},"S":{"item":"minecraft:spyglass"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"},"I":{"item":"mareeletrica:iron_plate"}},"result":{"id":"mareeletrica:rover_remote","count":1}}

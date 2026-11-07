@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["RGR","ECE","RGR"],"key":{"R":{"item":"minecraft:redstone"},"G":{"item":"minecraft:gold_ingot"},"E":{"item":"minecraft:ender_pearl"},"C":{"item":"mareeletrica:control_module"}},"result":{"id":"mareeletrica:quantum_circuit","count":2}}

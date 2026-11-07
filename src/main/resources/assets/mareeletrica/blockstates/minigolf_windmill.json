@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"mareeletrica:block/minigolf_windmill"},"facing=east":{"model":"mareeletrica:block/minigolf_windmill","y":90},"facing=south":{"model":"mareeletrica:block/minigolf_windmill","y":180},"facing=west":{"model":"mareeletrica:block/minigolf_windmill","y":270}}}

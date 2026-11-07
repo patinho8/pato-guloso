@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["YPY"], "key": {"Y": {"item": "minecraft:yellow_concrete"}, "P": {"item": "mareeletrica:iron_plate"}}, "result": {"id": "mareeletrica:lift_stop", "count": 2}}

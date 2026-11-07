@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["  D", " S ", "P  "], "key": {"D": {"item": "minecraft:blue_dye"}, "S": {"item": "minecraft:stick"}, "P": {"item": "minecraft:dark_oak_planks"}}, "result": {"id": "mareeletrica:pool_cue", "count": 1}}

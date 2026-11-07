@@ -1,0 +1,14 @@
+# Maré Elétrica 0.44.0
+- Rastejar mais lento (meio-termo).
+- Girador automático com modelo novo, maior (motor industrial).
+- 5 armas novas: MAC-10, Galil ACE, Steyr AUG, Saiga-12, Dragunov SVD.
+- Xenocaçador com lâmina maior; todas as facas um pouco maiores na mão.
+- Combo de faca: batidas em até 0,6 s trocam a animação, até o 4º golpe.
+- Eletrônicos: binóculo com medidor de distância, lanterna, detector de minérios, GPS, rádio comunicador, óculos de visão térmica.
+- Danoninho de morango (leite + frutas doces + açúcar).
+- Projetor: 5 construções de concreto (casa, prédio, bunker, garagem, muro).
+- Canhão de campanha 3x3 (sentar e mirar ou controle de mira) e metralhadora fixa (senta e atira).
+- Lançador de mísseis teleguiados maior; mísseis mais bonitos e mais fáceis de desviar.
+- Armas podem ser colocadas no chão (Shift + clique direito no bloco).
+- Sniper: calibração vai 3x mais longe (até 1536 blocos).
+- Próxima versão: DMT novo (segurar botão direito pega bloco com a corda e joga/bate nos mobs).

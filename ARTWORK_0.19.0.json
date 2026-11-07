@@ -1,0 +1,39 @@
+{
+  "method": "Built-in image generation; 512px atlas conversion with ffmpeg; native JSON UV mapping",
+  "reference_order": [
+    "Órbita Branca",
+    "Colmeia Tóxica",
+    "Dragão Solar",
+    "Víbora Esmeralda",
+    "Pulso Neon",
+    "Runas Glaciais",
+    "Noir Ciano",
+    "Cromática",
+    "Carbono Rubi",
+    "Floresta Venenosa"
+  ],
+  "prompts": [
+    "Clean white and pale grey ceramic industrial sci-fi panels, bold vivid orange geometric end panels and diagonal accents, tiny black triangular danger symbols and black rivets, black thin outlines, exactly the white/orange/charcoal mechanical scheme in the reference.",
+    "Neon acid green and lime organic stains over a charcoal hexagonal honeycomb pattern, dark hexagon cells clearly visible, vivid green chemical cloud patches with distressed paint, closely match the green hexagonal finish in the reference.",
+    "A single long serpentine Chinese dragon formed from blazing golden yellow and orange fire winding horizontally over deep crimson red. Detailed dragon head on left, undulating fiery body to right. Many fine flame filaments and dark red shadows, exactly the reference fiery dragon motif.",
+    "A luminous emerald and cyan scaled coiling viper winding from left to right over midnight blue and black. Bright lime green scale highlights, highly detailed scales, flowing coiled serpent as reference. Keep black and navy background prominent.",
+    "Magenta hot pink cyberpunk angular graphics, big stencil-like abstract shapes across left half, electric cyan fine technical circuit lines and white tiny geometric marks on black right half, thin cyan edge stripes, precise futuristic pink black cyan finish like reference.",
+    "Intricate engraved ivory and silver Norse/Celtic interlacing knotwork over frosted turquoise and deep cobalt blue. Fine double-line ornamental swirling knots and runic abstract geometric designs. Metallic ivory details with blue engraved shadows, rich elegant continuous pattern from reference.",
+    "A graphic novel pop-art face of a woman on right half, cyan blue skin with pink magenta highlights, flowing black hair in purple pink cyan lines stretching horizontally left, white geometric panels, sharp black comic outlines, exactly the reference neon noir palette and style.",
+    "Smooth deep glossy blue-violet on right fading through violet at centre to saturated crimson pink on left; a luxurious almost iridescent metallic gradient like the reference. Subtle flat fine brushed metal grain, no objects, no specular scene reflections.",
+    "A fine black and graphite diagonal woven carbon-fibre surface with one slim flowing crimson red stripe running horizontally through the centre and an angular red accent at the right. Understated dark finish, tightly detailed carbon fibre weave like reference.",
+    "Acid yellow-green high contrast sinister forest silhouettes and organic toxic dark green streaks, black bare trunks and branches on left, lime green foliage and black shadows on right, slim electric lime accents, closely match the reference acid forest finish."
+  ],
+  "assets": [
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_7.png",
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_8.png",
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_9.png",
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_10.png",
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_11.png",
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_12.png",
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_13.png",
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_14.png",
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_15.png",
+    "src/main/resources/assets/mareeletrica/textures/block/rifle_finish_16.png"
+  ]
+}

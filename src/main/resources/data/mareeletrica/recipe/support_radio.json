@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": [" R ", "PCP", "PBP"], "key": {"R": {"item": "minecraft:lightning_rod"}, "P": {"item": "mareeletrica:iron_plate"}, "C": {"item": "mareeletrica:control_module"}, "B": {"item": "minecraft:redstone_block"}}, "result": {"id": "mareeletrica:support_radio", "count": 1}}

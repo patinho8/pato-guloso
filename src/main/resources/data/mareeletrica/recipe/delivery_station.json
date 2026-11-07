@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["PLP", "WCW", "WWW"], "key": {"P": {"item": "mareeletrica:iron_plate"}, "L": {"item": "minecraft:lime_concrete"}, "C": {"item": "minecraft:chest"}, "W": {"item": "minecraft:spruce_planks"}}, "result": {"id": "mareeletrica:delivery_station", "count": 1}}

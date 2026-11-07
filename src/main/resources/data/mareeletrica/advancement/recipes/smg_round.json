@@ -1,0 +1,1 @@
+{"criteria":{"obtain":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":"minecraft:iron_ingot"}]}}},"rewards":{"recipes":["mareeletrica:smg_round"]}}

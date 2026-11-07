@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["III", "GRS", "  I"], "key": {"I": {"item": "minecraft:iron_ingot"}, "G": {"item": "minecraft:glass_pane"}, "R": {"item": "minecraft:redstone"}, "S": {"item": "minecraft:stick"}}, "result": {"id": "mareeletrica:missile_launcher_portable", "count": 1}}

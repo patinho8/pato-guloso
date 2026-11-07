@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shapeless","category":"equipment","ingredients":[{"item":"minecraft:tnt"},{"item":"mareeletrica:iron_plate"},{"item":"mareeletrica:iron_plate"},{"item":"minecraft:gunpowder"}],"result":{"id":"mareeletrica:drone_bomb","count":2}}

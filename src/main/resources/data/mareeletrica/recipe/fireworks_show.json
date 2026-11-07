@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["RRR", "RDR", "PPP"], "key": {"R": {"item": "minecraft:firework_rocket"}, "D": {"item": "minecraft:dispenser"}, "P": {"item": "minecraft:spruce_planks"}}, "result": {"id": "mareeletrica:fireworks_show", "count": 1}}

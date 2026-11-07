@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["WHW","CPC","IRI"],"key":{"W":{"item":"minecraft:wheat_seeds"},"H":{"item":"minecraft:hopper"},"C":{"item":"minecraft:copper_ingot"},"P":{"item":"minecraft:piston"},"I":{"item":"minecraft:iron_ingot"},"R":{"item":"minecraft:redstone"}},"result":{"id":"mareeletrica:planter","count":1}}

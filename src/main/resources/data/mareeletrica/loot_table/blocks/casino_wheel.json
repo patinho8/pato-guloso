@@ -1,0 +1,1 @@
+{"type": "minecraft:block", "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": "mareeletrica:casino_wheel"}], "conditions": [{"condition": "minecraft:survives_explosion"}]}]}

@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shapeless","category":"redstone","ingredients":[{"item":"minecraft:lever"},{"item":"mareeletrica:iron_plate"},{"item":"minecraft:stick"},{"item":"minecraft:iron_ingot"}],"result":{"id":"mareeletrica:hand_crank","count":1}}

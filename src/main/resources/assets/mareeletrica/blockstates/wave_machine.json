@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"mareeletrica:block/wave_machine"},"facing=east":{"model":"mareeletrica:block/wave_machine","y":90},"facing=south":{"model":"mareeletrica:block/wave_machine","y":180},"facing=west":{"model":"mareeletrica:block/wave_machine","y":270}}}

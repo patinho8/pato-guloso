@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/tennis_net"}, "facing=east": {"model": "mareeletrica:block/tennis_net", "y": 90}, "facing=south": {"model": "mareeletrica:block/tennis_net", "y": 180}, "facing=west": {"model": "mareeletrica:block/tennis_net", "y": 270}}}

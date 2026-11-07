@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["PSP", "AMA", "PPP"], "key": {"P": {"item": "mareeletrica:iron_plate"}, "S": {"item": "minecraft:glass_pane"}, "A": {"item": "minecraft:anvil"}, "M": {"item": "mareeletrica:control_module"}}, "result": {"id": "mareeletrica:vehicle_garage", "count": 1}}

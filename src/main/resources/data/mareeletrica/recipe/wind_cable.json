@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["WWW", "CCC", "WWW"], "key": {"W": {"item": "minecraft:white_wool"}, "C": {"item": "mareeletrica:cable"}}, "result": {"id": "mareeletrica:wind_cable", "count": 8}}

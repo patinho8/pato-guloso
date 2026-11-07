@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IHI","CMC","ISI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"H":{"item":"minecraft:honeycomb"},"C":{"item":"mareeletrica:copper_coil"},"M":{"item":"mareeletrica:control_module"},"S":{"item":"minecraft:shears"}},"result":{"id":"mareeletrica:apiary_extractor","count":1}}

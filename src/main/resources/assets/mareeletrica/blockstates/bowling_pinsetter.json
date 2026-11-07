@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/bowling_pinsetter"}, "facing=east": {"model": "mareeletrica:block/bowling_pinsetter", "y": 90}, "facing=south": {"model": "mareeletrica:block/bowling_pinsetter", "y": 180}, "facing=west": {"model": "mareeletrica:block/bowling_pinsetter", "y": 270}}}

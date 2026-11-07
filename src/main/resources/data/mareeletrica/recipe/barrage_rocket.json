@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "equipment", "pattern": [" I ", "IGI", " F "], "key": {"I": {"item": "minecraft:iron_nugget"}, "G": {"item": "minecraft:gunpowder"}, "F": {"item": "minecraft:blaze_powder"}}, "result": {"id": "mareeletrica:barrage_rocket", "count": 8}}

@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IPI","PFP","IRI"],"key":{"I":{"item":"minecraft:iron_ingot"},"P":{"item":"minecraft:piston"},"F":{"item":"minecraft:furnace"},"R":{"item":"minecraft:redstone"}},"result":{"id":"mareeletrica:crusher","count":1}}

@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":[" I ","GSG"," R "],"key":{"I":{"item":"mareeletrica:iron_plate"},"G":{"item":"minecraft:glass"},"S":{"item":"minecraft:spyglass"},"R":{"item":"minecraft:amethyst_shard"}},"result":{"id":"mareeletrica:rifle_scope_2x","count":1}}

@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["RIR", " I ", " M "], "key": {"R": {"item": "minecraft:red_dye"}, "I": {"item": "minecraft:iron_ingot"}, "M": {"item": "mareeletrica:control_module"}}, "result": {"id": "mareeletrica:anemometer_mast", "count": 1}}

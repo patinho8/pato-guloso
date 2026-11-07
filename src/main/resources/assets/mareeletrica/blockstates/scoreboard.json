@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/scoreboard"}, "facing=east": {"model": "mareeletrica:block/scoreboard", "y": 90}, "facing=south": {"model": "mareeletrica:block/scoreboard", "y": 180}, "facing=west": {"model": "mareeletrica:block/scoreboard", "y": 270}}}

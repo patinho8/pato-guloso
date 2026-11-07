@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["APA","CMC","ASA"],"key":{"A":{"item":"mareeletrica:reinforced_alloy"},"P":{"item":"mareeletrica:plasma_cell"},"C":{"item":"mareeletrica:superconducting_coil"},"M":{"item":"mareeletrica:dimensional_matrix"},"S":{"item":"minecraft:magma_block"}},"result":{"id":"mareeletrica:geothermal_reactor","count":1}}

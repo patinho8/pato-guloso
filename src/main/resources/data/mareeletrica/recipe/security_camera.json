@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "III",
+    "IGR",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "mareeletrica:iron_plate"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "id": "mareeletrica:security_camera",
+    "count": 1
+  }
+}

@@ -1,0 +1,164 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.107'
+}
+version = '0.67.1'
+group = 'br.mareeletrica'
+base { archivesName = 'mare-eletrica' }
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+neoForge {
+    version = providers.gradleProperty('testNeoForgeVersion').getOrElse('21.1.172')
+    runs {
+        client { client() }
+        server { server(); programArgument '--nogui' }
+    }
+    mods {
+        mareeletrica { sourceSet sourceSets.main }
+    }
+}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.withType(Jar).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+if (project.hasProperty('update0210Integration')) {
+ tasks.named('compileJava') { options.incremental = false }
+ sourceSets.main.java.srcDir('tests/update0210')
+ neoForge.runs.client {
+  gameDirectory = file('run-armory21')
+  systemProperty 'mareeletrica.update21Test', 'true'
+  systemProperty 'mareeletrica.quickArmory', project.hasProperty('quickArmory').toString()
+  programArguments.addAll('--width','1280','--height','720','--username','ArmoryTest')
+ }
+}
+
+// Disposable graphical regression world; never part of the release JAR.
+if (project.hasProperty('remoteClientIntegration')) {
+    tasks.named('compileJava') { options.incremental = false }
+    sourceSets.main.java.srcDir('tests/client_integration')
+    neoForge.runs {
+        client {
+            gameDirectory = file('run-camera-test')
+            systemProperty 'mareeletrica.cameraTest', 'true'
+            programArguments.addAll('--width', '960', '--height', '540', '--username', 'CameraTest')
+        }
+    }
+}
+
+if (project.hasProperty('testRendererJar')) {
+ dependencies { runtimeOnly files(project.property('testRendererJar')) }
+}
+
+if (project.hasProperty('update0150Integration')) {
+ tasks.named('compileJava') { options.incremental = false }
+ sourceSets.main.java.srcDir('tests/update0150')
+ neoForge.runs.client {
+  gameDirectory = file('run-camera-test')
+  systemProperty 'mareeletrica.update15Test', 'true'
+  programArguments.addAll('--width', '960', '--height', '540', '--username', 'Update15Test')
+ }
+}
+
+if (project.hasProperty('update0160Integration')) {
+ tasks.named('compileJava') { options.incremental = false }
+ sourceSets.main.java.srcDir('tests/update0160')
+ neoForge.runs.client {
+  gameDirectory = file('run-camera-test')
+  systemProperty 'mareeletrica.update16Test', 'true'
+  programArguments.addAll('--width', '960', '--height', '540', '--username', 'Update16Test')
+ }
+}
+
+if (project.hasProperty('update0170Integration')) {
+ tasks.named('compileJava') { options.incremental = false }
+ sourceSets.main.java.srcDir('tests/update0170')
+ neoForge.runs.client {
+  gameDirectory = file('run-camera-test')
+  systemProperty 'mareeletrica.update17Test', 'true'
+  programArguments.addAll('--width', '960', '--height', '540', '--username', 'Update17Test')
+ }
+}
+
+if (project.hasProperty('update0180Integration')) {
+ tasks.named('compileJava') { options.incremental = false }
+ sourceSets.main.java.srcDir('tests/update0180')
+ neoForge.runs.client {
+  gameDirectory = file('run-camera-test')
+  systemProperty 'mareeletrica.update18Test', 'true'
+  programArguments.addAll('--width', '960', '--height', '540', '--username', 'Update18Test')
+ }
+}
+
+if (project.hasProperty('update0190Integration')) {
+ tasks.named('compileJava') { options.incremental = false }
+ sourceSets.main.java.srcDir('tests/update0190')
+ neoForge.runs.client {
+  gameDirectory = file('run-camera-test')
+  systemProperty 'mareeletrica.update19Test', 'true'
+  programArguments.addAll('--width', '960', '--height', '540', '--username', 'Update19Test')
+ }
+}
+
+if (project.hasProperty('update0191Visual')) {
+ tasks.named('compileJava') { options.incremental = false }
+ sourceSets.main.java.srcDir('tests/update0191')
+ neoForge.runs.client {
+  gameDirectory = file('run-camera-test')
+  systemProperty 'mareeletrica.update191Visual', 'true'
+  programArguments.addAll('--width', '1280', '--height', '720', '--username', 'Visual191Test')
+ }
+}
+
+if (project.hasProperty('update0200Integration')) {
+ tasks.named('compileJava') { options.incremental = false }
+ sourceSets.main.java.srcDir('tests/update0200')
+ neoForge.runs.client {
+  gameDirectory = file('run-camera-test')
+  systemProperty 'mareeletrica.update20Test', 'true'
+  programArguments.addAll('--width', '1280', '--height', '720', '--username', 'ArsenalTest')
+ }
+}
+
+// Do not package disposable regression fixtures or temporary synchronization files.
+tasks.named('jar') { exclude 'br/mareeletrica/ArmoryIntegration*'; exclude '**/.rsync-tmp/**' }
+tasks.named('processResources') { doNotTrackState('Temporary synchronization files can disappear during development.'); exclude '**/.rsync-tmp/**' }
+
+// 0.53 visual check: scene + screenshots (test only, never in the release JAR).
+if (project.hasProperty('visual053')) {
+ tasks.named('compileJava') { options.incremental = false }
+ sourceSets.main.java.srcDir('tests/visual053')
+ neoForge.runs.client {
+  gameDirectory = file('run-visual')
+  jvmArguments.addAll('-Xmx4G','-XX:+UseSerialGC')
+  systemProperty 'mareeletrica.cockpit', project.hasProperty('cockpit').toString()
+  systemProperty 'mareeletrica.casino', project.hasProperty('casino').toString()
+  systemProperty 'mareeletrica.war', project.hasProperty('war').toString()
+  systemProperty 'mareeletrica.pilot', project.hasProperty('pilot').toString()
+  systemProperty 'mareeletrica.fly', project.hasProperty('fly').toString()
+  systemProperty 'mareeletrica.frog', project.hasProperty('frog').toString()
+  systemProperty 'mareeletrica.sport', project.hasProperty('sport').toString()
+  systemProperty 'mareeletrica.robot', project.hasProperty('robot').toString()
+  systemProperty 'mareeletrica.battery', project.hasProperty('battery').toString()
+  systemProperty 'mareeletrica.ball', project.hasProperty('ball').toString()
+  systemProperty 'mareeletrica.rooster', project.hasProperty('rooster').toString()
+  systemProperty 'mareeletrica.drone', project.hasProperty('drone').toString()
+  systemProperty 'mareeletrica.manual', project.hasProperty('manual').toString()
+  systemProperty 'mareeletrica.wounds', project.hasProperty('wounds').toString()
+  systemProperty 'mareeletrica.crash', project.hasProperty('crash').toString()
+  systemProperty 'mareeletrica.fun', project.hasProperty('fun').toString()
+  systemProperty 'mareeletrica.newstuff', project.hasProperty('newstuff').toString()
+  systemProperty 'mareeletrica.pool', project.hasProperty('pool').toString()
+  systemProperty 'mareeletrica.skate', project.hasProperty('skate').toString()
+  systemProperty 'mareeletrica.big066', project.hasProperty('big066').toString()
+  systemProperty 'mareeletrica.club', project.hasProperty('club').toString()
+  systemProperty 'mareeletrica.fun067', project.hasProperty('fun067').toString()
+  systemProperty 'mareeletrica.ak', project.hasProperty('ak').toString()
+  systemProperty 'mareeletrica.audit', project.hasProperty('audit').toString()
+  systemProperty 'mareeletrica.auditonly', project.findProperty('auditonly') ?: ''
+  programArguments.addAll('--width','1280','--height','720','--username','Visual','--quickPlaySingleplayer','visual053')
+ }
+}

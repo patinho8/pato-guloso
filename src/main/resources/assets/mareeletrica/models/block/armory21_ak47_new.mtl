@@ -1,0 +1,9 @@
+newmtl metal
+map_Kd #metal
+
+newmtl wood
+map_Kd #wood
+
+newmtl mag
+map_Kd #mag
+

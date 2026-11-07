@@ -1,0 +1,24 @@
+MARÉ ELÉTRICA 0.21.0 — MINECRAFT 1.21.1 / NEOFORGE
+
+O JAR ja esta pronto. Nao precisa executar COMPILAR_WINDOWS.bat para jogar.
+
+1. Feche o Minecraft.
+2. Abra o ZIP e entre em MareEletrica/INSTALAR.
+3. Tire o JAR antigo do Maré Elétrica da pasta mods.
+4. Copie apenas mare-eletrica-0.21.0.jar para a pasta mods.
+5. Abra o perfil NeoForge 1.21.1 no TLauncher.
+
+Não coloque o ZIP inteiro, a pasta do projeto ou arquivos JSON em mods.
+Use apenas um JAR do Maré Elétrica. Em multiplayer, atualize cliente e servidor.
+
+Sem Punchy: NeoForge 21.1.172 ou superior da linha 21.1.
+Com Punchy 2.8g: o próprio Punchy exige NeoForge 21.1.229 ou superior.
+Java 21. Nenhum outro mod é obrigatório.
+
+M1 dispara, M2 mira, R recarrega, J abre acessórios.
+Armas: aba Itens de guerra. Roupas e pinturas: aba Camuflagem.
+Instruções completas: NOVIDADES_0.21.0.md.
+
+
+Pentes: segure o pente e use M2 com cartuchos no inventario para abastecer.
+Depois, segure a arma e aperte R para trocar. J abre os acessorios.

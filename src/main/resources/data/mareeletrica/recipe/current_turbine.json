@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["ICI","STS","ICI"],"key":{"I":{"item":"minecraft:iron_ingot"},"C":{"item":"mareeletrica:copper_coil"},"S":{"item":"mareeletrica:iron_plate"},"T":{"item":"mareeletrica:control_module"}},"result":{"id":"mareeletrica:current_turbine","count":1}}

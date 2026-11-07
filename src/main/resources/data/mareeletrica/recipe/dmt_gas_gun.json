@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["PPA"," SC"," LL"],"key":{"P":{"item":"mareeletrica:iron_plate"},"A":{"item":"minecraft:crossbow"},"S":{"item":"mareeletrica:pressure_chamber"},"C":{"item":"mareeletrica:control_module"},"L":{"item":"minecraft:leather"}},"result":{"id":"mareeletrica:dmt_gas_gun","count":1}}

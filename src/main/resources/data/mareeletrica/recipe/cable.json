@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["CCC","RRR","CCC"],"key":{"C":{"item":"minecraft:copper_ingot"},"R":{"item":"minecraft:dried_kelp"}},"result":{"id":"mareeletrica:cable","count":8}}

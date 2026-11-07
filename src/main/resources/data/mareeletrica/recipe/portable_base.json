@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["CCC", "DMD", "CSC"], "key": {"C": {"item": "minecraft:light_gray_concrete"}, "D": {"item": "mareeletrica:bunker_door"}, "M": {"item": "mareeletrica:control_module"}, "S": {"item": "mareeletrica:solar_panel"}}, "result": {"id": "mareeletrica:portable_base", "count": 1}}

@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shapeless", "category": "misc", "ingredients": [{"item": "mareeletrica:soccer_ball"}, {"item": "minecraft:grass_block"}, {"item": "minecraft:white_concrete"}, {"item": "minecraft:iron_ingot"}], "result": {"id": "mareeletrica:field_kit_futebol", "count": 1}}

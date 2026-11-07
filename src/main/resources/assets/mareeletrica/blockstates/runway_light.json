@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/runway_light"}, "facing=east": {"model": "mareeletrica:block/runway_light", "y": 90}, "facing=south": {"model": "mareeletrica:block/runway_light", "y": 180}, "facing=west": {"model": "mareeletrica:block/runway_light", "y": 270}}}

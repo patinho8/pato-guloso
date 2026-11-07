@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["SSS", "I I"], "key": {"S": {"tag": "minecraft:wooden_slabs"}, "I": {"item": "minecraft:iron_ingot"}}, "result": {"id": "mareeletrica:skateboard", "count": 1}}

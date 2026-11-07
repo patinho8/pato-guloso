@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":[" S ","I I","I I"],"key":{"S":{"item":"mareeletrica:servo_motor"},"I":{"item":"minecraft:iron_ingot"}},"result":{"id":"mareeletrica:rifle_bipod","count":1}}

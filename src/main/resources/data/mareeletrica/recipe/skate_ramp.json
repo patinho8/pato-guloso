@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["  S", " SS", "SSS"], "key": {"S": {"tag": "minecraft:wooden_slabs"}}, "result": {"id": "mareeletrica:skate_ramp", "count": 3}}

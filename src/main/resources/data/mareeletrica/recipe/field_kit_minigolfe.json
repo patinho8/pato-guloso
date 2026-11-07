@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["TWT","TPT","TTT"],"key":{"T":{"item":"mareeletrica:minigolf_turf"},"W":{"item":"mareeletrica:minigolf_windmill"},"P":{"item":"mareeletrica:minigolf_putter"}},"result":{"id":"mareeletrica:field_kit_minigolfe","count":1}}

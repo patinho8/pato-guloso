@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IPI","PCP","IRI"],"key":{"I":{"item":"minecraft:iron_ingot"},"P":{"item":"minecraft:prismarine_shard"},"C":{"item":"minecraft:copper_block"},"R":{"item":"minecraft:redstone_block"}},"result":{"id":"mareeletrica:sea_turbine","count":1}}

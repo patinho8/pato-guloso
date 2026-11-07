@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["YAY", "CMC", "PPP"], "key": {"Y": {"item": "minecraft:yellow_concrete"}, "A": {"item": "minecraft:anvil"}, "C": {"item": "mareeletrica:copper_coil"}, "M": {"item": "mareeletrica:control_module"}, "P": {"item": "mareeletrica:iron_plate"}}, "result": {"id": "mareeletrica:vehicle_hangar", "count": 1}}

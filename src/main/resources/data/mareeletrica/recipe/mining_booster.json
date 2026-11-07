@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IPI","AMA","ICI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"P":{"item":"minecraft:diamond_pickaxe"},"A":{"item":"minecraft:amethyst_shard"},"M":{"item":"mareeletrica:control_module"},"C":{"item":"mareeletrica:copper_coil"}},"result":{"id":"mareeletrica:mining_booster","count":1}}

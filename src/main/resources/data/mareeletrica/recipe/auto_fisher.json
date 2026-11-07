@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["  F"," CH","IRI"],"key":{"F":{"item":"minecraft:fishing_rod"},"C":{"item":"minecraft:copper_ingot"},"H":{"item":"minecraft:hopper"},"I":{"item":"minecraft:iron_ingot"},"R":{"item":"minecraft:redstone"}},"result":{"id":"mareeletrica:auto_fisher","count":1}}

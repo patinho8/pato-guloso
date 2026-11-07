@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IPI","PCP","IRI"],"key":{"I":{"item":"minecraft:iron_ingot"},"P":{"item":"minecraft:oak_planks"},"C":{"item":"minecraft:copper_block"},"R":{"item":"minecraft:redstone"}},"result":{"id":"mareeletrica:water_wheel","count":1}}

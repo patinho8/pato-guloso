@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["IAI","GMG","IEI"],"key":{"I":{"item":"mareeletrica:iron_plate"},"A":{"item":"minecraft:amethyst_shard"},"G":{"item":"mareeletrica:gold_contact"},"M":{"item":"mareeletrica:control_module"},"E":{"item":"minecraft:ender_pearl"}},"result":{"id":"mareeletrica:bridge_projector","count":1}}

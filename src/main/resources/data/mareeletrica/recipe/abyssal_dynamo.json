@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["APA","CMC","ASA"],"key":{"A":{"item":"mareeletrica:reinforced_alloy"},"P":{"item":"mareeletrica:pressure_chamber"},"C":{"item":"mareeletrica:superconducting_coil"},"M":{"item":"mareeletrica:dimensional_matrix"},"S":{"item":"mareeletrica:synthetic_crystal"}},"result":{"id":"mareeletrica:abyssal_dynamo","count":1}}

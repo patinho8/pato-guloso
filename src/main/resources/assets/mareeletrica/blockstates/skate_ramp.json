@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "mareeletrica:block/skate_ramp"}, "facing=east": {"model": "mareeletrica:block/skate_ramp", "y": 90}, "facing=south": {"model": "mareeletrica:block/skate_ramp", "y": 180}, "facing=west": {"model": "mareeletrica:block/skate_ramp", "y": 270}}}
