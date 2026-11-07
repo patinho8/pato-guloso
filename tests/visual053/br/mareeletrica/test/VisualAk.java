@@ -30,6 +30,7 @@ public final class VisualAk {
    for(int i=0;i<9;i++)p.getInventory().setItem(i,ak(new int[]{0,1,2,3,4,7,8,11,12}[i],false,0));
    l.setDayTime(6000);});
   if(tick>=62&&tick%10==0)srv.execute(()->{var p=srv.getPlayerList().getPlayers().get(0);for(var en:p.serverLevel().getEntities(p,p.getBoundingBox().inflate(40),x->!(x instanceof net.minecraft.world.entity.player.Player)))en.discard();});
+  if(tick==61)System.out.println("[AK] LEFT "+CreativeTabs.leftovers());
   if(tick==85)shot("ak_fp");
   if(tick==88)mc.options.keyUse.setDown(true);
   if(tick==100)shot("ak_aim");

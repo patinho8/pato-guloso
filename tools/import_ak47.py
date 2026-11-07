@@ -14,8 +14,9 @@ def rot(r):   # Blockbench mesh rotation (degrees), R = Rx·Ry·Rz
     Rz=np.array([[math.cos(z),-math.sin(z),0],[math.sin(z),math.cos(z),0],[0,0,1]])
     return Rx@Ry@Rz
 # model frame of the mod's guns: barrel along -z (muzzle near z=-13), centred on x=8, iron-sight line at y≈13.6 (pixels)
-S=.726;SX=S*1.25
-def to_mod(p):return np.array([8+p[2]*SX,13.6+(p[1]-27.1)*S,4.85-p[0]*S])
+# 0.67.2: full size (1 Blockbench px = 1 px), anchored so the pistol grip sits where the hand holds the old AK (grip top at z 10.5, y 6.5)
+S=1.0;SX=1.4
+def to_mod(p):return np.array([8+p[2]*SX,9.0+(p[1]-25)*S,10.5-(p[0]+9.5)*S])
 WOOD={11,12,15,36,37};MAG={1,16,17,18,19};STOCK={11,12};SKIP={0}
 parts={'body':[],'view':[],'magazine':[]}
 for i,e in enumerate(src['elements']):

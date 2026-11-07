@@ -54,22 +54,32 @@ public final class CreativeTabs {
  }
  static void armor(Sink s){PowerArmor.creative(s);s.add(MareEletrica.MACHINES.get(Kind.ARMOR_STATION));}
  static void camo(Sink s){ArmoryParts.creative(s,true);Camouflage.items().forEach(s::add);}
+ static void kit(Sink s,FieldKits.Kind k){s.add(FieldKits.ITEMS.get(k));}
+ /** 0.67.2: sports, games, skate/surf and animals each got their own tab (it was all one long mixed list) */
  static void sports(Sink s){
   SportsMode.creative(s::accept);
   Sports.creative(s);s.add(TennisBall.ITEM);TennisBall.COLORED.forEach(s::add);s.add(TennisBall.RACKET);s.add(TennisBall.NET_ITEM);s.add(Scoreboard.ITEM);
-  s.add(FightChickens.ITEM);FightChickens.BREED_ITEMS.forEach(s::add);s.add(FightChickens.WHISTLE);s.add(Frogs.EGG);s.add(ChickenBattle.ITEM);Fun.creative(s::accept);Games.creative(s::accept);Pool.creative(s::accept);Skate.creative(s::accept);MiniGolf.creative(s::accept);PingPong.creative(s::accept);Surf.creative(s::accept);FieldKits.ITEMS.values().forEach(s::add);
+  for(var k:List.of(FieldKits.Kind.FUTEBOL,FieldKits.Kind.BASQUETE,FieldKits.Kind.VOLEI,FieldKits.Kind.TENIS))kit(s,k);
+ }
+ static void games(Sink s){
+  Fun.creative(s::accept);Pool.creative(s::accept);PingPong.creative(s::accept);Games.creative(s::accept);MiniGolf.creative(s::accept);
+ }
+ static void radical(Sink s){Skate.creative(s::accept);Surf.creative(s::accept);}
+ static void animals(Sink s){
+  s.add(FightChickens.ITEM);FightChickens.BREED_ITEMS.forEach(s::add);s.add(FightChickens.WHISTLE);s.add(ChickenBattle.ITEM);kit(s,FieldKits.Kind.GALOS);
+  s.add(Frogs.EGG);s.add(Frogs.POCKET);s.add(Robots.ITEM);s.add(Robots.TRASH_ITEM);
  }
  /** 0.65.2: the old rifle/SMG stickers, suppressors and SMG scopes (replaced by the weapon modules) are gone from the tabs and recipes.
   *  They stay registered only so old copies in chests keep loading; the "adapt" recipes still turn them into modules. */
- static boolean legacy(String id){return id.startsWith("rifle_sticker_")||id.startsWith("rifle_suppressor_")||id.startsWith("smg_sticker_")||id.startsWith("smg_scope_");}
+ static boolean legacy(String id){return java.util.Set.of("sentry_gun","flak_battery","auto_grenade_launcher","flak_shell","grenade_round","ammo_crate").contains(id)||id.startsWith("rifle_sticker_")||id.startsWith("rifle_suppressor_")||id.startsWith("smg_sticker_")||id.startsWith("smg_scope_");}
  static void casino(Sink s){s.add(Casino.CHIP);for(var i:Casino.ITEMS.values())s.add(i);}
  static void materials(Sink s){
   s.add(MareEletrica.IRON_GRIT);s.add(MareEletrica.COPPER_GRIT);s.add(MareEletrica.GOLD_GRIT);s.add(MareEletrica.IRON_PLATE);s.add(MareEletrica.COPPER_COIL);s.add(MareEletrica.GOLD_CONTACT);s.add(MareEletrica.CONTROL_MODULE);
   MareEletrica.ADVANCED.values().forEach(s::add);
-  s.add(MareEletrica.POTABLE_WATER);s.add(MareEletrica.HONEY_BREAD);s.add(MareEletrica.HONEY_CANDY);s.add(MareEletrica.HONEY_WATER);s.add(Gadgets.DANONINHO);s.add(Robots.ITEM);s.add(Robots.TRASH_ITEM);
+  s.add(MareEletrica.POTABLE_WATER);s.add(MareEletrica.HONEY_BREAD);s.add(MareEletrica.HONEY_CANDY);s.add(MareEletrica.HONEY_WATER);s.add(Gadgets.DANONINHO);
   // everything else that no tab claimed
   var placed=new HashSet<Item>();
-  for(Consumer<Sink> f:List.<Consumer<Sink>>of(CreativeTabs::energy,CreativeTabs::machinesTab,CreativeTabs::guns,CreativeTabs::defense,CreativeTabs::vehicles,CreativeTabs::base,CreativeTabs::gear,CreativeTabs::armor,CreativeTabs::camo,CreativeTabs::sports,CreativeTabs::casino)){var x=new Sink();f.accept(x);x.stacks.forEach(st->placed.add(st.getItem()));}
+  for(Consumer<Sink> f:List.<Consumer<Sink>>of(CreativeTabs::energy,CreativeTabs::machinesTab,CreativeTabs::guns,CreativeTabs::defense,CreativeTabs::vehicles,CreativeTabs::base,CreativeTabs::gear,CreativeTabs::armor,CreativeTabs::camo,CreativeTabs::sports,CreativeTabs::games,CreativeTabs::radical,CreativeTabs::animals,CreativeTabs::casino)){var x=new Sink();f.accept(x);x.stacks.forEach(st->placed.add(st.getItem()));}
   for(var e:MareEletrica.ITEMS.getEntries()){var i=e.get();if(!placed.contains(i)&&!legacy(e.getId().getPath()))s.accept(new ItemStack(i));}
  }
 
@@ -92,7 +102,12 @@ public final class CreativeTabs {
  public static final Supplier<CreativeModeTab> ARMOR=tab("armor","🛡 Maré Elétrica · Armaduras",()->new ItemStack(PowerArmor.ITEMS.get(1).get()),CreativeTabs::armor);
  public static final Supplier<CreativeModeTab> CAMO=tab("camouflage","🌿 Maré Elétrica · Camuflagem",()->new ItemStack(Camouflage.items().get(1).get()),CreativeTabs::camo);
  public static final Supplier<CreativeModeTab> SPORTS=tab("sports","⚽ Maré Elétrica · Esportes",()->new ItemStack(Sports.BALLS.get(Sports.Kind.SOCCER).get()),CreativeTabs::sports);
+ public static final Supplier<CreativeModeTab> GAMES=tab("games","🎳 Maré Elétrica · Jogos e diversão",()->new ItemStack(Pool.TABLE_ITEM.get()),CreativeTabs::games);
+ public static final Supplier<CreativeModeTab> RADICAL=tab("radical","🛹 Maré Elétrica · Skate e surfe",()->new ItemStack(Skate.ITEM.get()),CreativeTabs::radical);
+ public static final Supplier<CreativeModeTab> ANIMALS=tab("animals","🐔 Maré Elétrica · Animais e robôs",()->new ItemStack(FightChickens.WHISTLE.get()),CreativeTabs::animals);
  public static final Supplier<CreativeModeTab> CASINO=tab("casino","🎰 Maré Elétrica · Cassino",()->new ItemStack(Casino.CHIP.get()),CreativeTabs::casino);
  public static final Supplier<CreativeModeTab> MATERIALS=tab("materials","🔩 Maré Elétrica · Materiais e comida",()->new ItemStack(MareEletrica.CONTROL_MODULE.get()),CreativeTabs::materials);
  public static void register(){}
+ /** test helper: ids that no tab claims on purpose (they fall into "Materiais e comida") */
+ public static List<String> leftovers(){var all=new Sink();materials(all);var named=new Sink();named.add(MareEletrica.IRON_GRIT);var out=new ArrayList<String>();for(var st:all.stacks)out.add(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(st.getItem()).getPath());return out;}
 }
