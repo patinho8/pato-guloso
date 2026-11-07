@@ -40,7 +40,7 @@ def warp(i,fn):
         f=fn(np.array(e['from'],float));t=fn(np.array(e['to'],float));o=fn(np.array(e['origin'],float))
         e['from']=[round(float(c),4) for c in np.minimum(f,t)];e['to']=[round(float(c),4) for c in np.maximum(f,t)];e['origin']=[round(float(c),4) for c in o]
 SC=np.array([-15.3,28.5,0.0])
-for i in list(range(46,59))+[73,74,75]:warp(i,lambda w:SC+(w-SC)*np.array([1.2,1.4,1.4]))
+for i in list(range(46,59))+[73,74,75]:warp(i,lambda w:SC+(w-SC)*np.array([1.35,1.85,1.85]))
 for i in (1,2):warp(i,lambda w:np.array([w[0]*.82 if w[0]>0 else w[0],w[1],w[2]]))
 warp(70,lambda w:w-np.array([16.9*.18,0,0]))
 d['name']='sniper_patinho_v3'
