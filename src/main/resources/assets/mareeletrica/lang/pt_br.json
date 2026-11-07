@@ -1563,5 +1563,18 @@
  "entity.mareeletrica.surf_wave": "Onda",
  "block.mareeletrica.wave_machine": "Máquina de Ondas",
  "item.mareeletrica.field_kit_minigolfe": "Minigolfe (pronto)",
- "item.mareeletrica.hunter_sniper": "Sniper Caçador"
+ "item.mareeletrica.hunter_sniper": "Sniper Caçador",
+ "entity.mareeletrica.duck": "Pato",
+ "item.mareeletrica.duck_spawn_egg": "Ovo Gerador de Pato",
+ "item.mareeletrica.golden_duck_egg": "Ovo de Pato Dourado",
+ "item.mareeletrica.duck_whistle": "Apito de Pato",
+ "block.mareeletrica.duck_nest": "Ninho de Pato",
+ "block.mareeletrica.duck_race": "Corrida de Patos",
+ "subtitles.mareeletrica.duck_quack": "Pato: quack!",
+ "item.mareeletrica.duck_hat_cap": "Boné de Pato",
+ "item.mareeletrica.duck_hat_tophat": "Cartola de Pato",
+ "item.mareeletrica.duck_hat_crown": "Coroa de Pato",
+ "item.mareeletrica.duck_hat_sunglasses": "Óculos Escuros de Pato",
+ "item.mareeletrica.duck_hat_helmet": "Capacete Militar de Pato",
+ "item.mareeletrica.duck_hat_scope": "Mini-luneta de Pato"
 }

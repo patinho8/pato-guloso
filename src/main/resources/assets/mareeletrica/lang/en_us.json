@@ -1563,5 +1563,18 @@
  "entity.mareeletrica.surf_wave": "Wave",
  "block.mareeletrica.wave_machine": "Wave Machine",
  "item.mareeletrica.field_kit_minigolfe": "Minigolf (ready)",
- "item.mareeletrica.hunter_sniper": "Hunter Sniper"
+ "item.mareeletrica.hunter_sniper": "Hunter Sniper",
+ "entity.mareeletrica.duck": "Duck",
+ "item.mareeletrica.duck_spawn_egg": "Duck Spawn Egg",
+ "item.mareeletrica.golden_duck_egg": "Golden Duck Egg",
+ "item.mareeletrica.duck_whistle": "Duck Whistle",
+ "block.mareeletrica.duck_nest": "Duck Nest",
+ "block.mareeletrica.duck_race": "Duck Race",
+ "subtitles.mareeletrica.duck_quack": "Duck quacks",
+ "item.mareeletrica.duck_hat_cap": "Duck Cap",
+ "item.mareeletrica.duck_hat_tophat": "Duck Top Hat",
+ "item.mareeletrica.duck_hat_crown": "Duck Crown",
+ "item.mareeletrica.duck_hat_sunglasses": "Duck Sunglasses",
+ "item.mareeletrica.duck_hat_helmet": "Duck Army Helmet",
+ "item.mareeletrica.duck_hat_scope": "Duck Mini Scope"
 }

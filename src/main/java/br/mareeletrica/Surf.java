@@ -108,8 +108,12 @@ public final class Surf {
   /** along (+ ahead of the crest, on the steep face) and across the wave */
   public double[] local(Vec3 p,float pt){Vec3 d=p.subtract(crest(pt));Vec3 f=dir();return new double[]{d.x*f.x+d.z*f.z,d.x*-f.z+d.z*f.x};}
   /** height of the water above the flat sea at (along, across) */
+  /** 0.68.0: the wave peels — it breaks progressively from one shoulder (-across) to the other; surf toward the unbroken side */
+  public double peel(float pt){return -width()/2-1+age(pt)*PEEL;}
+  public static final double PEEL=.05;
+  public boolean broken(double b,float pt){return b<peel(pt);}
   public double height(double a,double b){
-   double H=height(),half=width()/2;double k=Mth.clamp(1-(Math.abs(b)-half)/2.5,0,1);if(k<=0)return 0;
+   double H=height()*(broken(b,0)?.45:1),half=width()/2;double k=Mth.clamp(1-(Math.abs(b)-half)/2.5,0,1);if(k<=0)return 0;
    double h;
    if(a<-5||a>2.6)h=0;
    else if(a<=0){double x=(a+5)/5;h=H*x*x*(3-2*x);}
@@ -118,9 +122,12 @@ public final class Surf {
   @Override public void tick(){
    super.tick();
    Vec3 c=crest(0);setPos(c.x,c.y,c.z);setYRot(yawDeg());
-   if(level().isClientSide){   // foam blowing off the crest
-    var f=dir();Vec3 s=new Vec3(-f.z,0,f.x);
-    for(int i=0;i<3;i++){double b=(random.nextDouble()-.5)*width();Vec3 q=c.add(s.scale(b)).add(f.scale(.2));level().addParticle(i==0?ParticleTypes.CLOUD:ParticleTypes.SPLASH,q.x,q.y+height()*.95,q.z,f.x*.1,.05,f.z*.1);}
+   if(level().isClientSide){   // spray off the lip, whitewater where it already broke, a burst at the peeling point
+    var f=dir();Vec3 sd=new Vec3(-f.z,0,f.x);double pl=peel(0),half=width()/2;
+    for(int i=0;i<3;i++){double b=Mth.lerp(random.nextDouble(),Math.max(pl,-half),half);Vec3 q=c.add(sd.scale(b)).add(f.scale(.5));level().addParticle(i==0?ParticleTypes.CLOUD:ParticleTypes.SPLASH,q.x,q.y+height()*1.02,q.z,f.x*.12,.06,f.z*.12);}
+    for(int i=0;i<2;i++){double b=Mth.lerp(random.nextDouble(),-half,Math.min(pl,half));if(pl>-half){Vec3 q=c.add(sd.scale(b)).add(f.scale(random.nextDouble()));level().addParticle(ParticleTypes.CLOUD,q.x,q.y+height()*.4,q.z,f.x*.05,.02,f.z*.05);}}
+    if(pl>-half&&pl<half){Vec3 q=c.add(sd.scale(pl)).add(f.scale(.6));for(int i=0;i<3;i++)level().addParticle(ParticleTypes.SPLASH,q.x+random.nextGaussian()*.3,q.y+height()*.8,q.z+random.nextGaussian()*.3,0,.25,0);
+     if(tickCount%25==0){var pl2=net.minecraft.client.Minecraft.getInstance().player;if(pl2!=null&&pl2.distanceToSqr(q)<40*40)level().playLocalSound(q.x,q.y,q.z,SoundEvents.GENERIC_SPLASH,SoundSource.AMBIENT,.5F,.55F+random.nextFloat()*.2F,false);}}
     return;}
    double age=age(0);
    boolean water=!Double.isNaN(surface(level(),c.x+dir().x*1.5,c.y,c.z+dir().z*1.5));
@@ -152,7 +159,7 @@ public final class Surf {
    if(level.getNearestPlayer(worldPosition.getX(),worldPosition.getY(),worldPosition.getZ(),64,false)==null)return;
    var f=getBlockState().getValue(HorizontalDirectionalBlock.FACING);Vec3 at=Vec3.atCenterOf(worldPosition).add(Vec3.atLowerCornerOf(f.getNormal()).scale(3));
    double s=surface(level,at.x,worldPosition.getY(),at.z);if(Double.isNaN(s))s=surface(level,at.x,worldPosition.getY()-1,at.z);if(Double.isNaN(s))return;
-   Wave.spawn(sl,new Vec3(at.x,s,at.z),f.toYRot(),14F,1.8F);
+   Wave.spawn(sl,new Vec3(at.x,s,at.z),f.toYRot(),16F,2.1F);
    sl.sendParticles(ParticleTypes.BUBBLE_COLUMN_UP,at.x,s,at.z,30,1.5,.2,1.5,.1);
   }
  }
@@ -231,7 +238,7 @@ public final class Surf {
      Vec3 v=head.scale(speed);
      Wave lift=waveAt(position());
      if(lift!=null&&rider!=null){double[] lc=lift.local(position(),0);
-      if(lc[0]>=-.2&&lc[0]<=2.4&&Math.abs(lc[1])<lift.width()/2&&head.dot(lift.dir())>.25&&(speed>.06F||fwd>0)){   // caught it!
+      if(lc[0]>=-.2&&lc[0]<=2.4&&!lift.broken(lc[1]+.8,0)&&Math.abs(lc[1])<lift.width()/2&&head.dot(lift.dir())>.25&&(speed>.06F||fwd>0)){   // caught it!
        state=1;waveId=lift.getId();ride=.22F;points=0;ridingTicks=0;turnSum=0;lastYaw=getYRot();
        sound(SoundEvents.GENERIC_SPLASH,.7F,1.2F);msg(rider,"§b§l🌊 PEGOU A ONDA! §7A/D: curva • Espaço na crista: aéreo");}
       else v=v.add(lift.dir().scale(.06));}   // a passing swell nudges you along
@@ -249,6 +256,7 @@ public final class Surf {
      rv=dir.scale(along).add(across.scale(side*(.08+ride*.6)));
      move(MoverType.SELF,new Vec3(rv.x,0,rv.z));
      lc=w.local(position(),0);
+     if(w.broken(lc[1]+.8,0)){loseWave(rider,"a onda fechou em cima de você — surfe para o lado que não quebrou");if(level().isClientSide){speed=0;vy=0;}break;}
      if(lc[0]>3.2||lc[0]<-1.6||Math.abs(lc[1])>w.width()/2+1.5){loseWave(rider,lc[0]<-1.6?"passou por cima da onda":Math.abs(lc[1])>w.width()/2?"saiu pela ponta da onda":"a onda passou");break;}
      setPos(getX(),sea-.04+w.height(lc[0],lc[1]),getZ());
      ridingTicks++;if(ridingTicks%10==0)points+=5;
@@ -304,7 +312,7 @@ public final class Surf {
    if(!level().getEntitiesOfClass(Wave.class,getBoundingBox().inflate(30)).isEmpty())return;
    double r=Math.toRadians(getYRot());Vec3 head=new Vec3(-Math.sin(r),0,Math.cos(r));Vec3 at=position().subtract(head.scale(20));
    double s2=surface(level(),at.x,s,at.z);if(Double.isNaN(s2))return;
-   Wave.spawn(sl,new Vec3(at.x,s2,at.z),getYRot(),16F,1.3F+random.nextFloat()*.6F);
+   Wave.spawn(sl,new Vec3(at.x,s2,at.z),getYRot(),18F,1.9F+random.nextFloat()*.7F);
    if(getControllingPassenger() instanceof Player p)p.displayClientMessage(Component.literal("§3🌊 Vem uma onda atrás de você — reme!"),true);
   }
   @Override protected void addAdditionalSaveData(CompoundTag t){}

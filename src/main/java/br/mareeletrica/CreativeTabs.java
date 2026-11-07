@@ -62,12 +62,12 @@ public final class CreativeTabs {
   for(var k:List.of(FieldKits.Kind.FUTEBOL,FieldKits.Kind.BASQUETE,FieldKits.Kind.VOLEI,FieldKits.Kind.TENIS))kit(s,k);
  }
  static void games(Sink s){
-  Fun.creative(s::accept);Pool.creative(s::accept);PingPong.creative(s::accept);Games.creative(s::accept);MiniGolf.creative(s::accept);
+  Fun.creative(s::accept);Pool.creative(s::accept);s.add(Pato.RACE_ITEM);PingPong.creative(s::accept);Games.creative(s::accept);MiniGolf.creative(s::accept);
  }
  static void radical(Sink s){Skate.creative(s::accept);Surf.creative(s::accept);}
  static void animals(Sink s){
   s.add(FightChickens.ITEM);FightChickens.BREED_ITEMS.forEach(s::add);s.add(FightChickens.WHISTLE);s.add(ChickenBattle.ITEM);kit(s,FieldKits.Kind.GALOS);
-  s.add(Frogs.EGG);s.add(Frogs.POCKET);s.add(Robots.ITEM);s.add(Robots.TRASH_ITEM);
+  Pato.creative(s::accept);s.add(Frogs.EGG);s.add(Frogs.POCKET);s.add(Robots.ITEM);s.add(Robots.TRASH_ITEM);
  }
  /** 0.65.2: the old rifle/SMG stickers, suppressors and SMG scopes (replaced by the weapon modules) are gone from the tabs and recipes.
   *  They stay registered only so old copies in chests keep loading; the "adapt" recipes still turn them into modules. */

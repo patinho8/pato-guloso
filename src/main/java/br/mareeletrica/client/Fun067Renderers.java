@@ -76,30 +76,43 @@ public final class Fun067Renderers {
   public WaveR(EntityRendererProvider.Context c){super(c);shadowRadius=0;}
   @Override public ResourceLocation getTextureLocation(Surf.Wave e){return PoolRenderer.WHITE;}
   @Override public boolean shouldRender(Surf.Wave e,net.minecraft.client.renderer.culling.Frustum f,double x,double y,double z){return true;}
+  static final ResourceLocation WATER=ResourceLocation.withDefaultNamespace("textures/block/water_still.png");
   @Override public void render(Surf.Wave w,float yaw,float pt,PoseStack p,MultiBufferSource b,int light){
    Vec3 at=new Vec3(Mth.lerp(pt,w.xo,w.getX()),Mth.lerp(pt,w.yo,w.getY()),Mth.lerp(pt,w.zo,w.getZ()));
    Vec3 c=w.crest(pt);
    p.pushPose();p.translate(c.x-at.x,c.y-at.y+.03,c.z-at.z);
    Vec3 f=w.dir();float fx=(float)f.x,fz=(float)f.z,sx=-fz,sz=fx;
-   VertexConsumer vc=b.getBuffer(RenderType.entityTranslucent(PoolRenderer.WHITE));
-   var ps=p.last();
-   float half=w.width()/2+2.5F;int NA=22,NB=Math.max(6,(int)(half*2/1.2F));
-   float a0=-5.2F,a1=2.8F;
+   VertexConsumer vc=b.getBuffer(RenderType.entityTranslucent(WATER));
+   var ps=p.last();float age=(float)w.age(pt);int frame=((int)(age/2))%32;float v0=frame/32F,v1=(frame+1)/32F;
+   float half=w.width()/2+2.5F;int NA=26,NB=Math.max(8,(int)(half*2/1.0F));
+   float a0=-5.2F,a1=2.8F,peel=(float)w.peel(pt);
    for(int i=0;i<NA;i++)for(int j=0;j<NB;j++){
     float aa=a0+(a1-a0)*i/NA,ab=a0+(a1-a0)*(i+1)/NA,ba=-half+2*half*j/NB,bb=-half+2*half*(j+1)/NB;
-    vert(vc,ps,w,aa,ba,fx,fz,sx,sz,light);vert(vc,ps,w,aa,bb,fx,fz,sx,sz,light);vert(vc,ps,w,ab,bb,fx,fz,sx,sz,light);vert(vc,ps,w,ab,ba,fx,fz,sx,sz,light);
+    vert(vc,ps,w,aa,ba,fx,fz,sx,sz,light,0,v0,peel,age);vert(vc,ps,w,aa,bb,fx,fz,sx,sz,light,1,v0,peel,age);vert(vc,ps,w,ab,bb,fx,fz,sx,sz,light,1,v1,peel,age);vert(vc,ps,w,ab,ba,fx,fz,sx,sz,light,0,v1,peel,age);
    }
+   // the lip: a ribbon curling forward off the crest along the part that has not broken yet
+   float H=w.height();int NS=7;
+   for(int j=0;j<NB;j++){float ba=-half+2*half*j/NB,bb=-half+2*half*(j+1)/NB;if(bb<peel||Math.abs(ba)>w.width()/2+.5F)continue;
+    for(int k=0;k<NS;k++){float s0=k/(float)NS,s1=(k+1)/(float)NS;
+     lip(vc,ps,s0,ba,H,fx,fz,sx,sz,light,0,v0);lip(vc,ps,s0,bb,H,fx,fz,sx,sz,light,1,v0);lip(vc,ps,s1,bb,H,fx,fz,sx,sz,light,1,v1);lip(vc,ps,s1,ba,H,fx,fz,sx,sz,light,0,v1);}}
    p.popPose();}
-  static void vert(VertexConsumer vc,PoseStack.Pose ps,Surf.Wave w,float a,float bb,float fx,float fz,float sx,float sz,int light){
-   float h=(float)w.height(a,bb);float k=h/Math.max(.1F,w.height());
-   int alpha=(int)(40+150*Math.min(1,k*1.4F));
-   int r,g,bl;
-   if(a>-.7F&&a<.5F&&k>.6F){r=235;g=248;bl=255;alpha=Math.max(alpha,210);}   // foam on the crest
-   else{r=(int)Mth.lerp(k,40,70);g=(int)Mth.lerp(k,100,170);bl=(int)Mth.lerp(k,190,215);}
+  static void lip(VertexConsumer vc,PoseStack.Pose ps,float s,float b,float H,float fx,float fz,float sx,float sz,int light,float u,float v){
+   float a=1.35F*s,h=H*(1.04F+.12F*Mth.sin(s*Mth.PI*.8F))-H*.82F*s*s;
+   int alpha=(int)(235-90*s),r=(int)Mth.lerp(s,235,90),g=(int)Mth.lerp(s,250,200),bl=(int)Mth.lerp(s,255,220);
+   vc.addVertex(ps,fx*a+sx*b,h,fz*a+sz*b).setColor(alpha<<24|r<<16|g<<8|bl).setUv(u,v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(ps,0,1,0);}
+  static void vert(VertexConsumer vc,PoseStack.Pose ps,Surf.Wave w,float a,float bb,float fx,float fz,float sx,float sz,int light,float u,float v,float peel,float age){
+   float h=(float)w.height(a,bb);float k=h/Math.max(.1F,w.height());boolean broke=bb<peel;
+   float face=a>0?1:0;   // the steep front face lets light through: turquoise; the back is deeper blue
+   int r=(int)Mth.lerp(k,24,face>0?50:36),g=(int)Mth.lerp(k,80,face>0?185:120),bl=(int)Mth.lerp(k,150,face>0?200:190);
+   int alpha=(int)(70+150*Math.min(1,k*1.5F));
+   float foam=0;
+   if(!broke&&a>-.8F&&a<.6F&&k>.7F)foam=Mth.clamp((k-.7F)/.3F,0,1);   // crest
+   if(broke&&k>.05F)foam=Mth.clamp(.45F+.4F*Mth.sin(a*3.1F+bb*2.3F+age*.25F),0,1)*Math.min(1,k*3);   // whitewater
+   if(Math.abs(bb-peel)<.9F&&k>.2F)foam=1;
+   r=(int)Mth.lerp(foam,r,240);g=(int)Mth.lerp(foam,g,250);bl=(int)Mth.lerp(foam,bl,255);alpha=(int)Mth.lerp(foam,alpha,230);
    int col=alpha<<24|r<<16|g<<8|bl;
-   // slope normal (rough)
    float dh=(float)(w.height(a+.2,bb)-w.height(a-.2,bb))/.4F;float nx=-fx*dh,nz=-fz*dh,ny=1;float n=Mth.sqrt(nx*nx+ny*ny+nz*nz);
-   vc.addVertex(ps,fx*a+sx*bb,h,fz*a+sz*bb).setColor(col).setUv(.5F,.5F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(ps,nx/n,ny/n,nz/n);
+   vc.addVertex(ps,fx*a+sx*bb,h,fz*a+sz*bb).setColor(col).setUv(u,v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(ps,nx/n,ny/n,nz/n);
   }
  }
 

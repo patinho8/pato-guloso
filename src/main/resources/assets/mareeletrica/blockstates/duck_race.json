@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"mareeletrica:block/duck_race"},"facing=east":{"model":"mareeletrica:block/duck_race","y":90},"facing=south":{"model":"mareeletrica:block/duck_race","y":180},"facing=west":{"model":"mareeletrica:block/duck_race","y":270}}}
