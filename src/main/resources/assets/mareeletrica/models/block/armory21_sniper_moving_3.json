@@ -1,1 +1,1 @@
-{"parent":"mareeletrica:block/armory21_sniper_moving_0","textures":{"atlas":"mareeletrica:block/armory21_sniper_3","particle":"mareeletrica:block/armory21_sniper_3"}}
+{"textures": {"particle": "mareeletrica:block/sniper_claude_black"}, "elements": []}

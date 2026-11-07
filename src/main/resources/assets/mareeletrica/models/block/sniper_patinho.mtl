@@ -1,0 +1,27 @@
+newmtl black
+map_Kd #black
+
+newmtl brass
+map_Kd #brass
+
+newmtl lens
+map_Kd #lens
+
+newmtl metal
+map_Kd #metal
+
+newmtl metal_l
+map_Kd #metal_l
+
+newmtl rubber
+map_Kd #rubber
+
+newmtl steel
+map_Kd #steel
+
+newmtl wood
+map_Kd #wood
+
+newmtl wood_d
+map_Kd #wood_d
+

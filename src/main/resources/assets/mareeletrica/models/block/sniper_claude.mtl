@@ -1,0 +1,33 @@
+newmtl black
+map_Kd #black
+
+newmtl brass
+map_Kd #brass
+
+newmtl flute
+map_Kd #flute
+
+newmtl green
+map_Kd #green
+
+newmtl green_d
+map_Kd #green_d
+
+newmtl lens
+map_Kd #lens
+
+newmtl metal
+map_Kd #metal
+
+newmtl metal_l
+map_Kd #metal_l
+
+newmtl red
+map_Kd #red
+
+newmtl rubber
+map_Kd #rubber
+
+newmtl steel
+map_Kd #steel
+

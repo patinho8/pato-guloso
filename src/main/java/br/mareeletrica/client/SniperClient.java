@@ -45,19 +45,20 @@ public final class SniperClient {
   if(SniperItem.firearm(gun))redDot(g);
   if(SniperItem.firearm(gun)){String text=gun.getItem() instanceof GunItem weapon?weapon.profile.title+"  "+GunLoadout.rounds(gun)+"/"+weapon.profile.capacity+" · R: recarga · J: painel":gun.is(MareEletrica.SMG.get())?"SMG  "+SmgLoadout.rounds(gun)+"/30 · R: recarga · J: painel":"Sniper  "+Magazines.rounds(gun)+"/5 · R: recarga · J: acessórios";int x=8,y=g.guiHeight()-65;g.fill(x-3,y-3,x+mc.font.width(text)+5,y+23,0xA0192027);g.drawString(mc.font,text,x,y,0xDBE7EC);g.drawString(mc.font,ProneSystem.prone(mc.player)?(ProneSystem.supported(mc.player)?"BIPÉ APOIADO":"DEITADO · sem apoio estável"):"Shift 2×: deitar",x,y+12,ProneSystem.supported(mc.player)?0x88EEAB:0xA9BBC8);}
  }
- private static void redDot(GuiGraphics g){int cx=g.guiWidth()/2,cy=g.guiHeight()/2;g.fill(cx-2,cy-2,cx+2,cy+2,0x50200406);g.fill(cx-1,cy-1,cx+1,cy+1,0xFFE5222B);}
+ /** 0.67.3: hip-fire crosshair = a small round dot (white with a dark outline) */
+ private static void redDot(GuiGraphics g){int cx=g.guiWidth()/2,cy=g.guiHeight()/2;
+  g.fill(cx-1,cy-2,cx+2,cy+3,0x90000000);g.fill(cx-2,cy-1,cx+3,cy+2,0x90000000);
+  g.fill(cx-1,cy-1,cx+2,cy+2,0xFFF4F6F6);g.fill(cx,cy-1,cx+1,cy+2,0xFFFFFFFF);}
  private static void ammo(GuiGraphics g,net.minecraft.world.item.ItemStack s){var f=WeaponFamily.of(s);if(f!=null)g.drawCenteredString(Minecraft.getInstance().font,Magazines.rounds(s)+" / "+f.capacity+"  ·  "+(ModularLoadout.hasOptic(s)?zoom()+"×":"FERRO"),g.guiWidth()/2,g.guiHeight()-22,0xD4E7DF);}
  private static void arsenalReticle(GuiGraphics g,net.minecraft.world.item.ItemStack s){ammo(g,s);}
  private static void smgReticle(GuiGraphics g){ammo(g,Minecraft.getInstance().player.getMainHandItem());}
  private static void ring(GuiGraphics g,int cx,int cy,int r,int width,int color){for(int y=-r;y<=r;y++){int outer=(int)Math.sqrt(r*r-y*y),inner=Math.abs(y)<r-width?(int)Math.sqrt((r-width)*(r-width)-y*y):0;g.fill(cx-outer,cy+y,cx-inner+1,cy+y+1,color);g.fill(cx+inner,cy+y,cx+outer+1,cy+y+1,color);}}
+ /** 0.67.3: Valorant-style sniper scope: thin black cross through the centre (no gap, no dots), getting thick towards the edge of the lens */
  private static void reticle(GuiGraphics g,int cx,int cy,int r){
-  int ink=0xE2181D22,gap=6,mid=(int)(r*.45F),up=(int)(r*.30F);
-  g.fill(cx-r+3,cy,cx-gap,cy+1,ink);g.fill(cx+gap,cy,cx+r-3,cy+1,ink);
-  g.fill(cx-r+3,cy-1,cx-mid,cy+2,ink);g.fill(cx+mid,cy-1,cx+r-3,cy+2,ink);
-  g.fill(cx,cy+gap,cx+1,cy+r-3,ink);g.fill(cx-1,cy+mid,cx+2,cy+r-3,ink);
-  g.fill(cx,cy-up,cx+1,cy-gap,ink);
-  for(int d=14;d<r-8;d+=14){int n=d%28==0?4:2;g.fill(cx+d,cy+2,cx+d+1,cy+2+n,ink);g.fill(cx-d,cy+2,cx-d+1,cy+2+n,ink);g.fill(cx-n,cy+d,cx+n+1,cy+d+1,ink);}
-  g.fill(cx-3,cy-3,cx+4,cy+4,0xB0200406);g.fill(cx-2,cy-2,cx+3,cy+3,0xFFFF3535);g.fill(cx-1,cy-2,cx+1,cy-1,0xFFFF9A9A);
+  int ink=0xF0101214,thin=(int)(r*.62F);
+  g.fill(cx-r,cy,cx+r+1,cy+1,ink);g.fill(cx,cy-r,cx+1,cy+r+1,ink);   // thin hairlines
+  g.fill(cx-r,cy-1,cx-thin,cy+2,ink);g.fill(cx+thin+1,cy-1,cx+r+1,cy+2,ink);g.fill(cx-1,cy+thin+1,cx+2,cy+r+1,ink);g.fill(cx-1,cy-r,cx+2,cy-thin,ink);
+  g.fill(cx-r,cy-2,cx-r+(r-thin)/2,cy+3,ink);g.fill(cx+r-(r-thin)/2,cy-2,cx+r+1,cy+3,ink);g.fill(cx-2,cy+r-(r-thin)/2,cx+3,cy+r+1,ink);g.fill(cx-2,cy-r,cx+3,cy-r+(r-thin)/2,ink);
  }
 
 }
