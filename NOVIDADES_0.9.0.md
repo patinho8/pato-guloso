@@ -36,7 +36,7 @@ A haste telescópica prende a broca giratória ao suporte superior. A ponta desc
 
 Cada leva começa com 100 minérios. Cada um dos dez espaços de gás ocupado acrescenta 100, até 1.100. Cada espaço aceita um cilindro; a máquina consome um por espaço ao iniciar. Gasta 2.000 FE por minério. Saída cheia pausa a produção e preserva o resultado pendente; retire os itens ou conecte um duto. O progresso é salvo ao fechar o mundo.
 
-Os números pedidos somam 196,0001%; foram interpretados como **pesos relativos**, com um resultado por sorteio:
+Os números somam 196,0001%; foram interpretados como **pesos relativos**, com um resultado por sorteio:
 
 | Minério | Peso |
 |---|---:|
@@ -71,4 +71,4 @@ A água bombeada alcança até 14 blocos horizontalmente num piso plano e escoa 
 
 Feche o Minecraft, retire o JAR antigo do Maré Elétrica e coloque somente o JAR novo da pasta `INSTALAR` em `mods`. Em servidor, atualize os dois lados. Use Minecraft 1.21.1, NeoForge 21.1.172 ou posterior da linha 21.1 e Java 21. Não exige GeckoLib ou outros mods.
 
-O DMT de Attack on Titan fica para a próxima versão. O pedido está registrado em `PROXIMA_VERSAO.md`.
+O DMT de Attack on Titan fica para a próxima versão.

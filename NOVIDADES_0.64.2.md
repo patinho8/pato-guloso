@@ -1,7 +1,7 @@
 # Maré Elétrica 0.64.2
 
 ## Bolas (futebol, basquete e vôlei)
-- **A bola não entra mais no chão.** Agora ela colide com os blocos de verdade, do mesmo jeito no seu PC e no servidor. Antes ela atravessava o chão e o servidor tinha que corrigir, o que fazia ela afundar e tremer.
+- **A bola não entra mais no chão.** Agora ela colide com os blocos de verdade, do mesmo jeito no jogo e no servidor. Antes ela atravessava o chão e o servidor tinha que corrigir, o que fazia ela afundar e tremer.
 - **Acabou o quica-quica sem fim.** Cada quique perde força e, quando o pulo fica pequeno, a bola para de quicar e só rola. Caindo de 12 blocos ela quica 1 ou 2 vezes e para.
 - Batendo na parede ou na trave, a bola volta com menos força.
 

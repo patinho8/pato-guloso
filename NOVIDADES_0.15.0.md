@@ -44,7 +44,7 @@ Nova arma preta com modelo 3D, luneta, coronha e carregador. Segure-a na mão pr
 
 - **Segure M2:** mira circular com retículo e ampliação de 5×. A sensibilidade da visão cai para 22% enquanto mira; a configuração normal do mouse é preservada.
 - **M1:** dispara, inclusive com a mira aberta. Cada tiro consome uma munição; intervalo de 1,75 segundo.
-- Projétil sem espalhamento, a 20 blocos/tick, com **20 de dano base**. Contra um golem de ferro sem modificadores, tira 20 dos 100 pontos de vida, abaixo dos 25% pedidos.
+- Projétil sem espalhamento, a 20 blocos/tick, com **20 de dano base**. Contra um golem de ferro sem modificadores, tira 20 dos 100 pontos de vida, abaixo de 25%.
 - A munição possui modelo próprio. A arma e as balas têm receitas de bancada.
 
 Armadura e efeitos do alvo podem reduzir o dano. Segurar a sniper dá prioridade aos controles dela sobre os do DMT.

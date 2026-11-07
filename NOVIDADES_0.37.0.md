@@ -104,7 +104,6 @@ Limitações honestas: o braço na primeira pessoa é o bloco do braço do jogad
 - **Borboleta:** modelo novo (cabos vazados com recortes de verdade, bordas chanfradas, parafusos de latão, lâmina clip-point com canal). A inspeção agora **sobe devagar e cai mais rápido**.
 - **Sem movimento de tela** nos ataques de faca.
 - **Animação de bater:** agora tem temporizador próprio (≈0,6 s) e dispara a cada novo golpe no ar ou em bloco; ao acertar um animal/mob não toca.
-- **Zerofang:** deixada de lado, como pedido.
 
 ## Leva 10
 - **Braço das facas:** mais **fino** (antes parecia largo) e **sem o punho largo** que eu tinha adicionado. Na inspeção da karambit a mão fica mais baixa, deixando o braço esticado para a frente em vez de curvado para cima; a karambit gira em cima da ponta do dedo.

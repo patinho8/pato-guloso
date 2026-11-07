@@ -45,4 +45,4 @@ O controle funciona até 256 blocos, na mesma dimensão e com a máquina carrega
 
 Feche o jogo. Retire o JAR anterior do Maré Elétrica e coloque somente `INSTALAR/mare-eletrica-0.10.0.jar` na pasta `mods`. Use Minecraft 1.21.1, NeoForge 21.1.172 ou posterior da linha 21.1 e Java 21. Atualize também o servidor quando jogar em multiplayer. Não precisa recompilar.
 
-O pedido do DMT continua anotado em `PROXIMA_VERSAO.md` para uma atualização posterior.
+O DMT fica para uma próxima versão.

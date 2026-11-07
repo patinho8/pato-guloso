@@ -3,7 +3,7 @@
 ## 1. Gerar o JAR
 1. Instale o **Java 21**.
 2. Dê dois cliques em `COMPILAR_WINDOWS.bat` (pasta `MareEletrica`).
-3. O JAR sai pronto na pasta indicada pelo script. Se falhar, ele cria `COMPILACAO.log` — me mande esse arquivo.
+3. O JAR sai pronto na pasta indicada pelo script. Se falhar, ele cria `COMPILACAO.log` — ele mostra o que deu errado.
 4. Coloque o JAR na pasta `mods` (NeoForge 1.21.1), no lugar do da 0.21.0.
 
 ## 2. Controles
