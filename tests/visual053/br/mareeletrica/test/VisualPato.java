@@ -72,7 +72,7 @@ public final class VisualPato {
   var bb=mc.player.getVehicle() instanceof Surf.Board b0?b0:null;
   if(rs<0&&bb!=null&&bb.state==1&&tick>322){rs=tick;log("CAUGHT t"+tick);}
   if(tick>322&&tick<470&&tick%4==0&&bb!=null)log(String.format("surf t%d z=%.1f x=%.1f y=%.2f st=%d",tick,bb.getZ()-plat.getZ()-60,bb.getX()-plat.getX(),bb.getY()-plat.getY(),bb.state));
-  if(rs>0){int k=tick-rs;if(k==4){left=-1;fwd=0;}if(k==20)left=0;if(k==22)mc.player.setYRot(-120);if(k==28)shot("onda_lado");if(k==30)mc.player.setYRot(-20);if(k==36)shot("onda_tras");}
+  if(rs>0){int k=tick-rs;if(k==4){left=-1;fwd=0;}if(k==20)left=0;if(k==22)mc.player.setYRot(-120);if(k==28)shot("onda_lado");if(k==30)mc.player.setYRot(-20);if(k==36)shot("onda_tras");if(k==38){mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);mc.player.setYRot(0);mc.player.setXRot(70);}if(k==44)shot("onda_cima");}
   if(tick==330)shot("onda_chegando");
   if(tick==480)System.out.println("[PATO] DONE");
  }

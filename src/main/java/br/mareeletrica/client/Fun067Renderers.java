@@ -82,12 +82,14 @@ public final class Fun067Renderers {
    Vec3 c=w.crest(pt);
    p.pushPose();p.translate(c.x-at.x,c.y-at.y+.03,c.z-at.z);
    Vec3 f=w.dir();float fx=(float)f.x,fz=(float)f.z,sx=-fz,sz=fx;
-   VertexConsumer vc=b.getBuffer(RenderType.entityTranslucent(WATER));
+   // 0.68.1: drawn opaque — a translucent mesh hid the water surface behind it (you saw straight through to the bottom)
+   VertexConsumer vc=b.getBuffer(RenderType.entityCutoutNoCull(WATER));
    var ps=p.last();float age=(float)w.age(pt);int frame=((int)(age/2))%32;float v0=frame/32F,v1=(frame+1)/32F;
    float half=w.width()/2+2.5F;int NA=26,NB=Math.max(8,(int)(half*2/1.0F));
    float a0=-5.2F,a1=2.8F,peel=(float)w.peel(pt);
    for(int i=0;i<NA;i++)for(int j=0;j<NB;j++){
     float aa=a0+(a1-a0)*i/NA,ab=a0+(a1-a0)*(i+1)/NA,ba=-half+2*half*j/NB,bb=-half+2*half*(j+1)/NB;
+    if(Math.max(Math.max(w.height(aa,ba),w.height(aa,bb)),Math.max(w.height(ab,bb),w.height(ab,ba)))<.04)continue;   // flat sea: leave the real water
     vert(vc,ps,w,aa,ba,fx,fz,sx,sz,light,0,v0,peel,age);vert(vc,ps,w,aa,bb,fx,fz,sx,sz,light,1,v0,peel,age);vert(vc,ps,w,ab,bb,fx,fz,sx,sz,light,1,v1,peel,age);vert(vc,ps,w,ab,ba,fx,fz,sx,sz,light,0,v1,peel,age);
    }
    // the lip: a ribbon curling forward off the crest along the part that has not broken yet
