@@ -863,7 +863,7 @@
  "item.mareeletrica.sniper_skin_3": "Sniper · Lótus Branco",
  "item.mareeletrica.sniper_skin_4": "Sniper · Fênix",
  "item.mareeletrica.sniper_skin_5": "Sniper · Nebulosa",
- "item.mareeletrica.sniper_skin_6": "Sniper · Caçador",
+ "item.mareeletrica.sniper_skin_6": "Sniper · Duna Fantasma",
  "item.mareeletrica.sniper_empty_magazine": "Pente Sniper vazio",
  "item.mareeletrica.sniper_magazine": "Pente Sniper abastecido",
  "item.mareeletrica.frag_grenade": "Granada de fragmentação",
@@ -1562,5 +1562,6 @@
  "entity.mareeletrica.surfboard": "Prancha de Surfe",
  "entity.mareeletrica.surf_wave": "Onda",
  "block.mareeletrica.wave_machine": "Máquina de Ondas",
- "item.mareeletrica.field_kit_minigolfe": "Minigolfe (pronto)"
+ "item.mareeletrica.field_kit_minigolfe": "Minigolfe (pronto)",
+ "item.mareeletrica.hunter_sniper": "Sniper Caçador"
 }

@@ -242,8 +242,8 @@ public final class Wounds {
   if(!st.isEmpty()){var e=p.drop(st,false);if(e!=null)e.setPickUpDelay(60);}
  }
  // ---------------- weapons a hurt body can't handle ----------------
- public static boolean heavy(ItemStack s){var f=WeaponFamily.of(s);return s.is(MareEletrica.SNIPER.get())||f==WeaponFamily.BARRETT||f==WeaponFamily.SVD||f==WeaponFamily.M249||s.getItem() instanceof WarPlus.LauncherItem;}
- public static boolean gun(ItemStack s){return WeaponFamily.of(s)!=null||s.getItem() instanceof GunItem||s.getItem() instanceof WarPlus.LauncherItem||s.is(MareEletrica.SMG.get())||s.is(MareEletrica.SNIPER.get());}
+ public static boolean heavy(ItemStack s){var f=WeaponFamily.of(s);return MareEletrica.isSniper(s)||f==WeaponFamily.BARRETT||f==WeaponFamily.SVD||f==WeaponFamily.M249||s.getItem() instanceof WarPlus.LauncherItem;}
+ public static boolean gun(ItemStack s){return WeaponFamily.of(s)!=null||s.getItem() instanceof GunItem||s.getItem() instanceof WarPlus.LauncherItem||s.is(MareEletrica.SMG.get())||MareEletrica.isSniper(s);}
  /** Null when the player can fire what they hold; otherwise the reason. */
  public static String blocked(Player p,ItemStack held){
   if(p.isCreative())return null;var s=of(p);

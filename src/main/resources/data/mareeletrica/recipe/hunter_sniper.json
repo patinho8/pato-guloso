@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["IIS","WML"," W "],"key":{"I":{"item":"mareeletrica:reinforced_alloy"},"S":{"item":"minecraft:spyglass"},"W":{"tag":"minecraft:logs"},"M":{"item":"mareeletrica:servo_motor"},"L":{"item":"minecraft:brown_dye"}},"result":{"id":"mareeletrica:hunter_sniper","count":1}}

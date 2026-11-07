@@ -24,6 +24,25 @@ cube('bola_ferrolho',[-9.9,25.2,-5.4],[-8.3,26.8,-4.4])
 cube('lente_frente',[-23.3,28.6,-1.3],[-23.2,30.8,1.0])
 cube('lente_tras',[-7.4,28.8,-1.0],[-7.3,30.5,.6])
 cube('tampa_torre',[-16.4,31.7,-1.0],[-14.9,32.1,.8])
+# ---- 0.67.4: proporções — luneta maior, coronha um pouco mais curta ----
+import math
+def Rm(r):
+    x,y,z=[math.radians(a) for a in r]
+    Rx=np.array([[1,0,0],[0,math.cos(x),-math.sin(x)],[0,math.sin(x),math.cos(x)]]);Ry=np.array([[math.cos(y),0,math.sin(y)],[0,1,0],[-math.sin(y),0,math.cos(y)]]);Rz=np.array([[math.cos(z),-math.sin(z),0],[math.sin(z),math.cos(z),0],[0,0,1]])
+    return Rx@Ry@Rz
+def warp(i,fn):
+    e=d['elements'][i]
+    if e.get('type')=='mesh':
+        M=Rm(e.get('rotation',[0,0,0]));o=np.array(e.get('origin',[0,0,0]),float)
+        for k,v in e['vertices'].items():
+            w=fn(M@np.array(v,float)+o);e['vertices'][k]=[round(float(c),4) for c in M.T@(w-o)]
+    else:
+        f=fn(np.array(e['from'],float));t=fn(np.array(e['to'],float));o=fn(np.array(e['origin'],float))
+        e['from']=[round(float(c),4) for c in np.minimum(f,t)];e['to']=[round(float(c),4) for c in np.maximum(f,t)];e['origin']=[round(float(c),4) for c in o]
+SC=np.array([-15.3,28.5,0.0])
+for i in list(range(46,59))+[73,74,75]:warp(i,lambda w:SC+(w-SC)*np.array([1.2,1.4,1.4]))
+for i in (1,2):warp(i,lambda w:np.array([w[0]*.82 if w[0]>0 else w[0],w[1],w[2]]))
+warp(70,lambda w:w-np.array([16.9*.18,0,0]))
 d['name']='sniper_patinho_v3'
 json.dump(d,open('tools/sniper_patinho_v3.bbmodel','w'))
 print(len(d['elements']))

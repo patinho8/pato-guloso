@@ -89,6 +89,9 @@ public final class MareEletrica {
     public static final DeferredItem<DmtItem> DMT=ITEMS.register("dmt",()->new DmtItem(new Item.Properties().stacksTo(1)));
     public static final DeferredItem<net.minecraft.world.item.SwordItem> DMT_BLADE=ITEMS.register("dmt_blade",()->new net.minecraft.world.item.SwordItem(net.minecraft.world.item.Tiers.IRON,new Item.Properties().durability(512).attributes(net.minecraft.world.item.SwordItem.createAttributes(net.minecraft.world.item.Tiers.IRON,3,-2.2F))));
     public static final DeferredItem<SniperItem> SNIPER=ITEMS.register("precision_sniper",()->new SniperItem(new Item.Properties().stacksTo(1)));
+    /** 0.67.4: the hunting rifle modelled by the player — same mechanics as the precision sniper, its own look */
+    public static final DeferredItem<SniperItem> HUNTER=ITEMS.register("hunter_sniper",()->new SniperItem(new Item.Properties().stacksTo(1)));
+    public static boolean isSniper(net.minecraft.world.item.ItemStack s){return s.is(SNIPER.get())||s.is(HUNTER.get());}
     public static final DeferredRegister<net.minecraft.core.particles.ParticleType<?>> PARTICLES=DeferredRegister.create(Registries.PARTICLE_TYPE,ID);
     public static final Supplier<net.minecraft.core.particles.SimpleParticleType> SMOKE_CLOUD=PARTICLES.register("smoke_cloud",()->new net.minecraft.core.particles.SimpleParticleType(true));
     public static final Supplier<net.minecraft.core.particles.SimpleParticleType> MUZZLE_SMOKE=PARTICLES.register("muzzle_smoke",()->new net.minecraft.core.particles.SimpleParticleType(false));
@@ -186,7 +189,7 @@ public final class MareEletrica {
     private static net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.sounds.SoundEvent,net.minecraft.sounds.SoundEvent> sound(String n){return SOUNDS.register(n,()->net.minecraft.sounds.SoundEvent.createVariableRangeEvent(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(ID,n)));}
     public static final Supplier<net.minecraft.sounds.SoundEvent> SMG_SHOT=SOUNDS.register("smg_shot",()->net.minecraft.sounds.SoundEvent.createVariableRangeEvent(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(ID,"smg_shot")));
     public static final Supplier<net.minecraft.sounds.SoundEvent> SMG_SILENCED=SOUNDS.register("smg_silenced",()->net.minecraft.sounds.SoundEvent.createVariableRangeEvent(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(ID,"smg_silenced")));
-    private static void weaponItems(CreativeModeTab.Output out){for(var gun:Arsenal.guns())if(gun!=REVOLVER)out.accept(gun.get());out.accept(Arsenal.USP_ROUND.get());out.accept(Arsenal.RIFLE_ROUND.get());out.accept(Arsenal.SHOTGUN_SHELL.get());out.accept(ROVER_BULLET.get());out.accept(SMG.get());out.accept(SMG_ROUND.get());out.accept(SNIPER.get());out.accept(SNIPER_ROUND.get());out.accept(REVOLVER.get());out.accept(REVOLVER_ROUND.get());SCOPES.forEach(x->out.accept(x.get()));ArmoryParts.creative(out,false);out.accept(BIPOD.get());}
+    private static void weaponItems(CreativeModeTab.Output out){for(var gun:Arsenal.guns())if(gun!=REVOLVER)out.accept(gun.get());out.accept(Arsenal.USP_ROUND.get());out.accept(Arsenal.RIFLE_ROUND.get());out.accept(Arsenal.SHOTGUN_SHELL.get());out.accept(ROVER_BULLET.get());out.accept(SMG.get());out.accept(SMG_ROUND.get());out.accept(SNIPER.get());out.accept(HUNTER.get());out.accept(SNIPER_ROUND.get());out.accept(REVOLVER.get());out.accept(REVOLVER_ROUND.get());SCOPES.forEach(x->out.accept(x.get()));ArmoryParts.creative(out,false);out.accept(BIPOD.get());}
     private static MachineBlock machineBlock(Kind kind,BlockBehaviour.Properties props){return kind==Kind.GIANT_WHEEL?new GiantWheelBlock(kind,props):new MachineBlock(kind,props);}
 
     public MareEletrica(IEventBus bus) {

@@ -34,7 +34,7 @@ public final class ScopeSight {
  public static boolean sees(ServerPlayer p,Entity entity){var s=SESSIONS.get(p.getUUID());return s!=null&&s.level==entity.level()&&!RemoteSessions.active(p)&&(entity instanceof LivingEntity||entity instanceof DmtProjectileEntity)&&s.chunks.contains(entity.chunkPosition().toLong())&&p.distanceToSqr(entity)<(MAX_RADIUS*16+32)*(MAX_RADIUS*16+32);}
  public static void request(ServerPlayer p){
   boolean binoculars=p.isUsingItem()&&p.getUseItem().is(Gadgets.BINOCULARS.get());
-  if(!p.isAlive()||p.isSpectator()||RemoteSessions.active(p)||p.containerMenu!=p.inventoryMenu||!binoculars&&(!SniperItem.scoped(p)||!p.getUseItem().is(MareEletrica.SNIPER.get())))return;
+  if(!p.isAlive()||p.isSpectator()||RemoteSessions.active(p)||p.containerMenu!=p.inventoryMenu||!binoculars&&(!SniperItem.scoped(p)||!MareEletrica.isSniper(p.getUseItem())))return;
   var s=SESSIONS.computeIfAbsent(p.getUUID(),id->new Session(p));long now=s.level.getGameTime();if(now-s.lastRequest<8)return;s.lastRequest=now;
   int zoom=binoculars?12:RifleLoadout.zoom(p.getUseItem());
   int range=Math.min(MAX_RADIUS,Math.max(12,8+zoom));s.radius=Math.max(s.radius,range);

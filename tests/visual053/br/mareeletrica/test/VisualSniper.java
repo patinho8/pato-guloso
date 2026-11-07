@@ -25,7 +25,7 @@ public final class VisualSniper {
   if(tick==60)srv.execute(()->{var p=srv.getPlayerList().getPlayers().get(0);p.setGameMode(net.minecraft.world.level.GameType.CREATIVE);var l=p.serverLevel();
    var at=p.blockPosition().atY(150);for(int x=-4;x<=4;x++)for(int z=-4;z<=4;z++){l.setBlockAndUpdate(at.offset(x,-1,z),net.minecraft.world.level.block.Blocks.GRASS_BLOCK.defaultBlockState());for(int y=0;y<3;y++)l.setBlockAndUpdate(at.offset(x,y,z),net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());}
    p.teleportTo(l,at.getX()+.5,at.getY(),at.getZ()+.5,0,5);p.getInventory().clearContent();
-   int[] sk={0,6,1,2,7,8,11,12,9};for(int i=0;i<9;i++)p.getInventory().setItem(i,sn(sk[i]));
+   int[] sk={0,6,1,2,7,8,11,12,9};for(int i=0;i<9;i++)p.getInventory().setItem(i,sn(sk[i]));p.getInventory().setItem(1,new ItemStack(MareEletrica.HUNTER.get()));
    l.setDayTime(6000);l.setWeatherParameters(6000,0,false,false);});
   if(tick>=62&&tick%10==0)srv.execute(()->{var p=srv.getPlayerList().getPlayers().get(0);for(var en:p.serverLevel().getEntities(p,p.getBoundingBox().inflate(40),x->!(x instanceof net.minecraft.world.entity.player.Player)))en.discard();});
   if(tick==85)shot("mao");
