@@ -1,0 +1,17 @@
+{
+ "extra": {
+  "rail": [
+   9.25,
+   5.26,
+   12.78
+  ],
+  "bore": 7.67,
+  "muzzle": -10.75,
+  "iron": 9.94
+ },
+ "regions": {
+  "barrel": -1.32,
+  "stock": 14.19
+ },
+ "support": null
+}

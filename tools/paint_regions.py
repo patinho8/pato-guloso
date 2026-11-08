@@ -8,7 +8,15 @@ def java_region(name):
     if CANO.search(n):return 1
     return 0
 # imported (OBJ) guns: rules on the face centre (model units) and material
+import json as _j,os as _o
+_FR=_o.path.join(_o.path.dirname(_o.path.abspath(__file__)),'forge_regions.json')
+FORGE=_j.load(open(_FR)) if _o.path.exists(_FR) else {}
 def obj_region(tag,mat,z,y):
+    if tag in FORGE:   # 0.75.0 forge guns: barrel ahead of 'barrel' z, stock behind 'stock' z
+        r=FORGE[tag]
+        if 'stock' in r and z>r['stock']:return 2
+        if 'barrel' in r and z<r['barrel']:return 1
+        return 0
     if tag=='m4a1':
         if z>12.9:return 2
         if z<-6.4:return 1

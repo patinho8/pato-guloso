@@ -1,0 +1,30 @@
+newmtl alu
+map_Kd #alu
+
+newmtl brass
+map_Kd #brass
+
+newmtl dark
+map_Kd #dark
+
+newmtl engrave
+map_Kd #engrave
+
+newmtl polish
+map_Kd #polish
+
+newmtl poly
+map_Kd #poly
+
+newmtl rubber
+map_Kd #rubber
+
+newmtl shell
+map_Kd #shell
+
+newmtl steel
+map_Kd #steel
+
+newmtl white
+map_Kd #white
+

@@ -1,1 +1,1 @@
-{"parent":"mareeletrica:block/armory21p_ump45_view_1_s","textures":{"paint":"mareeletrica:block/paint_stripes","particle":"mareeletrica:block/paint_base"}}
+{"loader":"neoforge:obj","model":"mareeletrica:models/block/paint_ump45_view_1.obj","flip_v":true,"textures":{"paint":"mareeletrica:block/paint_stripes","particle":"mareeletrica:block/paint_base"}}

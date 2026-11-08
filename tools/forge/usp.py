@@ -1,0 +1,45 @@
+"""H&K USP .45 — ferrolho com frente chanfrada, cão externo, alavanca de segurança, armação com trilho, punho texturizado."""
+import sys,os,math;sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from gunforge import Gun
+K=Gun('usp',{'slide':(50,51,54),'frame':(40,40,42),'mag':(38,38,40),'steel':(74,76,80),'dark':(10,10,12),'polish':(150,154,160),
+ 'brass':(196,156,64),'red':(200,30,30),'white':(236,236,236),'engrave':(92,94,98),'rubber':(22,22,24)},seed=21)
+c=K.cube;both=K.both;tube=K.tube;B=23.6
+G='ferrolho'
+c(G,'ferrolho',[-22.4,20.6,-2.65],[16.4,26.0,2.65],'slide');c(G,'ferrolho_alto',[-22.4,26.0,-2.65],[14.2,26.8,2.65],'slide')
+both(G,'ferrolho_chanfro',-22.4,25.4,16.4,27.6,1.4,2.9,'slide',rot=[35,0,0],origin=[-3,26.4,2.2])
+c(G,'ferrolho_topo',[-22.4,26.8,-1.5],[16.4,27.5,1.5],'slide')
+K.serr(G,-21.6,-15,21.4,26.0,2.65,6)
+c(G,'janela',[-6.6,24.6,1.0],[3.4,27.55,2.75],'dark')
+c(G,'capuz_cano',[-6.4,24.8,-1.4],[3.2,27.6,1.4],'polish')
+c(G,'extrator',[-7.4,24.2,2.6],[-2.6,24.9,2.8],'steel')
+c(G,'alca',[-21.8,27.4,-1.9],[-18.6,29.3,1.9],'dark');c(G,'alca_entalhe',[-21.85,28.3,-.5],[-18.55,29.35,.5],'slide')
+for z in (-1.4,.9):c(G,'alca_ponto',[-21.9,28.4,z],[-21.8,28.9,z+.5],'white')
+c(G,'massa',[13.0,27.4,-.5],[14.6,29.0,.5],'dark');c(G,'massa_ponto',[14.55,28.1,-.3],[14.65,28.7,.3],'white')
+K.text(G,-12,21.8,-2.67,[.5,.5,.5,.3,.5,.5,.5],h=1.1,s=-1)
+K.text(G,-12,21.8,2.67,[.4,.4,.4,.4,.4],h=.8,s=1)
+tube(G,'boca',B,0,16.35,16.5,.85,'dark')
+G='armacao'
+c(G,'armacao',[-22,17.4,-2.5],[15.2,20.6,2.5],'frame')
+c(G,'trilho_frente',[3,15.6,-2.3],[14.8,17.6,2.3],'frame')
+for k in range(3):c(G,'trilho_fenda',[5+k*3,15.55,-2.35],[6.2+k*3,16.8,2.35],'dark')
+c(G,'cao',[-24.4,22.0,-.9],[-22.2,25.6,.9],'steel',rot=[0,0,18],origin=[-22.8,22,0])
+c(G,'cao_espora',[-25.4,24.6,-.9],[-23.8,25.8,.9],'steel',rot=[0,0,18],origin=[-22.8,22,0])
+c(G,'alavanca_seg',[-21.0,19.4,-3.3],[-16.4,20.6,-2.5],'steel',rot=[0,0,-14],origin=[-18.4,20,-2.9])
+c(G,'alavanca_seg_eixo',[-19.4,19.2,-3.4],[-18.0,20.8,-2.5],'polish')
+c(G,'retem_ferrolho',[-9.4,19.6,-2.85],[-3.6,20.6,-2.5],'steel')
+c(G,'retem_eixo',[-1.6,18.6,-2.75],[-.2,20.0,2.75],'polish')
+K.trigger(G,-7.2,17.4,guard=True,gmat='frame',w=1.3,L=11.4,depth=5.6)
+c(G,'reten_pa',[-11,11.2,-1.4],[-8.8,12.4,1.4],'frame',rot=[0,0,-20],origin=[-9,12.2,0])
+GR=dict(rot=[0,0,17],origin=[-16.4,17.4,0])
+c(G,'punho',[-21.4,-5.2,-2.95],[-11.8,17.6,2.95],'frame',**GR)
+c(G,'punho_cauda',[-24.2,15.8,-2.4],[-20.6,17.8,2.4],'frame',rot=[0,0,-10],origin=[-21,17,0])
+K.checker(G,-20.4,-3.6,6,12,1.4,2.95,**GR)
+c(G,'punho_dorso',[-22.0,-4,-2.4],[-21.2,15,2.4],'frame',**GR)
+for k in range(8):c(G,'punho_frente_estria',[-12.1,-3+k*2.2,-2.6],[-11.6,-2+k*2.2,2.6],'dark',**GR)
+c(G,'logo',[-18.8,13.8,2.95],[-15,15.4,3.05],'engrave',**GR);c(G,'logo2',[-18.8,13.8,-3.05],[-15,15.4,-2.95],'engrave',**GR)
+G='carregador'
+c(G,'carregador',[-20.2,-4.2,-2.3],[-13,16.6,2.3],'mag',**GR)
+c(G,'carregador_base',[-21.4,-6.4,-3.05],[-11.6,-5.0,3.05],'mag',**GR)
+c(G,'carregador_bala',[-19.4,16.6,-1.1],[-13.8,17.6,1.1],'brass',**GR)
+K.finish(scale=.4,width=1.1,grip=(-16.4,17.4),muzzle_x=16.5,bore_y=B,iron_y=28.7,rail=(27.5,-15.5,-7),moving=['ferrolho'],magazine=['carregador'],
+ roles={'slide':'main','frame':'accent','mag':'mag'},pistol=True,regions={'barrel':17})

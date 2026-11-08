@@ -1,0 +1,27 @@
+newmtl alu
+map_Kd #alu
+
+newmtl body
+map_Kd #body
+
+newmtl body2
+map_Kd #body2
+
+newmtl brass
+map_Kd #brass
+
+newmtl dark
+map_Kd #dark
+
+newmtl mag
+map_Kd #mag
+
+newmtl rubber
+map_Kd #rubber
+
+newmtl steel
+map_Kd #steel
+
+newmtl white
+map_Kd #white
+

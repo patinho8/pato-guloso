@@ -1,0 +1,27 @@
+newmtl bake
+map_Kd #bake
+
+newmtl brass
+map_Kd #brass
+
+newmtl dark
+map_Kd #dark
+
+newmtl engrave
+map_Kd #engrave
+
+newmtl mag
+map_Kd #mag
+
+newmtl polish
+map_Kd #polish
+
+newmtl steel
+map_Kd #steel
+
+newmtl steel2
+map_Kd #steel2
+
+newmtl white
+map_Kd #white
+

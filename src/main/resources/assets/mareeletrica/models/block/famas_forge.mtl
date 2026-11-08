@@ -1,0 +1,27 @@
+newmtl body
+map_Kd #body
+
+newmtl body2
+map_Kd #body2
+
+newmtl brass
+map_Kd #brass
+
+newmtl dark
+map_Kd #dark
+
+newmtl engrave
+map_Kd #engrave
+
+newmtl mag
+map_Kd #mag
+
+newmtl polish
+map_Kd #polish
+
+newmtl rubber
+map_Kd #rubber
+
+newmtl steel
+map_Kd #steel
+

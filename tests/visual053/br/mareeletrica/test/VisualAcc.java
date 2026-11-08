@@ -63,6 +63,9 @@ public final class VisualAcc {
    for(int x=-8;x<=8;x++)for(int y=0;y<6;y++)l.setBlockAndUpdate(o.offset(x,y,-16),Blocks.STONE_BRICKS.defaultBlockState());
    for(int y=0;y<3;y++)l.setBlockAndUpdate(o.offset(0,y,-12),Blocks.TARGET.defaultBlockState());
    p.teleportTo(l,o.getX()+.5,o.getY(),o.getZ()+.5,180,3);});
+  if(Boolean.getBoolean("mareeletrica.accguns")&&tick>=70){var fs=WeaponFamily.values();int i=(tick-70)/44,k=(tick-70)%44;
+   if(i>=fs.length){if(k==0){mc.options.keyUse.setDown(false);System.out.println("[ACC] DONE");}return;}
+   var f=fs[i];if(k==0){mc.options.keyUse.setDown(false);hold(gun(f,i%13,0,0,0));}if(k==18)shot("fp_"+f.id);if(k==20)mc.options.keyUse.setDown(true);if(k==40)shot("ads_"+f.id);return;}
   int t0=Boolean.getBoolean("mareeletrica.accfast")?-1000:70;String[] names={"m4","m4b","m4skins","todas1","todas2","todas3"};
   for(int i=0;i<6;i++){if(tick==t0+i*12)mc.setScreen(new G(i));if(tick==t0+i*12+10)shot(names[i]);}
   int t=t0<0?70:t0+6*12;

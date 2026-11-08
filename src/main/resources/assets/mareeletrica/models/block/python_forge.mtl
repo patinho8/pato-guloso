@@ -1,0 +1,27 @@
+newmtl blue
+map_Kd #blue
+
+newmtl dark
+map_Kd #dark
+
+newmtl engrave
+map_Kd #engrave
+
+newmtl polish
+map_Kd #polish
+
+newmtl red
+map_Kd #red
+
+newmtl steel
+map_Kd #steel
+
+newmtl steel2
+map_Kd #steel2
+
+newmtl wood
+map_Kd #wood
+
+newmtl wood2
+map_Kd #wood2
+

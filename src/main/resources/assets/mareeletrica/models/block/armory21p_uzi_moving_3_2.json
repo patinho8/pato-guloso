@@ -1,1 +1,1 @@
-{"parent":"mareeletrica:block/armory21p_uzi_moving_3_s","textures":{"paint":"mareeletrica:block/paint_dots","particle":"mareeletrica:block/paint_base"}}
+{"loader":"neoforge:obj","model":"mareeletrica:models/block/paint_uzi_moving_3.obj","flip_v":true,"textures":{"paint":"mareeletrica:block/paint_dots","particle":"mareeletrica:block/paint_base"}}

@@ -26,7 +26,7 @@ public final class RifleHands {
    .rotateX((float)Math.toRadians(kick*(f==WeaponFamily.DESERT_EAGLE?42F:f==WeaponFamily.PYTHON?34F:f==WeaponFamily.SPAS12?20F:f==WeaponFamily.BARRETT?26F:pistol?15F:11F)+reloadPose*6F+(f==WeaponFamily.PYTHON&&reloading?ReloadPath.pyTilt(progress)*26F:0F)))
    .scale(scale).translate(-.5F,-.5F,-.9F);
   var pose=e.getPoseStack();var buffers=e.getMultiBufferSource();int light=e.getPackedLight();
-  if(!player.isInvisible()&&mc.getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer renderer){var model=renderer.getModel();var grip=rifle.transformPosition(new Vector3f(.5F,.23F,.76F));var support=new Vector3f(.5F,pistol?.24F:.42F,pistol?.69F:f==WeaponFamily.SMG?.1F:-.12F);
+  if(!player.isInvisible()&&mc.getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer renderer){var model=renderer.getModel();var grip=rifle.transformPosition(new Vector3f(.5F,.23F,.76F));var support=new Vector3f(.5F,pistol?.24F:.42F,pistol?.69F:f==WeaponFamily.SMG?.1F:-.12F);{float[] sp=ArmoryRenderer.support(f);if(sp!=null)support.set(.5F,sp[0]/16,sp[1]/16);}
    if(reloading&&ReloadPath.special(f)){support.set(ReloadPath.hand(f,progress,support));}
    else if(reloading){float reach=Math.min(1,progress/.12F);support.lerp(new Vector3f(.5F-reload*.28F,.12F-reload*.36F,ArmoryRenderer.magazineZ(f)+reload*.04F),reach);}
    rifle.transformPosition(support);arm(pose,buffers,light,right?model.rightArm:model.leftArm,right?model.rightSleeve:model.leftSleeve,right,player.isModelPartShown(right?PlayerModelPart.RIGHT_SLEEVE:PlayerModelPart.LEFT_SLEEVE),new Vector3f(side*.42F,-.59F,.12F),grip);

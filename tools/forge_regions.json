@@ -1,0 +1,79 @@
+{
+ "mp5": {
+  "barrel": -3.91,
+  "stock": 13.95
+ },
+ "glock": {
+  "barrel": -1.2
+ },
+ "usp": {
+  "barrel": -1.76
+ },
+ "beretta": {
+  "barrel": -1.84
+ },
+ "ump45": {
+  "barrel": -1.47,
+  "stock": 13.57
+ },
+ "scar": {
+  "barrel": -6.49,
+  "stock": 13.25
+ },
+ "mp40": {
+  "barrel": 1.26,
+  "stock": 13.95
+ },
+ "uzi": {
+  "barrel": 5.73,
+  "stock": 16.07
+ },
+ "mac10": {
+  "barrel": 9.84,
+  "stock": 17.36
+ },
+ "p90": {
+  "barrel": 3.49
+ },
+ "aug": {
+  "barrel": 5.61
+ },
+ "famas": {
+  "barrel": 3.02
+ },
+ "galil": {
+  "barrel": -2.26,
+  "stock": 14.19
+ },
+ "svd": {
+  "barrel": -6.49,
+  "stock": 13.71
+ },
+ "saiga12": {
+  "barrel": -1.32,
+  "stock": 14.19
+ },
+ "m870": {
+  "barrel": 2.67,
+  "stock": 10.19
+ },
+ "spas12": {
+  "barrel": 5.02,
+  "stock": 12.54
+ },
+ "m249": {
+  "barrel": 1.73,
+  "stock": 13.95
+ },
+ "barrett": {
+  "barrel": -11.43,
+  "stock": 18.18
+ },
+ "smg": {
+  "barrel": 3.85,
+  "stock": 14.66
+ },
+ "python": {
+  "barrel": 4.4
+ }
+}

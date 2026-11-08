@@ -1,0 +1,27 @@
+newmtl brass
+map_Kd #brass
+
+newmtl dark
+map_Kd #dark
+
+newmtl mag
+map_Kd #mag
+
+newmtl polish
+map_Kd #polish
+
+newmtl rubber
+map_Kd #rubber
+
+newmtl steel
+map_Kd #steel
+
+newmtl white
+map_Kd #white
+
+newmtl wood
+map_Kd #wood
+
+newmtl wood2
+map_Kd #wood2
+

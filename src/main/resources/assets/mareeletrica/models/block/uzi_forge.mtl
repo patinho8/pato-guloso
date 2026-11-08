@@ -1,0 +1,27 @@
+newmtl dark
+map_Kd #dark
+
+newmtl engrave
+map_Kd #engrave
+
+newmtl grip
+map_Kd #grip
+
+newmtl mag
+map_Kd #mag
+
+newmtl polish
+map_Kd #polish
+
+newmtl red
+map_Kd #red
+
+newmtl steel
+map_Kd #steel
+
+newmtl steel2
+map_Kd #steel2
+
+newmtl white
+map_Kd #white
+

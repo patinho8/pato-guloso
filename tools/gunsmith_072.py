@@ -471,7 +471,7 @@ def desert_eagle():return pistol(-5,12.3,1.85,'de','paint')
 def usp():return pistol(-3,11.6,1.55,'usp','rubber')
 def glock():return pistol(-3,11.3,1.5,'glock','rubber')
 def beretta():return pistol(-3,11.5,1.4,'beretta','paint')
-GUNS=['usp','m870','mp5','smg','mp40','p90','glock','scar','ump45','spas12','beretta','uzi','famas','m249','barrett','mac10','galil','aug','saiga12','svd']
+GUNS=[]
 # ---------------- optics ----------------
 ZOOMS={'desert_eagle':[1,2,3],'usp':[1,2,3],'m4a1':[1,3,6],'ak47':[1,2,4],'m870':[1,2,3],'mp5':[1,2,3],'smg':[1,2,4],'sniper':[5,12,24],'mp40':[1,2,3],'p90':[1,2,3],'python':[1,2,3],
  'glock':[1,2,3],'scar':[1,3,6],'ump45':[1,2,3],'spas12':[1,2,3],'beretta':[1,2,3],'uzi':[1,2,3],'famas':[1,3,6],'m249':[1,2,4],'barrett':[4,8,12],'mac10':[1,2,3],'galil':[1,3,6],'aug':[1,3,6],'saiga12':[1,2,3],'svd':[4,8,12]}
@@ -560,8 +560,28 @@ def suppressor(style,v,pistol):
  return e
 STYLE={'desert_eagle':0,'usp':0,'glock':1,'beretta':0,'python':2,'m4a1':2,'ak47':1,'m870':0,'mp5':0,'smg':1,'sniper':2,'mp40':0,'p90':1,'scar':2,'ump45':1,'spas12':0,'uzi':0,'famas':1,'m249':2,'barrett':2,'mac10':1,'galil':1,'aug':0,'saiga12':1,'svd':2}
 EXTRA={   # guns not rebuilt here: just their sight mounts and muzzle data
+ 'beretta':dict(rail=(9.6, 7.36, 11.16), bore=8.0, muzzle=-1.72, iron=10.0, pistol=True),   # 0.75.0: OBJ from tools/forge/beretta.py
+ 'usp':dict(rail=(9.64, 7.84, 11.24), bore=8.08, muzzle=-1.56, iron=10.12, pistol=True),   # 0.75.0: OBJ from tools/forge/usp.py
+ 'glock':dict(rail=(9.6, 8.0, 11.4), bore=8.08, muzzle=-1.0, iron=10.04, pistol=True),   # 0.75.0: OBJ from tools/forge/glock.py
+ 'mp5':dict(rail=(10.59, 4.88, 11.27), bore=8.47, muzzle=-8.39, iron=10.72),   # 0.75.0: OBJ from tools/forge/mp5.py
+ 'python':dict(rail=(10.72, 5.44, 10.64), bore=9.44, muzzle=-7.4, iron=11.24, pistol=True),   # 0.75.0: OBJ from tools/forge/python.py
+ 'smg':dict(rail=(10.34, 4.79, 13.71), bore=8.89, muzzle=-0.17, iron=11.02),   # 0.75.0: OBJ from tools/forge/smg.py
+ 'barrett':dict(rail=(9.91, -5.32, 8.78), bore=8.18, muzzle=-29.78, iron=10.7),   # 0.75.0: OBJ from tools/forge/barrett.py
+ 'm249':dict(rail=(9.72, 4.08, 11.6), bore=7.57, muzzle=-17.56, iron=10.44),   # 0.75.0: OBJ from tools/forge/m249.py
+ 'spas12':dict(rail=(8.65, 5.96, 12.07), bore=7.76, muzzle=-11.92, iron=9.38),   # 0.75.0: OBJ from tools/forge/spas12.py
+ 'm870':dict(rail=(8.41, 5.02, 8.78), bore=7.24, muzzle=-17.09, iron=8.98),   # 0.75.0: OBJ from tools/forge/m870.py
+ 'svd':dict(rail=(8.89, 4.32, 12.3), bore=7.71, muzzle=-21.56, iron=8.96),   # 0.75.0: OBJ from tools/forge/svd.py
+ 'saiga12':dict(rail=(9.25, 5.26, 12.78), bore=7.67, muzzle=-10.75, iron=9.94),   # 0.75.0: OBJ from tools/forge/saiga12.py
+ 'galil':dict(rail=(9.11, 5.26, 12.78), bore=7.62, muzzle=-9.81, iron=9.8),   # 0.75.0: OBJ from tools/forge/galil.py
+ 'aug':dict(rail=(9.68, 7.96, 19.24), bore=8.42, muzzle=-6.17, iron=10.44),   # 0.75.0: OBJ from tools/forge/aug.py
+ 'famas':dict(rail=(10.77, 4.43, 18.06), bore=7.71, muzzle=-3.58, iron=11.15),   # 0.75.0: OBJ from tools/forge/famas.py
+ 'p90':dict(rail=(9.4, 5.37, 15.24), bore=6.54, muzzle=0.18, iron=9.77),   # 0.75.0: OBJ from tools/forge/p90.py
+ 'mac10':dict(rail=(8.94, 11.25, 16.42), bore=7.67, muzzle=7.46, iron=9.3),   # 0.75.0: OBJ from tools/forge/mac10.py
+ 'uzi':dict(rail=(9.5, 8.08, 14.66), bore=8.04, muzzle=2.88, iron=9.87),   # 0.75.0: OBJ from tools/forge/uzi.py
+ 'mp40':dict(rail=(9.27, 2.2, 8.31), bore=8.23, muzzle=-5.67, iron=9.97),   # 0.75.0: OBJ from tools/forge/mp40.py
+ 'ump45':dict(rail=(10.38, 0.88, 11.22), bore=8.33, muzzle=-5.16, iron=11.05),   # 0.75.0: OBJ from tools/forge/ump45.py
+ 'scar':dict(rail=(9.82, -4.14, 11.37), bore=8.14, muzzle=-13.1, iron=10.6),   # 0.75.0: OBJ from tools/forge/scar.py
  'ak47':dict(mount=(11.3,1.6,10.8),side_ak=True,bore=9.6,muzzle=-23.2,iron=11.1),
- 'python':dict(mount=(11.0,5.6,10.2),bore=9.9,muzzle=-7.0,iron=12.1,pistol=True),
  'm4a1':dict(rail=(10.03,-6.3,12.6),bore=8.40,muzzle=-12.72,iron=10.90),   # 0.74.0: OBJ from tools/make_m4_claude.py
  'desert_eagle':dict(rail=(12.02,-5.9,0.7),bore=9.6,muzzle=-6.87,iron=12.4,pistol=True),   # 0.73.0: OBJ from tools/make_deagle_claude.py
  'sniper':dict(rail=(12.5,-6,6),bore=8.6,muzzle=-49.8,iron=13.5)}
