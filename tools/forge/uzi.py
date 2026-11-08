@@ -47,5 +47,5 @@ G='carregador'
 c(G,'carregador',[-18.8,-6,-2.0],[-11.4,23.4,2.0],'mag',**GR)
 c(G,'carregador_base',[-19.6,-7.6,-2.4],[-10.6,-5.8,2.4],'mag',**GR)
 both(G,'carregador_nervura',-17.6,-5,-12.6,-1,2.0,2.2,'mag',**GR)
-K.finish(scale=.235,support=(6,28),grip=(-15,23.6),muzzle_x=22.1,bore_y=B,iron_y=IRON,rail=(40.2,-28,0),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,support=(6,28),grip=(-15,23.6),muzzle_x=22.1,bore_y=B,iron_y=IRON,rail=(40.2,-28,0),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'steel':'main','steel2':'main2','grip':'accent','mag':'mag'},regions={'barrel':10,'stock':-34})

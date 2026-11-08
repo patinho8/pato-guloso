@@ -2,11 +2,11 @@
  "bbmodel": "/home/claude/proj/MareEletrica/tools/forge/smg_forge.bbmodel",
  "family": "smg",
  "tag": "forge",
- "scale": 0.235,
- "width": 1.1,
+ "scale": 0.36,
+ "width": 1.3,
  "trigger": [
-  -7.382978723404253,
-  24.97872340425532
+  -12.11111111111111,
+  23.944444444444443
  ],
  "muzzle_dir": 1,
  "default": "body",
@@ -24,22 +24,22 @@
   "16,16": "engrave"
  },
  "moving": [
-  233
+  234
  ],
  "magazine": [
-  234,
   235,
-  236
+  236,
+  237
  ],
  "stock": [
-  225,
   226,
   227,
   228,
   229,
   230,
   231,
-  232
+  232,
+  233
  ],
  "skins": [
   0,

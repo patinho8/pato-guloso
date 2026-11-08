@@ -41,5 +41,5 @@ c(G,'botao_armar_topo',[-12.4,41.0,-1.2],[-8.6,41.8,1.2],'steel')
 G='carregador'
 c(G,'carregador',[-5.2,-8,-2.1],[2.2,23.8,2.1],'mag',**GR)
 c(G,'carregador_base',[-5.8,-9.4,-2.4],[2.8,-7.8,2.4],'mag',**GR)
-K.finish(scale=.235,support=(8,22.6),grip=(-1.5,24.2),muzzle_x=16.1,bore_y=B,iron_y=IRON,rail=(38.4,-22,0),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,support=(8,22.6),grip=(-1.5,24.2),muzzle_x=16.1,bore_y=B,iron_y=IRON,rail=(38.4,-22,0),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'steel':'main','steel2':'main2','mag':'mag'},regions={'barrel':6,'stock':-26})

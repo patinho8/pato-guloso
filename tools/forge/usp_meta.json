@@ -1,17 +1,17 @@
 {
  "extra": {
   "rail": [
-   9.64,
-   7.84,
-   11.24
+   11.26,
+   6.34,
+   11.1
   ],
-  "bore": 8.08,
-  "muzzle": -1.56,
-  "iron": 10.12,
+  "bore": 9.07,
+  "muzzle": -6.82,
+  "iron": 11.93,
   "pistol": true
  },
  "regions": {
-  "barrel": -1.76
+  "barrel": -7.1
  },
  "support": null
 }

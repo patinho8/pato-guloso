@@ -33,7 +33,7 @@ K.trigger(G,-26.4,24.2,guard=True,gmat='lower',w=1.3,L=11.6,depth=6.4)
 c(G,'seletor',[-33.4,27.2,-3.5],[-29,28.2,-2.8],'black',rot=[0,0,-12],origin=[-31.2,27.7,-3.1])
 c(G,'reten_ferrolho',[-10,26.4,-3.4],[-6.4,29.4,-2.8],'black');c(G,'botao_carregador',[-10.6,25.4,2.8],[-8.6,27.4,3.4],'black')
 c(G,'reten_ambi',[-6.4,18.6,-1.4],[-4.4,20.8,1.4],'black')
-GR=dict(rot=[0,0,24],origin=[-31,24.2,0])
+GR=dict(rot=[0,0,16],origin=[-31,24.2,0])
 c(G,'punho',[-35,7.2,-2.3],[-28.2,24.4,2.3],'black',**GR)
 c(G,'punho_base',[-35.4,6.6,-2.5],[-27.8,7.6,2.5],'black',**GR)
 K.checker(G,-34,9,3,8,1.8,2.3,**GR)
@@ -55,5 +55,5 @@ c(G,'alavanca_bola',[4.0,36.1,-7.4],[6.4,37.9,-6.0],'black',rot=[0,-20,0],origin
 G='carregador'
 K.mag_box(G,-20.8,-5.8,17.2,-1.6,2.7,lean=3,segs=2,base='black')
 K.round_top(G,-20,-6.6,17.2,2.7,'mag')
-K.finish(scale=.235,grip=(-31,24.2),muzzle_x=74.1,bore_y=B,iron_y=IRON,rail=(ry,-30,36),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,grip=(-31,24.2),muzzle_x=74.1,bore_y=B,iron_y=IRON,rail=(ry,-30,36),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'upper':'main','lower':'main2','black':'accent','mag':'mag'},regions={'barrel':46,'stock':-38})

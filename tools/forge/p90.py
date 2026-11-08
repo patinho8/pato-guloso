@@ -38,5 +38,5 @@ G='carregador'
 c(G,'carregador',[-28,40.2,-2.8],[20,43.8,2.8],'mag')
 for k in range(15):both(G,'carregador_bala',-26+k*3.0,41.0,-24.2+k*3.0,43.0,2.75,2.85,'brass')
 c(G,'carregador_trava',[-30,40.4,-2.0],[-28,43.2,2.0],'shell2')
-K.finish(scale=.235,support=(11,27),grip=(-8.5,30),muzzle_x=40.1,bore_y=B,iron_y=IRON,rail=(ry,-24,18),moving=['ferrolho'],magazine=['carregador'],stock=[],
+K.finish(scale=.36,support=(11,27),grip=(-8.5,30),muzzle_x=40.1,bore_y=B,iron_y=IRON,rail=(ry,-24,18),moving=['ferrolho'],magazine=['carregador'],stock=[],
  roles={'shell':'main','shell2':'accent','mag':'mag'},regions={'barrel':26})

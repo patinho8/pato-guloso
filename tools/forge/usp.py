@@ -30,7 +30,7 @@ c(G,'retem_ferrolho',[-9.4,19.6,-2.85],[-3.6,20.6,-2.5],'steel')
 c(G,'retem_eixo',[-1.6,18.6,-2.75],[-.2,20.0,2.75],'polish')
 K.trigger(G,-7.2,17.4,guard=True,gmat='frame',w=1.3,L=11.4,depth=5.6)
 c(G,'reten_pa',[-11,11.2,-1.4],[-8.8,12.4,1.4],'frame',rot=[0,0,-20],origin=[-9,12.2,0])
-GR=dict(rot=[0,0,17],origin=[-16.4,17.4,0])
+GR=dict(rot=[0,0,16],origin=[-16.4,17.4,0])
 c(G,'punho',[-21.4,-5.2,-2.95],[-11.8,17.6,2.95],'frame',**GR)
 c(G,'punho_cauda',[-24.2,15.8,-2.4],[-20.6,17.8,2.4],'frame',rot=[0,0,-10],origin=[-21,17,0])
 K.checker(G,-20.4,-3.6,6,12,1.4,2.95,**GR)
@@ -41,5 +41,5 @@ G='carregador'
 c(G,'carregador',[-20.2,-4.2,-2.3],[-13,16.6,2.3],'mag',**GR)
 c(G,'carregador_base',[-21.4,-6.4,-3.05],[-11.6,-5.0,3.05],'mag',**GR)
 c(G,'carregador_bala',[-19.4,16.6,-1.1],[-13.8,17.6,1.1],'brass',**GR)
-K.finish(scale=.4,width=1.1,grip=(-16.4,17.4),muzzle_x=16.5,bore_y=B,iron_y=28.7,rail=(27.5,-15.5,-7),moving=['ferrolho'],magazine=['carregador'],
+K.finish(scale=.56,grip=(-16.4,17.4),muzzle_x=16.5,bore_y=B,iron_y=28.7,rail=(27.5,-15.5,-7),moving=['ferrolho'],magazine=['carregador'],
  roles={'slide':'main','frame':'accent','mag':'mag'},pistol=True,regions={'barrel':17})

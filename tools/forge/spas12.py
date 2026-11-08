@@ -42,5 +42,5 @@ c(G,'telha',[8,27.2,-2.7],[30,34.0,2.7],'poly')
 for k in range(10):c(G,'telha_nervura',[9+k*2.1,26.6,-2.8],[10+k*2.1,34.4,2.8],'poly')
 G='carregador'
 c(G,'cartucho',[-18,24.2,-1.3],[-8,26.6,1.3],'shell');c(G,'cartucho_base',[-19,24.0,-1.4],[-18,26.8,1.4],'brass')
-K.finish(scale=.235,support=(19,26.4),grip=(-28,25.8),muzzle_x=72.1,bore_y=B,iron_y=IRON,rail=(ry,-30,-4),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,support=(19,26.4),grip=(-28,25.8),muzzle_x=72.1,bore_y=B,iron_y=IRON,rail=(ry,-30,-4),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'alu':'main','steel':'main2','poly':'accent'},regions={'barrel':0,'stock':-32})

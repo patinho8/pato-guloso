@@ -42,5 +42,5 @@ c(G,'alavanca',[-2,33.6,-4.8],[0,35.2,-2.6],'alu');c(G,'alavanca_bola',[-2.6,33.
 G='carregador'
 K.mag_box(G,-37.6,-26.4,16.4,-3.4,2.6,lean=3,curve=4,segs=3,base='body2')
 K.round_top(G,-37,-27,16.4,2.6,'mag')
-K.finish(scale=.235,support=(17,24),grip=(-11.5,22),muzzle_x=64.1,bore_y=B,iron_y=IRON,rail=(ry,-44,4),moving=['ferrolho'],magazine=['carregador'],stock=[],
+K.finish(scale=.36,support=(17,24),grip=(-11.5,22),muzzle_x=64.1,bore_y=B,iron_y=IRON,rail=(ry,-44,4),moving=['ferrolho'],magazine=['carregador'],stock=[],
  roles={'body':'main','body2':'main2','alu':'accent','mag':'mag'},regions={'barrel':14})

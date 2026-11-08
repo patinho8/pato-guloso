@@ -2,10 +2,10 @@
  "bbmodel": "tools/deagle_claude.bbmodel",
  "family": "desert_eagle",
  "tag": "claude",
- "scale": 0.4,
+ "scale": 0.56,
  "trigger": [
-  -10.85,
-  14.15
+  -13.135,
+  13.65
  ],
  "muzzle_dir": 1,
  "default": "slide",
@@ -942,5 +942,5 @@
    ]
   }
  },
- "width": 1.15
+ "width": 1.322
 }

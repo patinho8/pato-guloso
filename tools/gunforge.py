@@ -12,6 +12,13 @@ THEMES={  # skin: (main, accent, mag) — the same 13 finishes as the M4A1 / Des
 class Gun(Kit):
     def __init__(self,family,swatches,seed=7,brushed=('steel','polish')):
         super().__init__(family+'_forge',swatches,seed=seed,brushed=brushed);self.family=family
+    def cube(self,group,name,f,t,mat,rot=None,origin=None,faces=None):
+        if name in('punho','punho_armacao') and rot and rot[2]:
+            # raked grip: tamer rake, a little taller (hidden inside the frame) and a solid web joining it to the frame
+            a=rot[2];top=t[1];t=[t[0],t[1]+2.2,t[2]]
+            sh=math.tan(math.radians(a))*3.0
+            super().cube(group,'punho_juncao',[f[0]+min(0,sh)+.2,top-3.0,f[2]+.1],[t[0]+max(0,sh)-.2,top+.4,t[2]-.1],mat)
+        return super().cube(group,name,f,t,mat,rot,origin,faces)
     # ---------- common parts ----------
     def rail(self,g,x0,x1,y,w=2.15,mat='steel',pitch=1.0):
         """Picatinny on top: base + teeth"""
@@ -86,7 +93,7 @@ class Gun(Kit):
         """bullet on top of a magazine"""
         self.cube(g,'carregador_bala',[x0,ytop,-w*.5],[x1-1.6,ytop+1.1,w*.5],'brass');self.cube(g,'carregador_ponta',[x1-1.6,ytop+.15,-w*.4],[x1-.6,ytop+.95,w*.4],'brass')
     # ---------- output ----------
-    def finish(self,*,scale,width=1.1,grip,muzzle_x,bore_y,iron_y,rail,moving=(),magazine=(),stock=(),roles,pistol=False,regions=None,mag_item=None,support=None):
+    def finish(self,*,scale,width=1.3,grip,muzzle_x,bore_y,iron_y,rail,moving=(),magazine=(),stock=(),roles,pistol=False,regions=None,mag_item=None,support=None):
         """grip=(x,y): centre of the top of the pistol grip in model units — it lands where the arsenal hand holds (z 11.6, y 5.6).
         rail=(y_top,x0,x1): where optics sit. roles: material -> main/accent/mag (repainted by the 13 finishes)."""
         out=os.path.join(T,'forge');idx,sw=self.save(out);S=scale

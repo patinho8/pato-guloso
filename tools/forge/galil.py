@@ -25,7 +25,7 @@ for k in range(4):c(G,'qc_fenda',[54,B+1.6,-.3],[59.4,B+2.0,.3],'dark',rot=[k*90
 tube(G,'boca',B,0,59.95,60.1,1.0,'dark')
 G='inferior'
 ak_trigger_group(K,G,-24,25.4)
-GR=dict(rot=[0,0,22],origin=[-31,25.4,0])
+GR=dict(rot=[0,0,16],origin=[-31,25.4,0])
 c(G,'punho',[-35,8,-2.4],[-27,25.6,2.4],'poly',**GR)
 K.checker(G,-34,10,3,8,1.8,2.4,**GR)
 c(G,'punho_dedo',[-27.6,14,-2.2],[-26.4,16.4,2.2],'poly',**GR)
@@ -44,5 +44,5 @@ c(G,'transportador',[-24,33,2.6],[-12,36,2.95],'polish')
 G='carregador'
 K.mag_box(G,-20.8,-6.8,25.4,1,2.5,lean=3,curve=6,segs=4,base='poly')
 K.round_top(G,-20.2,-7.4,25.4,2.5,'mag')
-K.finish(scale=.235,grip=(-31,25.4),muzzle_x=60.1,bore_y=B,iron_y=IRON,rail=(ry,-36,-4),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,grip=(-31,25.4),muzzle_x=60.1,bore_y=B,iron_y=IRON,rail=(ry,-36,-4),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'steel':'main','poly':'accent','mag':'mag'},regions={'barrel':28,'stock':-42})

@@ -2,11 +2,11 @@
  "bbmodel": "/home/claude/proj/MareEletrica/tools/forge/saiga12_forge.bbmodel",
  "family": "saiga12",
  "tag": "forge",
- "scale": 0.235,
- "width": 1.1,
+ "scale": 0.36,
+ "width": 1.3,
  "trigger": [
-  -17.382978723404253,
-  28.17872340425532
+  -22.11111111111111,
+  27.144444444444442
  ],
  "muzzle_dir": 1,
  "default": "steel",
@@ -23,12 +23,11 @@
   "8,16": "engrave"
  },
  "moving": [
-  302,
   303,
-  304
+  304,
+  305
  ],
  "magazine": [
-  305,
   306,
   307,
   308,
@@ -36,16 +35,17 @@
   310,
   311,
   312,
-  313
+  313,
+  314
  ],
  "stock": [
-  295,
   296,
   297,
   298,
   299,
   300,
-  301
+  301,
+  302
  ],
  "skins": [
   0,

@@ -24,7 +24,7 @@ for k in range(4):both(G,'freio_furo',55+k*2.2,B-.7,56.2+k*2.2,B+.7,2.35,2.6,'da
 tube(G,'boca',B,0,63.95,64.1,1.5,'dark')
 G='inferior'
 ak_trigger_group(K,G,-24,25.2)
-GR=dict(rot=[0,0,20],origin=[-31,25.2,0])
+GR=dict(rot=[0,0,16],origin=[-31,25.2,0])
 c(G,'punho',[-35,8,-2.5],[-27,25.4,2.5],'poly',**GR)
 K.checker(G,-34,10,3,8,1.8,2.5,**GR)
 c(G,'punho_base',[-35.4,7.2,-2.7],[-26.6,8.2,2.7],'poly',**GR)
@@ -40,5 +40,5 @@ c(G,'transportador',[-24,32,2.9],[-12,35.6,3.25],'polish')
 G='carregador'
 K.mag_box(G,-22,-6,25.2,4,3.0,lean=2,curve=2,segs=2,base='poly')
 c(G,'cartucho',[-21,25.2,-1.8],[-9,26.8,1.8],'shell');c(G,'cartucho_base',[-22,25.2,-1.9],[-21,26.8,1.9],'brass')
-K.finish(scale=.235,grip=(-31,25.2),muzzle_x=64.1,bore_y=B,iron_y=IRON,rail=(ry,-36,-4),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,grip=(-31,25.2),muzzle_x=64.1,bore_y=B,iron_y=IRON,rail=(ry,-36,-4),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'steel':'main','poly':'accent','mag':'mag'},regions={'barrel':24,'stock':-42})

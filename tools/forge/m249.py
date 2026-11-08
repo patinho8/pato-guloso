@@ -36,7 +36,7 @@ both(G,'bipe_pe',34,24.8,37,27.4,1.2,2.6,'steel')
 G='inferior'
 K.trigger(G,-28,25.6,guard=True,gmat='steel',w=1.3,L=12,depth=6.4)
 c(G,'seguranca',[-24,26,-3.8],[-22,27.2,3.8],'polish')
-GR=dict(rot=[0,0,18],origin=[-34,25.6,0])
+GR=dict(rot=[0,0,16],origin=[-34,25.6,0])
 c(G,'punho',[-38,8,-2.6],[-30,25.8,2.6],'poly',**GR)
 K.checker(G,-37,10,3,8,1.9,2.6,**GR)
 c(G,'punho_base',[-38.4,7.2,-2.8],[-29.6,8.2,2.8],'poly',**GR)
@@ -55,5 +55,5 @@ c(G,'caixa_tampa',[-22.4,24.4,-7.8],[-1.6,25.4,-1.6],'box')
 c(G,'caixa_alca',[-14,4.6,-6],[-10,6,-3.4],'box')
 c(G,'caixa_janela',[-20,14,-7.45],[-14,22,-7.38],'dark')
 for k in range(5):c(G,'fita_bala',[-4.0+k*.1,25.4+k*1.2,-6.8+k*.1],[2.0,26.4+k*1.2,-4.4],'brass')
-K.finish(scale=.235,support=(18,25),grip=(-34,25.6),muzzle_x=90.1,bore_y=B,iron_y=IRON,rail=(ry,-34,-2),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.32,support=(18,25),grip=(-34,25.6),muzzle_x=90.1,bore_y=B,iron_y=IRON,rail=(ry,-34,-2),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'steel':'main','poly':'accent','box':'mag'},regions={'barrel':8,'stock':-44})

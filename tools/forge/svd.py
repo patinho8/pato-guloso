@@ -44,5 +44,5 @@ c(G,'transportador',[-24,32,2.6],[-12,35.6,2.95],'polish')
 G='carregador'
 K.mag_box(G,-24,-11,25.0,9,2.4,lean=2,curve=3,segs=2,base='steel')
 K.round_top(G,-23.4,-11.6,25.0,2.4,'mag')
-K.finish(scale=.235,grip=(-37,25),muzzle_x=104.1,bore_y=B,iron_y=IRON,rail=(ry,-40,-6),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.32,grip=(-37,25),muzzle_x=104.1,bore_y=B,iron_y=IRON,rail=(ry,-40,-6),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'steel':'main','wood':'accent','wood2':'accent','mag':'mag'},regions={'barrel':40,'stock':-46})

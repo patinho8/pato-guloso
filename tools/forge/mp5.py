@@ -70,7 +70,7 @@ c(G,'seletor',[-42.2,25.4,-3.4],[-36.6,26.6,-2.7],'steel',rot=[0,0,-30],origin=[
 c(G,'seletor_eixo',[-40.0,25.2,-3.5],[-38.8,26.8,-2.7],'polish')
 for k,col in enumerate(('white','red','red','red')):c(G,'seletor_marca',[-41+k*1.3,27.6,-2.75],[-40.5+k*1.3,28.2,-2.7],col)
 # punho inclinado com textura
-GR=dict(rot=[0,0,20],origin=[-37,22.8,0])
+GR=dict(rot=[0,0,16],origin=[-37,22.8,0])
 c(G,'punho',[-40.6,6,-2.5],[-33.4,22.8,2.5],'polymer',**GR)
 for k in range(3):c(G,'punho_dedo',[-34.0,9+k*4.4,-2.3],[-32.8,11.6+k*4.4,2.3],'polymer',**GR)
 c(G,'punho_base',[-41.2,5.2,-2.8],[-33,6.4,2.8],'polymer',**GR)
@@ -103,5 +103,5 @@ c(G,'alavanca_base',[24.2,38.2,-2.6],[26.4,39.8,-2.0],'steel')
 G='carregador'
 xs=K.mag_box(G,-14.6,-5.8,21.8,-1.0,2.15,lean=4,curve=5,segs=4,window=False,base='mag')
 K.round_top(G,-14.0,-6.2,21.8,2.15,'mag')
-K.finish(scale=.235,grip=(-37,22.8),muzzle_x=48.05,bore_y=B,iron_y=IRON,rail=(ry,-35.6,-8.4),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,grip=(-37,22.8),muzzle_x=48.05,bore_y=B,iron_y=IRON,rail=(ry,-35.6,-8.4),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'upper':'main','polymer':'accent','mag':'mag'},regions={'barrel':29,'stock':-47})

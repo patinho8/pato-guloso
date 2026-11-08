@@ -46,5 +46,5 @@ G='carregador'
 c(G,'carregador',[-20.4,-4.2,-2.0],[-13.2,16.6,2.0],'mag',**GR)
 c(G,'carregador_base',[-21.4,-6.6,-2.6],[-12.2,-5.2,2.6],'grip',**GR)
 c(G,'carregador_bala',[-19.4,16.6,-1],[-14,17.6,1],'brass',**GR)
-K.finish(scale=.4,width=1.1,grip=(-16.6,17.6),muzzle_x=16.7,bore_y=B,iron_y=28.6,rail=(27.6,-15.5,-6),moving=['ferrolho'],magazine=['carregador'],
+K.finish(scale=.56,grip=(-16.6,17.6),muzzle_x=16.7,bore_y=B,iron_y=28.6,rail=(27.6,-15.5,-6),moving=['ferrolho'],magazine=['carregador'],
  roles={'slide':'main','frame':'main2','grip':'accent','mag':'mag'},pistol=True,regions={'barrel':17})

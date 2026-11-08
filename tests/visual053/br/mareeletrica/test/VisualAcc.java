@@ -45,6 +45,8 @@ public final class VisualAcc {
    if(mode==0){draw(g,gun(M,0,0,0,0),width*.25F,height*.3F,95,90,0,false);draw(g,gun(M,0,id(Accessory.Kind.VERTICAL_GRIP),id(Accessory.Kind.COMBO),id(Accessory.Kind.DRUM_MAG)),width*.75F,height*.3F,95,-90,0,false);draw(g,gun(M,0,id(Accessory.Kind.VERTICAL_GRIP),id(Accessory.Kind.COMBO),id(Accessory.Kind.DRUM_MAG)),width*.5F,height*.75F,110,-130,18,false);}
    else if(mode==1){draw(g,gun(M,0,id(Accessory.Kind.ANGLED_GRIP),id(Accessory.Kind.LASER_GREEN),id(Accessory.Kind.EXTENDED_MAG)),width*.25F,height*.3F,95,-90,0,false);draw(g,gun(M,0,id(Accessory.Kind.BIPOD),id(Accessory.Kind.FLASHLIGHT),0),width*.75F,height*.3F,95,-90,0,false);draw(g,gun(M,0,id(Accessory.Kind.BIPOD),0,0),width*.25F,height*.75F,95,-90,0,true);draw(g,gun(M,0,id(Accessory.Kind.ANGLED_GRIP),id(Accessory.Kind.LASER_GREEN),id(Accessory.Kind.EXTENDED_MAG)),width*.75F,height*.75F,100,-150,25,false);}
    else if(mode==2){for(int sk=0;sk<=12;sk++){int c=sk%5,r=sk/5;draw(g,gun(M,sk,0,0,0),width*(.1F+c*.2F),height*(.2F+r*.31F),42,90,0,false);g.drawString(font,""+sk,(int)(width*(.02F+c*.2F)),(int)(height*(.05F+r*.31F)),0xFFFFFF80);}}
+   else if(mode>=10){var fs=WeaponFamily.values();for(int c=0;c<4;c++){int n=(mode-10)*4+c;if(n>=fs.length)break;var f=fs[n];float sc=f.pistol()?110:70;
+     draw(g,gun(f,3,0,0,0),width*(.25F+(c%2)*.5F),height*(.27F+(c/2)*.5F),sc,c%2==0?-60:-120,-12,false);g.drawString(font,f.id,(int)(width*(.02F+(c%2)*.5F)),(int)(height*(.03F+(c/2)*.5F)),0xFFFFFF80);}}
    else{int i=0;var fs=WeaponFamily.values();int from=(mode-3)*12;for(int n=from;n<Math.min(fs.length,from+12);n++){var f=fs[n];if(f==WeaponFamily.SNIPER)continue;int c=i%4,r=i/4;float sc=f.pistol()?62:50;draw(g,full(f,n),width*(.13F+c*.25F),height*(.2F+r*.32F),sc,-90,0,false);g.drawString(font,f.id,(int)(width*(.02F+c*.25F)),(int)(height*(.04F+r*.32F)),0xFFFFFF80);i++;}}
   }
   @Override public boolean isPauseScreen(){return false;}
@@ -63,9 +65,10 @@ public final class VisualAcc {
    for(int x=-8;x<=8;x++)for(int y=0;y<6;y++)l.setBlockAndUpdate(o.offset(x,y,-16),Blocks.STONE_BRICKS.defaultBlockState());
    for(int y=0;y<3;y++)l.setBlockAndUpdate(o.offset(0,y,-12),Blocks.TARGET.defaultBlockState());
    p.teleportTo(l,o.getX()+.5,o.getY(),o.getZ()+.5,180,3);});
+  if(Boolean.getBoolean("mareeletrica.accmag")&&tick>=70){int i=(tick-70)/12,k=(tick-70)%12;if(i>=7){if(k==0){mc.setScreen(null);System.out.println("[ACC] DONE");}return;}if(k==0)mc.setScreen(new G(10+i));if(k==10)shot("mag"+i);return;}
   if(Boolean.getBoolean("mareeletrica.accguns")&&tick>=70){var fs=WeaponFamily.values();int i=(tick-70)/44,k=(tick-70)%44;
    if(i>=fs.length){if(k==0){mc.options.keyUse.setDown(false);System.out.println("[ACC] DONE");}return;}
-   var f=fs[i];if(k==0){mc.options.keyUse.setDown(false);hold(gun(f,i%13,0,0,0));}if(k==18)shot("fp_"+f.id);if(k==20)mc.options.keyUse.setDown(true);if(k==40)shot("ads_"+f.id);return;}
+   var f=fs[i];if(k==0){mc.options.keyUse.setDown(false);hold(gun(f,3,0,0,0));}if(k==18)shot("fp_"+f.id);if(k==20)mc.options.keyUse.setDown(true);if(k==40)shot("ads_"+f.id);return;}
   int t0=Boolean.getBoolean("mareeletrica.accfast")?-1000:70;String[] names={"m4","m4b","m4skins","todas1","todas2","todas3"};
   for(int i=0;i<6;i++){if(tick==t0+i*12)mc.setScreen(new G(i));if(tick==t0+i*12+10)shot(names[i]);}
   int t=t0<0?70:t0+6*12;

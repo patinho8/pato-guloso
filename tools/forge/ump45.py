@@ -38,7 +38,7 @@ c(G,'reten_pa',[-16.4,20.2,-1.4],[-13.8,21.6,1.4],'steel',rot=[0,0,-20],origin=[
 K.trigger(G,-26.4,22.4,guard=True,gmat='poly2',w=1.6,L=14,depth=6.6)
 c(G,'seletor',[-38,25.2,-3.8],[-33,26.4,-3.0],'steel',rot=[0,0,-25],origin=[-35.5,25.8,-3.4])
 for k,col in enumerate(('white','red','red')):c(G,'seletor_marca',[-37+k*1.4,27.2,-3.05],[-36.4+k*1.4,27.8,-3.0],col)
-GR=dict(rot=[0,0,18],origin=[-35.6,22.4,0])
+GR=dict(rot=[0,0,16],origin=[-35.6,22.4,0])
 c(G,'punho',[-39.6,5.6,-2.6],[-31.6,22.6,2.6],'poly2',**GR)
 for k in range(3):c(G,'punho_dedo',[-32.2,8.6+k*4.4,-2.4],[-31,11.2+k*4.4,2.4],'poly2',**GR)
 c(G,'punho_base',[-40.2,4.8,-2.9],[-31.2,6.0,2.9],'poly2',**GR)
@@ -56,5 +56,5 @@ c(G,'alavanca_bola',[17.2,37.4,-6.2],[19.4,39.4,-4.8],'poly2')
 G='carregador'
 K.mag_box(G,-13.4,-2.6,22.0,-2.2,2.6,lean=2,segs=2,base='mag')
 K.round_top(G,-12.8,-3.2,22,2.6,'mag')
-K.finish(scale=.235,grip=(-35.6,22.4),muzzle_x=35.7,bore_y=B,iron_y=IRON,rail=(ry,-34,10),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,grip=(-35.6,22.4),muzzle_x=35.7,bore_y=B,iron_y=IRON,rail=(ry,-34,10),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'poly':'main','poly2':'accent','mag':'mag'},regions={'barrel':20,'stock':-44})

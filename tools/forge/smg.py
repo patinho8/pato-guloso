@@ -39,5 +39,5 @@ c(G,'alavanca',[-4,36,-4.4],[0,37.6,-3.0],'polish')
 G='carregador'
 K.mag_box(G,-5.4,1.4,12,-14,2.0,lean=0,segs=1,ribs=False,base='mag')
 c(G,'carregador_bala',[-5,12,-1],[0,13,1],'brass')
-K.finish(scale=.235,support=(6,25),grip=(-21,22),muzzle_x=29.1,bore_y=B,iron_y=IRON,rail=(ry,-30,8),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,support=(6,25),grip=(-21,22),muzzle_x=29.1,bore_y=B,iron_y=IRON,rail=(ry,-30,8),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'body':'main','body2':'accent','mag':'mag'},regions={'barrel':12,'stock':-34})

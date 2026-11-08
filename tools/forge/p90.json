@@ -2,11 +2,11 @@
  "bbmodel": "/home/claude/proj/MareEletrica/tools/forge/p90_forge.bbmodel",
  "family": "p90",
  "tag": "forge",
- "scale": 0.235,
- "width": 1.1,
+ "scale": 0.36,
+ "width": 1.3,
  "trigger": [
-  5.117021276595747,
-  32.97872340425532
+  0.3888888888888893,
+  31.944444444444443
  ],
  "muzzle_dir": 1,
  "default": "shell",
@@ -24,11 +24,10 @@
   "16,16": "rubber"
  },
  "moving": [
-  193,
-  194
+  194,
+  195
  ],
  "magazine": [
-  195,
   196,
   197,
   198,
@@ -59,7 +58,8 @@
   223,
   224,
   225,
-  226
+  226,
+  227
  ],
  "stock": [],
  "skins": [

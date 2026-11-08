@@ -36,7 +36,7 @@ K.trigger(G,-6.6,17.2,guard=True,gmat='frame',w=1.2,L=10,depth=5.2)
 c(G,'gatilho_seguranca',[-6.4,13.8,-.12],[-5.8,16.8,.12],'dark')
 c(G,'reten_carregador',[-12.2,13.6,-2.85],[-10.8,15.6,2.85],'frame')
 # punho 22°
-GR=dict(rot=[0,0,22],origin=[-16,17.2,0])
+GR=dict(rot=[0,0,16],origin=[-16,17.2,0])
 c(G,'punho',[-21.0,-5.6,-2.85],[-11.4,17.4,2.85],'frame',**GR)
 c(G,'punho_cauda',[-23.6,15.6,-2.3],[-20.4,17.6,2.3],'frame',rot=[0,0,-12],origin=[-21,17,0])
 for k in range(3):c(G,'punho_dedo',[-11.8,-1.6+k*5.0,-2.6],[-10.8,1.6+k*5.0,2.6],'frame',**GR)
@@ -50,5 +50,5 @@ c(G,'carregador',[-20.0,-4.6,-2.2],[-12.6,16.4,2.2],'mag',**GR)
 c(G,'carregador_base',[-21.2,-6.8,-2.95],[-11.0,-5.4,2.95],'mag',**GR)
 c(G,'carregador_furo',[-12.7,-2,-2.25],[-12.5,12,2.25],'orange',**GR) if False else None
 c(G,'carregador_bala',[-19,16.4,-1],[-13.4,17.4,1],'brass',**GR)
-K.finish(scale=.4,width=1.1,grip=(-16,17.2),muzzle_x=15.5,bore_y=B,iron_y=28.3,rail=(27.2,-15.5,-7),moving=['ferrolho'],magazine=['carregador'],
+K.finish(scale=.56,grip=(-16,17.2),muzzle_x=15.5,bore_y=B,iron_y=28.3,rail=(27.2,-15.5,-7),moving=['ferrolho'],magazine=['carregador'],
  roles={'slide':'main','frame':'accent','mag':'mag'},pistol=True,regions={'barrel':16})

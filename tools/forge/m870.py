@@ -40,5 +40,5 @@ c(G,'telha_frente',[29.4,28.0,-2.3],[30.6,33.2,2.3],'wood2');c(G,'telha_tras',[9
 both(G,'barra_acao',-4,30.0,10,31,1.2,1.8,'polish')
 G='carregador'
 c(G,'cartucho',[-18,24.2,-1.3],[-8,26.6,1.3],'shell');c(G,'cartucho_base',[-19,24.0,-1.4],[-18,26.8,1.4],'brass')
-K.finish(scale=.235,support=(20,27),grip=(-38,28),muzzle_x=84.1,bore_y=B,iron_y=IRON,rail=(ry,-26,-10),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
+K.finish(scale=.36,support=(20,27),grip=(-38,28),muzzle_x=84.1,bore_y=B,iron_y=IRON,rail=(ry,-26,-10),moving=['ferrolho'],magazine=['carregador'],stock=['coronha'],
  roles={'steel':'main','wood':'accent','wood2':'accent'},regions={'barrel':0,'stock':-32})
