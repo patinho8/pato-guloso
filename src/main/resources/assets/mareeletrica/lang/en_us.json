@@ -1597,5 +1597,13 @@
  "entity.mareeletrica.evil_duck": "Giant Evil Duck",
  "entity.mareeletrica.evil_egg": "Exploding Egg",
  "item.mareeletrica.cursed_duck_egg": "Cursed Duck Egg",
- "item.mareeletrica.quack_staff": "Quack Staff"
+ "item.mareeletrica.quack_staff": "Quack Staff",
+ "block.mareeletrica.led_lamp_magenta": "LED Lamp (magenta)",
+ "block.mareeletrica.led_lamp_light_blue": "LED Lamp (light blue)",
+ "block.mareeletrica.led_lamp_amber": "LED Lamp (amber)",
+ "block.mareeletrica.led_lamp_teal": "LED Lamp (teal)",
+ "block.mareeletrica.led_lamp_rainbow": "LED Lamp (rainbow)",
+ "entity.mareeletrica.evil_feather": "Sharp Feather",
+ "entity.mareeletrica.quack_wave": "Quack Wave",
+ "entity.mareeletrica.evil_duckling": "Kamikaze Duckling"
 }

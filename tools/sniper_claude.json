@@ -2,7 +2,7 @@
  "bbmodel": "tools/sniper_claude.bbmodel",
  "family": "sniper",
  "tag": "claude",
- "scale": 0.66,
+ "scale": 0.82,
  "trigger": [
   -9.9,
   18

@@ -1,0 +1,377 @@
+{
+ "desert_eagle": {
+  "muzzle": -5.3,
+  "bore": 10.600000000000001,
+  "iron": 13.3,
+  "sights": [
+   14.15,
+   14.4,
+   14.7
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "usp": {
+  "muzzle": -3.3,
+  "bore": 10.25,
+  "iron": 12.6,
+  "sights": [
+   13.45,
+   13.7,
+   14.0
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "m4a1": {
+  "muzzle": -12.2,
+  "bore": 9.6,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.85
+  ],
+  "scope": [
+   false,
+   false,
+   true
+  ]
+ },
+ "ak47": {
+  "muzzle": -23.2,
+  "bore": 9.6,
+  "iron": 11.1,
+  "sights": [
+   13.6,
+   13.4,
+   13.9
+  ],
+  "scope": [
+   false,
+   false,
+   true
+  ]
+ },
+ "m870": {
+  "muzzle": -14.0,
+  "bore": 10.0,
+  "iron": 11.6,
+  "sights": [
+   13.4,
+   13.2,
+   13.5
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "mp5": {
+  "muzzle": -8.0,
+  "bore": 9.5,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.85
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "smg": {
+  "muzzle": -7.4,
+  "bore": 10.0,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.9
+  ],
+  "scope": [
+   false,
+   false,
+   true
+  ]
+ },
+ "sniper": {
+  "muzzle": -49.8,
+  "bore": 8.6,
+  "iron": 13.5,
+  "sights": [
+   15.7,
+   16.25,
+   16.8
+  ],
+  "scope": [
+   true,
+   true,
+   true
+  ]
+ },
+ "mp40": {
+  "muzzle": -6.6,
+  "bore": 9.6,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.85
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "p90": {
+  "muzzle": -6.0,
+  "bore": 9.2,
+  "iron": 14.5,
+  "sights": [
+   15.55,
+   15.35,
+   15.65
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "python": {
+  "muzzle": -7.0,
+  "bore": 9.9,
+  "iron": 12.1,
+  "sights": [
+   12.85,
+   13.1,
+   13.4
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "glock": {
+  "muzzle": -3.3,
+  "bore": 10.100000000000001,
+  "iron": 12.3,
+  "sights": [
+   13.15,
+   13.4,
+   13.7
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "scar": {
+  "muzzle": -12.2,
+  "bore": 9.7,
+  "iron": 13.5,
+  "sights": [
+   13.9,
+   14.0,
+   14.29
+  ],
+  "scope": [
+   false,
+   false,
+   true
+  ]
+ },
+ "ump45": {
+  "muzzle": -7.4,
+  "bore": 9.6,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.85
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "spas12": {
+  "muzzle": -13.6,
+  "bore": 10.0,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.85
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "beretta": {
+  "muzzle": -3.3,
+  "bore": 10.2,
+  "iron": 12.5,
+  "sights": [
+   13.35,
+   13.6,
+   13.9
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "uzi": {
+  "muzzle": -5.0,
+  "bore": 9.2,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.85
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "famas": {
+  "muzzle": -12.0,
+  "bore": 9.0,
+  "iron": 13.5,
+  "sights": [
+   15.55,
+   15.65,
+   15.94
+  ],
+  "scope": [
+   false,
+   false,
+   true
+  ]
+ },
+ "m249": {
+  "muzzle": -15.2,
+  "bore": 9.6,
+  "iron": 13.5,
+  "sights": [
+   14.6,
+   14.4,
+   14.9
+  ],
+  "scope": [
+   false,
+   false,
+   true
+  ]
+ },
+ "barrett": {
+  "muzzle": -15.2,
+  "bore": 10.0,
+  "iron": 13.5,
+  "sights": [
+   14.9,
+   15.08,
+   15.26
+  ],
+  "scope": [
+   true,
+   true,
+   true
+  ]
+ },
+ "mac10": {
+  "muzzle": -5.0,
+  "bore": 9.6,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.85
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "galil": {
+  "muzzle": -12.6,
+  "bore": 9.4,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.8,
+   14.09
+  ],
+  "scope": [
+   false,
+   false,
+   true
+  ]
+ },
+ "aug": {
+  "muzzle": -12.2,
+  "bore": 8.8,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.89
+  ],
+  "scope": [
+   false,
+   false,
+   true
+  ]
+ },
+ "saiga12": {
+  "muzzle": -13.4,
+  "bore": 9.4,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.85
+  ],
+  "scope": [
+   false,
+   false,
+   false
+  ]
+ },
+ "svd": {
+  "muzzle": -15.9,
+  "bore": 9.4,
+  "iron": 13.5,
+  "sights": [
+   13.85,
+   13.85,
+   13.85
+  ],
+  "scope": [
+   true,
+   true,
+   true
+  ]
+ }
+}

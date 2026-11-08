@@ -33,7 +33,7 @@ public final class RifleHands {
    if(f!=WeaponFamily.DESERT_EAGLE||reloading)arm(pose,buffers,light,right?model.leftArm:model.rightArm,right?model.leftSleeve:model.rightSleeve,!right,player.isModelPartShown(right?PlayerModelPart.LEFT_SLEEVE:PlayerModelPart.RIGHT_SLEEVE),new Vector3f(-side*.35F,-.64F,.04F),support);
   }
   pose.pushPose();pose.mulPose(rifle);RifleRenderer.parts(gun,pose,buffers,light,ProneSystem.supported(player),true);
-  if(SniperClient.flashTicks>0&&RifleLoadout.suppressor(gun)==0){pose.pushPose();pose.translate(0,0,(ArmoryRenderer.muzzle(f)+10.5)/16);DmtGearLayer.model("gun_flash",pose,buffers,15728880);pose.popPose();}
+  if(SniperClient.flashTicks>0&&RifleLoadout.suppressor(gun)==0){pose.pushPose();pose.translate(0,(ArmoryRenderer.bore(gun,f)-8.9)/16,(ArmoryRenderer.muzzle(gun,f)+10.5)/16);DmtGearLayer.model("gun_flash",pose,buffers,15728880);pose.popPose();}
   if(kick>.08F){pose.pushPose();pose.translate((1-kick)*.6,.1+kick*.16,.05);pose.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(kick*180));DmtGearLayer.model("gun_case",pose,buffers,light);pose.popPose();}pose.popPose();
  }
  static void arm(PoseStack pose,MultiBufferSource buffers,int light,ModelPart arm,ModelPart sleeve,boolean right,boolean showSleeve,Vector3f shoulder,Vector3f hand){arm(pose,buffers,light,arm,sleeve,right,showSleeve,shoulder,hand,.68F);}

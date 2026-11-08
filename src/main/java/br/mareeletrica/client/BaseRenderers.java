@@ -92,7 +92,7 @@ public final class BaseRenderers {
  /** Lit LED lamp: soft coloured halo plus coloured light thrown on the blocks around it (Minecraft light is always white,
   *  so the colour is painted on the nearby surfaces, brighter close to the lamp). */
  public static final class LampR implements BlockEntityRenderer<Lamps.Glow> {
-  static final int R=6;
+  static final int R=8;
   /** Faces around each lamp: x,y,z of 4 corners + strength of each corner (16 floats per face). Rebuilt once a second. */
   static final java.util.Map<net.minecraft.core.BlockPos,float[]> FACES=new java.util.HashMap<>();
   static final java.util.Map<net.minecraft.core.BlockPos,Long> BUILT=new java.util.HashMap<>();
@@ -135,22 +135,28 @@ public final class BaseRenderers {
   }
   @Override public void render(Lamps.Glow g,float pt,PoseStack p,MultiBufferSource buf,int light,int ov){
    var s=g.getBlockState();if(!(s.getBlock() instanceof Lamps.LampBlock lb)||!s.getValue(Lamps.LIT))return;
-   int rgb=Lamps.RGB[lb.color];int r=rgb>>16&255,gg=rgb>>8&255,b=rgb&255;
+   int rgb=Lamps.rgb(lb.color,g.getLevel().getGameTime(),pt);float r=(rgb>>16&255)/255F,gg=(rgb>>8&255)/255F,b=(rgb&255)/255F;
    var m=p.last();
-   // coloured light on the surroundings (additive, so it tints instead of covering)
+   float sky=g.getLevel() instanceof net.minecraft.client.multiplayer.ClientLevel cl?cl.getSkyDarken(pt):1F;float night=Mth.clamp((1F-sky)/.8F,0F,1F);
+   // coloured light on the surroundings (additive, no depth write: several lamps just add up)
    var f=faces(g);
    if(f!=null&&f.length>0){
-    VertexConsumer w=buf.getBuffer(RenderType.lightning());
-    // stronger at night, when it matters
-    float sky=g.getLevel() instanceof net.minecraft.client.multiplayer.ClientLevel cl?cl.getSkyDarken(pt):1F;float night=Mth.clamp((1F-sky)/.8F,0F,1F);
-    float power=.26F+.26F*night;
-    for(int i=0;i<f.length;i+=4){float a=f[i+3]*power;w.addVertex(m,f[i],f[i+1],f[i+2]).setColor(r/255F,gg/255F,b/255F,a);}
+    VertexConsumer w=buf.getBuffer(GlowTypes.WASH);
+    float power=.3F+.25F*night;
+    for(int i=0;i<f.length;i+=4){float a=f[i+3]*power;w.addVertex(m,f[i],f[i+1],f[i+2]).setColor(r,gg,b,a);}
    }
-   VertexConsumer v=buf.getBuffer(RenderType.entityTranslucentEmissive(ResourceLocation.withDefaultNamespace("textures/misc/white.png")));
-   for(float grow:new float[]{.12F,.28F}){int a=grow<.2F?70:32;float lo=-grow,hi=1+grow;
-    float[][] q={{lo,lo,lo, hi,lo,lo, hi,lo,hi, lo,lo,hi, 0,-1,0},{lo,hi,lo, lo,hi,hi, hi,hi,hi, hi,hi,lo, 0,1,0},{lo,lo,lo, lo,hi,lo, hi,hi,lo, hi,lo,lo, 0,0,-1},
-     {lo,lo,hi, hi,lo,hi, hi,hi,hi, lo,hi,hi, 0,0,1},{lo,lo,lo, lo,lo,hi, lo,hi,hi, lo,hi,lo, -1,0,0},{hi,lo,lo, hi,hi,lo, hi,hi,hi, hi,lo,hi, 1,0,0}};
-    for(var e:q)for(int i=0;i<4;i++)v.addVertex(m,e[i*3],e[i*3+1],e[i*3+2]).setColor(r,gg,b,a).setUv(0,0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(FULL).setNormal(m,e[12],e[13],e[14]);}
+   // halo: a soft disc facing the camera, bright in the middle and fading out
+   var cam=Minecraft.getInstance().gameRenderer.getMainCamera();
+   p.pushPose();p.translate(.5,.5,.5);p.mulPose(cam.rotation());
+   var h=buf.getBuffer(GlowTypes.HALO);var hm=p.last();
+   float rad=1.45F+.35F*night,core=.45F+.15F*night;int seg=20;
+   for(int i=0;i<seg;i++){double a0=i*Math.PI*2/seg,a1=(i+1)*Math.PI*2/seg;
+    float x0=(float)Math.cos(a0),y0=(float)Math.sin(a0),x1=(float)Math.cos(a1),y1=(float)Math.sin(a1);
+    // inner ring (bright) and outer ring (fades to nothing)
+    float ri=.55F;
+    h.addVertex(hm,0,0,0).setColor(r,gg,b,core);h.addVertex(hm,0,0,0).setColor(r,gg,b,core);h.addVertex(hm,x1*ri,y1*ri,0).setColor(r,gg,b,core*.55F);h.addVertex(hm,x0*ri,y0*ri,0).setColor(r,gg,b,core*.55F);
+    h.addVertex(hm,x0*ri,y0*ri,0).setColor(r,gg,b,core*.55F);h.addVertex(hm,x1*ri,y1*ri,0).setColor(r,gg,b,core*.55F);h.addVertex(hm,x1*rad,y1*rad,0).setColor(r,gg,b,0);h.addVertex(hm,x0*rad,y0*rad,0).setColor(r,gg,b,0);}
+   p.popPose();
   }
  }
  /** Rooster ring: the 3x3 model drawn stretched to the 5x5 floor. */

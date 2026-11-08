@@ -31,3 +31,6 @@ map_Kd #rubber
 newmtl steel
 map_Kd #steel
 
+newmtl tan
+map_Kd #tan
+

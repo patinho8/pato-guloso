@@ -61,3 +61,18 @@ cr=json.load(open(os.path.join(A,'models/block/duck_hat_crown.json')))
 cr['textures']={'g':M('duck_red'),'r':M('duck_gold'),'b':M('duck_white'),'particle':M('duck_red')}
 save(os.path.join(A,'models/block/duck_crown_red.json'),cr)
 print('red crown ok')
+# 0.72.0: 3D egg and feather dart for the boss fight
+M=lambda n:"mareeletrica:block/"+n
+def el2(f,t,tex,rot=None):
+    e={"from":f,"to":t,"faces":{d:{"texture":"#"+tex,"uv":[0,0,16,16]} for d in ["north","south","west","east","up","down"]}}
+    if rot:e["rotation"]=rot
+    return e
+# egg: stacked slices, wider at the bottom, with red cracks
+eg=[]
+for y0,y1,r in [(3,4,2.2),(4,6,3.0),(6,9,3.3),(9,11,3.0),(11,12.4,2.4),(12.4,13.2,1.5)]:
+    eg+= [el2([8-r,y0,8-r*.6],[8+r,y1,8+r*.6],'w'),el2([8-r*.6,y0,8-r],[8+r*.6,y1,8+r],'w')]
+eg+=[el2([10.95,6,7.4],[11.4,10.5,8.0],'c'),el2([10.6,9.6,7.9],[11.1,11.2,8.4],'c'),el2([4.6,5,8.2],[5.05,8.5,8.7],'c'),el2([7.6,7.5,11.25],[8.2,10.4,11.4],'c'),el2([7.2,4.2,4.6],[7.8,6.6,4.75],'c')]
+part('boss_egg',{"w":M("duck_white"),"c":M("duck_red")},eg)
+part('boss_feather',{"q":M("duck_white"),"v":M("duck_feather"),"t":M("duck_black"),"r":M("duck_red")},[
+ el2([7.8,7.8,1],[8.2,8.2,15],'q'),el2([7.9,6.6,5],[8.1,9.4,14],'v'),el2([7.85,7.0,3.2],[8.15,9.0,5],'v'),el2([7.7,7.7,.2],[8.3,8.3,1.4],'t'),el2([7.85,6.4,13],[8.15,9.6,14.5],'r')])
+print('boss fx parts ok')

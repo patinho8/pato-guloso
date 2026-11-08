@@ -99,6 +99,51 @@ cube(G,'tampa_elevação',[1.2,30.4,-.7],[2.8,30.8,.7],'brass')
 cube(G,'torre_vento',[1,26.4,1.3],[3,28.2,2.8],'metal_l')
 cube(G,'foco',[-2.5,26.4,1.3],[-1,28.2,2.3],'metal')
 cube(G,'marca',[12.4,29.2,-.3],[13.2,29.25,.3],'red',faces=['up'])
+# ===== 0.72.0: mais detalhes =====
+G='luneta'
+for x in (-6,4):   # braçadeiras dos anéis com 2 parafusos de cada lado
+    for zz in (-1.8,1.6):cube(G,'braçadeira',[x-.2,24.4,zz],[x+2,25.6,zz+.2],'metal')
+    for dx in (.3,1.2):cube(G,'parafuso_anel_b',[x+dx,24.6,-2.0],[x+dx+.5,25.1,-1.8],'metal_l')
+for i in range(5):cube(G,'serrilha_torre',[1,28.8+i*.32,-.95],[3,28.95+i*.32,.95],'flute')
+for i in range(4):cube(G,'serrilha_vento',[1.1+i*.5,26.5,2.8],[1.35+i*.5,28.1,2.95],'flute')
+cube(G,'paralaxe',[-3,26.0,-2.9],[-1,28.6,-1.3],'metal_l')
+for i in range(4):cube(G,'serrilha_paralaxe',[-2.9+i*.5,26.1,-3.05],[-2.65+i*.5,28.5,-2.9],'flute')
+cube(G,'anel_zoom',[-9,25.8,-1.6],[-7.2,28.8,1.6],'rubber')
+for i in range(5):cube(G,'aleta_zoom',[-8.9+i*.36,28.8,-.3],[-8.7+i*.36,29.0,.3],'black')
+cube(G,'tampa_frente_aberta',[22.1,29.1,-1.6],[22.5,31.8,1.6],'black',rot=[0,0,-22.5],origin=[22.3,29.1,0])
+cube(G,'tampa_tras_aberta',[-15.6,29.1,-1.5],[-15.2,31.6,1.5],'black',rot=[0,0,22.5],origin=[-15.4,29.1,0])
+cube(G,'faixa_lente',[19.2,29.0,-1.85],[19.6,29.25,1.85],'red')
+G='corpo'
+cube(G,'capa_ferrolho',[-17,19,-1.2],[-15,22.6,1.2],'metal')
+cube(G,'tampa_ferrolho',[-17.6,19.6,-.9],[-17,22,.9],'steel')
+for i in range(3):cube(G,'serrilha_bola',[-8.2,21.0+i*.5,6.1],[-6.4,21.2+i*.5,6.2],'flute')
+cube(G,'parafuso_receptor',[-12,19,1.5],[-11.2,19.8,1.6],'metal_l')
+cube(G,'parafuso_receptor',[4,19,1.5],[4.8,19.8,1.6],'metal_l')
+cube(G,'liberador_ferrolho',[-14.6,21.6,1.5],[-13.4,22.4,1.9],'steel')
+cube(G,'boca_carregador',[-5,17.6,-1.6],[2,18.4,1.6],'metal')
+cube(G,'liberador_carregador',[-6.4,15.2,-.5],[-5,16.6,.5],'steel')
+cube(G,'porca_cano',[24.5,19.6,-1.2],[26,22,1.2],'steel')
+G='cano'
+cube(G,'rosca',[55,20,-.95],[56,21.6,.95],'steel')
+cube(G,'chanfro_freio',[60.4,19.6,-1.1],[61,22,1.1],'steel')
+G='guarda_mao'
+for i in range(5):
+    cube(G,f'mlok_{i}',[10.5+i*2.8,18.2,1.7],[12.2+i*2.8,18.8,1.75],'black',faces=['east','north','south','up','down','west'])
+    cube(G,f'mlok_b{i}',[10.5+i*2.8,19,-1.75],[12.2+i*2.8,20.6,-1.7],'black',faces=['east','north','south','up','down','west'])
+cube(G,'trilho_baixo',[9,17.1,-.9],[23,17.5,.9],'metal_l')
+for i in range(7):cube(G,'dente_baixo',[9.4+i*2,16.8,-.9],[10.2+i*2,17.1,.9],'black')
+cube(G,'copo_bandoleira',[9.2,18.4,1.7],[10.2,19.4,2.1],'steel')
+G='coronha'
+for i in range(3):cube(G,'espaçador',[-33.6+i*.0,13+i*0,-1.5],[-33.2,24.5,1.5],'black') if i==0 else None
+cube(G,'botão_bochecha',[-25,24.2,1.25],[-24.2,25.0,1.7],'steel')
+cube(G,'botão_bochecha',[-25,24.2,-1.7],[-24.2,25.0,-1.25],'steel')
+cube(G,'copo_bandoleira_t',[-31,13.2,1.4],[-30,14.2,1.8],'steel')
+cube(G,'faixa_coronha',[-33,16.2,1.42],[-29,16.6,1.45],'tan',faces=['south'])
+cube(G,'faixa_coronha',[-33,16.2,-1.45],[-29,16.6,-1.42],'tan',faces=['north'])
+G='punho'
+for i in range(5):cube(G,'textura_punho',[-16.6,11+i*1.3,1.3],[-13.4,11.5+i*1.3,1.35],'green_d',rot=[0,0,-22.5],origin=[-15,17,0])
+for i in range(5):cube(G,'textura_punho',[-16.6,11+i*1.3,-1.35],[-13.4,11.5+i*1.3,-1.3],'green_d',rot=[0,0,-22.5],origin=[-15,17,0])
+cube(G,'apoio_polegar',[-13.4,17.6,-1.5],[-11.6,18.2,1.5],'green_d')
 # ================= .bbmodel =================
 outliner=[];allel=[]
 for g in order:

@@ -23,15 +23,18 @@ import net.neoforged.neoforge.registries.DeferredItem;
 
 /** Coloured LED lamps: right-click turns them on/off, a redstone signal turns them on. Lit lamps glow in their colour. */
 public final class Lamps {
- public static final String[] COLORS={"white","red","orange","yellow","lime","green","cyan","blue","purple","pink"};
- public static final String[] NAMES={"branca","vermelha","laranja","amarela","verde-limão","verde","ciano","azul","roxa","rosa"};
- public static final int[] RGB={0xFFF4E8,0xFF3030,0xFF8A20,0xFFE030,0x80FF40,0x30C040,0x30E8F0,0x3070FF,0xA040FF,0xFF60C0};
+ public static final String[] COLORS={"white","red","orange","yellow","lime","green","cyan","blue","purple","pink","magenta","light_blue","amber","teal","rainbow"};
+ public static final String[] NAMES={"branca","vermelha","laranja","amarela","verde-limão","verde","ciano","azul","roxa","rosa","magenta","azul-claro","âmbar","turquesa","arco-íris"};
+ public static final int[] RGB={0xFFF4E8,0xFF2020,0xFF7A10,0xFFE020,0x70FF30,0x20D040,0x20F0FF,0x2060FF,0xA030FF,0xFF50C0,0xFF28E6,0x50BEFF,0xFFAA28,0x14E6AA,-1};
+ /** 0.72.0: the rainbow lamp cycles through the hues */
+ public static final int RAINBOW=14;
+ public static int rgb(int color,long time,float pt){if(color!=RAINBOW)return RGB[color];return java.awt.Color.HSBtoRGB(((time+pt)*.004F)%1F,.9F,1F)&0xFFFFFF;}
  public static final BooleanProperty LIT=BooleanProperty.create("lit");
  public static final List<DeferredBlock<LampBlock>> BLOCKS=new ArrayList<>();
  public static final List<DeferredItem<BlockItem>> ITEMS=new ArrayList<>();
  static{
   for(int i=0;i<COLORS.length;i++){final int c=i;
-   var b=MareEletrica.BLOCKS.register("led_lamp_"+COLORS[i],()->new LampBlock(BlockBehaviour.Properties.of().strength(.6F).sound(SoundType.GLASS).lightLevel(s->s.getValue(LIT)?15:0),c));
+   var b=MareEletrica.BLOCKS.register("led_lamp_"+COLORS[i],()->new LampBlock(BlockBehaviour.Properties.of().strength(.6F).sound(SoundType.GLASS).noOcclusion().isViewBlocking((st,l,pp)->false).isSuffocating((st,l,pp)->false).lightLevel(s->s.getValue(LIT)?15:0),c));
    BLOCKS.add(b);ITEMS.add(MareEletrica.ITEMS.register("led_lamp_"+COLORS[i],()->new BlockItem(b.get(),new Item.Properties())));
   }
  }

@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shapeless", "category": "building", "ingredients": [{"item": "minecraft:glass"}, {"item": "minecraft:glowstone_dust"}, {"item": "minecraft:iron_nugget"}, {"item": "minecraft:orange_dye"}, {"item": "minecraft:white_dye"}], "result": {"id": "mareeletrica:led_lamp_amber", "count": 4}}

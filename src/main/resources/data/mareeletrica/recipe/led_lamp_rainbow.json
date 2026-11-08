@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shapeless", "category": "building", "ingredients": [{"item": "minecraft:glass"}, {"item": "minecraft:glowstone_dust"}, {"item": "minecraft:iron_nugget"}, {"item": "minecraft:red_dye"}, {"item": "minecraft:lime_dye"}, {"item": "minecraft:blue_dye"}], "result": {"id": "mareeletrica:led_lamp_rainbow", "count": 4}}

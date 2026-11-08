@@ -30,6 +30,8 @@ public final class DuckBossRenderer extends EntityRenderer<EvilDuck> {
   p.scale(S,S,S);
   float waddle=Mth.sin(walkPos*.6F)*walkSpd*7F;p.mulPose(Axis.ZP.rotationDegrees(waddle));
   if(atk==EvilDuck.CHARGE){p.mulPose(Axis.XP.rotationDegrees(-14));}
+  if(!e.onGround()){float vy=(float)e.getDeltaMovement().y;p.mulPose(Axis.XP.rotationDegrees(atk==EvilDuck.DIVE&&vy<-.5F?-40:Mth.clamp(-vy*12,-15,15)));}
+  if(atk==EvilDuck.FEATHERS){float t=Math.min(1,(e.attackTime()+pt)/8F);p.mulPose(Axis.XP.rotationDegrees(t*12));}
   if(atk==EvilDuck.QUACK){float t=Math.min(1,(e.attackTime()+pt)/28F);p.translate(0,0,t*.04);p.mulPose(Axis.XP.rotationDegrees(t*18-(e.attackTime()>28?30:0)));}
   p.translate(-.5,0,-.5);
   float sw=Mth.cos(walkPos*.6F)*walkSpd*35F;

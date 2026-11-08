@@ -1597,5 +1597,13 @@
  "entity.mareeletrica.evil_duck": "Pato Gigante Malvado",
  "entity.mareeletrica.evil_egg": "Ovo Explosivo",
  "item.mareeletrica.cursed_duck_egg": "Ovo Amaldiçoado",
- "item.mareeletrica.quack_staff": "Cajado do Quack"
+ "item.mareeletrica.quack_staff": "Cajado do Quack",
+ "block.mareeletrica.led_lamp_magenta": "Lâmpada LED Magenta",
+ "block.mareeletrica.led_lamp_light_blue": "Lâmpada LED Azul-Claro",
+ "block.mareeletrica.led_lamp_amber": "Lâmpada LED Âmbar",
+ "block.mareeletrica.led_lamp_teal": "Lâmpada LED Turquesa",
+ "block.mareeletrica.led_lamp_rainbow": "Lâmpada LED Arco-íris",
+ "entity.mareeletrica.evil_feather": "Pena Afiada",
+ "entity.mareeletrica.quack_wave": "Onda de Quack",
+ "entity.mareeletrica.evil_duckling": "Patinho Kamikaze"
 }
