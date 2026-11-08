@@ -7,7 +7,16 @@ V=lambda n:"minecraft:block/"+n;M=lambda n:"mareeletrica:block/"+n
 random.seed(690)
 def el(f,t,tex,faces=None,rot=None):
     for v in f+t:assert -16<=v<=32,(f,t)
-    e={"from":[round(v,3) for v in f],"to":[round(v,3) for v in t],"faces":{d:{"texture":"#"+tex} for d in (faces or ["north","south","west","east","up","down"])}}
+    def fit(a,b):
+        a,b=min(a,b),max(a,b)
+        if b-a>=16:return 0,16
+        if a<0:return 0,b-a
+        if b>16:return 16-(b-a),16
+        return a,b
+    def uv(d):
+        x=fit(f[0],t[0]);y=fit(16-t[1],16-f[1]);z=fit(f[2],t[2])
+        return [round(v,3) for v in ({"up":(x[0],z[0],x[1],z[1]),"down":(x[0],z[0],x[1],z[1]),"north":(x[0],y[0],x[1],y[1]),"south":(x[0],y[0],x[1],y[1])}.get(d) or (z[0],y[0],z[1],y[1]))]
+    e={"from":[round(v,3) for v in f],"to":[round(v,3) for v in t],"faces":{d:{"texture":"#"+tex,"uv":uv(d)} for d in (faces or ["north","south","west","east","up","down"])}}
     if rot:e["rotation"]=rot
     return e
 def save(path,obj):os.makedirs(os.path.dirname(path),exist_ok=True);json.dump(obj,open(path,'w'),separators=(',',':'))
