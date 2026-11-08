@@ -1587,5 +1587,11 @@
  "block.mareeletrica.double_bed": "Double Bed",
  "entity.mareeletrica.seat": "Seat",
  "item.mareeletrica.duck_potion": "Duck Potion",
- "effect.mareeletrica.duck": "Duck"
+ "effect.mareeletrica.duck": "Duck",
+ "block.mareeletrica.paint_bench": "Paint Bench",
+ "item.mareeletrica.spray_paint": "Spray Paint",
+ "item.mareeletrica.spray_metallic": "Metallic Spray",
+ "item.mareeletrica.spray_glow": "Glow Spray",
+ "item.mareeletrica.spray_rainbow": "Rainbow Spray",
+ "item.mareeletrica.paint_solvent": "Paint Solvent"
 }

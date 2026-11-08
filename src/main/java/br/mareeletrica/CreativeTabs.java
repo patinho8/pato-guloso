@@ -32,7 +32,7 @@ public final class CreativeTabs {
   machines(s,k->!energyKind(k)&&k!=Kind.MORTAR&&k!=Kind.TURRET&&k!=Kind.ARMOR_STATION&&k!=Kind.HANGAR&&k!=Kind.SHIELD);
   s.add(MareEletrica.ITEM_DUCT_ITEM);s.add(MareEletrica.LED_BED_ITEM);Lamps.ITEMS.forEach(s::add);s.add(MareEletrica.REMOTE);
  }
- static void guns(Sink s){
+ static void guns(Sink s){GunPaint.creative(s::accept);
   for(var gun:Arsenal.guns())if(gun!=MareEletrica.REVOLVER)s.add(gun);
   s.add(MareEletrica.SMG);s.add(MareEletrica.SNIPER);s.add(MareEletrica.REVOLVER);
   s.add(Arsenal.USP_ROUND);s.add(Arsenal.RIFLE_ROUND);s.add(Arsenal.SHOTGUN_SHELL);s.add(MareEletrica.SMG_ROUND);s.add(MareEletrica.SNIPER_ROUND);s.add(MareEletrica.REVOLVER_ROUND);s.add(MareEletrica.ROVER_BULLET);
@@ -79,7 +79,7 @@ public final class CreativeTabs {
   s.add(MareEletrica.POTABLE_WATER);s.add(MareEletrica.HONEY_BREAD);s.add(MareEletrica.HONEY_CANDY);s.add(MareEletrica.HONEY_WATER);s.add(Gadgets.DANONINHO);
   // everything else that no tab claimed
   var placed=new HashSet<Item>();
-  for(Consumer<Sink> f:List.<Consumer<Sink>>of(CreativeTabs::energy,CreativeTabs::machinesTab,CreativeTabs::guns,CreativeTabs::defense,CreativeTabs::vehicles,CreativeTabs::base,CreativeTabs::gear,CreativeTabs::armor,CreativeTabs::camo,CreativeTabs::sports,CreativeTabs::games,CreativeTabs::radical,CreativeTabs::animals,k->Furniture.creative(k::accept),CreativeTabs::casino)){var x=new Sink();f.accept(x);x.stacks.forEach(st->placed.add(st.getItem()));}
+  for(Consumer<Sink> f:List.<Consumer<Sink>>of(CreativeTabs::energy,CreativeTabs::machinesTab,CreativeTabs::guns,CreativeTabs::defense,CreativeTabs::vehicles,CreativeTabs::base,CreativeTabs::gear,CreativeTabs::armor,CreativeTabs::camo,CreativeTabs::sports,CreativeTabs::games,CreativeTabs::radical,CreativeTabs::animals,k->Furniture.creative(k::accept),k->GunPaint.creative(k::accept),CreativeTabs::casino)){var x=new Sink();f.accept(x);x.stacks.forEach(st->placed.add(st.getItem()));}
   for(var e:MareEletrica.ITEMS.getEntries()){var i=e.get();if(!placed.contains(i)&&!legacy(e.getId().getPath()))s.accept(new ItemStack(i));}
  }
 

@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["RYB","PPP","P P"],"key":{"R":{"item":"minecraft:red_dye"},"Y":{"item":"minecraft:yellow_dye"},"B":{"item":"minecraft:blue_dye"},"P":{"tag":"minecraft:planks"}},"result":{"id":"mareeletrica:paint_bench","count":1}}

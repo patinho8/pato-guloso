@@ -1587,5 +1587,11 @@
  "block.mareeletrica.double_bed": "Cama de Casal",
  "entity.mareeletrica.seat": "Assento",
  "item.mareeletrica.duck_potion": "Poção do Pato",
- "effect.mareeletrica.duck": "Pato"
+ "effect.mareeletrica.duck": "Pato",
+ "block.mareeletrica.paint_bench": "Bancada de Pintura",
+ "item.mareeletrica.spray_paint": "Spray de Tinta",
+ "item.mareeletrica.spray_metallic": "Spray Metálico",
+ "item.mareeletrica.spray_glow": "Spray Brilhante",
+ "item.mareeletrica.spray_rainbow": "Spray Arco-íris",
+ "item.mareeletrica.paint_solvent": "Solvente"
 }

@@ -1,0 +1,3 @@
+newmtl paint
+map_Kd #paint
+forge_TintIndex 0

@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"mareeletrica:block/paint_bench"},"facing=east":{"model":"mareeletrica:block/paint_bench","y":90},"facing=south":{"model":"mareeletrica:block/paint_bench","y":180},"facing=west":{"model":"mareeletrica:block/paint_bench","y":270}}}

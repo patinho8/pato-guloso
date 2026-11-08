@@ -20,14 +20,14 @@ public final class ArmoryRenderer {
  private static float smooth(float x){return x*x*(3-2*x);}
  public static float magazineZ(WeaponFamily f){return f.pistol()?.75F:f==WeaponFamily.SMG?.25F:.37F;}
  public static void parts(ItemStack s,PoseStack pose,MultiBufferSource buffers,int light,boolean supported,boolean first){var f=WeaponFamily.of(s);if(f==null)return;int skin=s.is(MareEletrica.HUNTER.get())?13:Math.clamp(RifleLoadout.tag(s).getInt("Sticker"),0,12);float reload=first?drop(progress(s,0)):0;String base="armory21_"+f.id+"_";
-  DmtGearLayer.model(base+(first&&SniperClient.aimAmount(1F)>.3F?"view_":"body_")+skin,pose,buffers,light);
-  pose.pushPose();pose.translate(0,0,first?SniperClient.kick*(f.pistol()?.1:.07):0);DmtGearLayer.model(base+"moving_"+skin,pose,buffers,light);pose.popPose();
+  String bk=first&&SniperClient.aimAmount(1F)>.3F?"view":"body";PaintClient.model(s,f,bk,base+bk+"_"+skin,pose,buffers,light);if(bk.equals("body"))PaintClient.sticker(s,f,pose,buffers,light);
+  pose.pushPose();pose.translate(0,0,first?SniperClient.kick*(f.pistol()?.1:.07):0);PaintClient.model(s,f,"moving",base+"moving_"+skin,pose,buffers,light);pose.popPose();
   float prog=first?progress(s,0):0;
   if(f==WeaponFamily.PYTHON){
    // revolver: cylinder swings out to the left, spent rounds fall, the hand brings a speedloader from the belt, the cylinder closes
    float swing=first?ReloadPath.pySwing(prog):0;
    pose.pushPose();pose.translate(6.4/16.0,6.6/16.0,0);pose.mulPose(Axis.ZP.rotationDegrees(swing*70F));pose.translate(-6.4/16.0,-6.6/16.0,0);
-   DmtGearLayer.model(base+"magazine_"+skin,pose,buffers,light);pose.popPose();
+   PaintClient.model(s,f,"magazine",base+"magazine_"+skin,pose,buffers,light);pose.popPose();
    float[] loader=first?ReloadPath.pyLoaderOffset(prog):null;
    boolean spent=!first||ReloadPath.pySpentVisible(prog),seated=!first||ReloadPath.pySeatedVisible(prog);
    float fall=first?ReloadPath.pySpentFall(prog):0;
@@ -40,12 +40,12 @@ public final class ArmoryRenderer {
   }else if(f==WeaponFamily.P90){
    // P90: the support hand pulls the top magazine up and back, throws it away, then slides a fresh one in from above
    float[] o=first?ReloadPath.p90Offset(prog):new float[3];
-   if(!first||ReloadPath.p90MagVisible(prog)){pose.pushPose();pose.translate(o[0],o[1],o[2]);DmtGearLayer.model(base+"magazine_"+skin,pose,buffers,light);pose.popPose();}
+   if(!first||ReloadPath.p90MagVisible(prog)){pose.pushPose();pose.translate(o[0],o[1],o[2]);PaintClient.model(s,f,"magazine",base+"magazine_"+skin,pose,buffers,light);pose.popPose();}
   }else{
   float slide=first?magSlide(prog):0;boolean outgoing=first&&prog<.5F;
-  if(slide<.88F){pose.pushPose();pose.translate(-slide*(outgoing?.28F:0F),-slide*(outgoing?.95F:.8F),slide*.04F);pose.translate(.5,0,magazineZ(f));pose.mulPose(Axis.ZP.rotationDegrees(outgoing?-slide*22:0));pose.translate(-.5,0,-magazineZ(f));DmtGearLayer.model(base+"magazine_"+skin,pose,buffers,light);pose.popPose();}
+  if(slide<.88F){pose.pushPose();pose.translate(-slide*(outgoing?.28F:0F),-slide*(outgoing?.95F:.8F),slide*.04F);pose.translate(.5,0,magazineZ(f));pose.mulPose(Axis.ZP.rotationDegrees(outgoing?-slide*22:0));pose.translate(-.5,0,-magazineZ(f));PaintClient.model(s,f,"magazine",base+"magazine_"+skin,pose,buffers,light);pose.popPose();}
   }
-  if(ModularLoadout.hasOptic(s)){int v=optic(s);DmtGearLayer.model(base+"optic_"+v,pose,buffers,light);if(first)DmtGearLayer.model(base+"reticle_"+v,pose,buffers,15728880);}
+  if(ModularLoadout.hasOptic(s)){int v=optic(s);PaintClient.model(s,f,"optic_"+v,base+"optic_"+v,pose,buffers,light);if(first)DmtGearLayer.model(base+"reticle_"+v,pose,buffers,15728880);}
   int suppressor=RifleLoadout.suppressor(s);if(suppressor>0){pose.pushPose();pose.translate(0,0,muzzle(f)/16);DmtGearLayer.model(base+"suppressor_"+Math.min(3,suppressor),pose,buffers,light);pose.popPose();}
   if(f==WeaponFamily.SNIPER&&RifleLoadout.bipod(s))DmtGearLayer.model(supported?"rifle_bipod_open":"rifle_bipod_folded",pose,buffers,light);
  }
