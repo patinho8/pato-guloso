@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["OFO","FGF","OFO"],"key":{"O":{"item":"minecraft:obsidian"},"F":{"item":"minecraft:fermented_spider_eye"},"G":{"item":"mareeletrica:golden_duck_egg"}},"result":{"id":"mareeletrica:cursed_duck_egg","count":1}}

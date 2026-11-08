@@ -1593,5 +1593,9 @@
  "item.mareeletrica.spray_metallic": "Metallic Spray",
  "item.mareeletrica.spray_glow": "Glow Spray",
  "item.mareeletrica.spray_rainbow": "Rainbow Spray",
- "item.mareeletrica.paint_solvent": "Paint Solvent"
+ "item.mareeletrica.paint_solvent": "Paint Solvent",
+ "entity.mareeletrica.evil_duck": "Giant Evil Duck",
+ "entity.mareeletrica.evil_egg": "Exploding Egg",
+ "item.mareeletrica.cursed_duck_egg": "Cursed Duck Egg",
+ "item.mareeletrica.quack_staff": "Quack Staff"
 }

@@ -1593,5 +1593,9 @@
  "item.mareeletrica.spray_metallic": "Spray Metálico",
  "item.mareeletrica.spray_glow": "Spray Brilhante",
  "item.mareeletrica.spray_rainbow": "Spray Arco-íris",
- "item.mareeletrica.paint_solvent": "Solvente"
+ "item.mareeletrica.paint_solvent": "Solvente",
+ "entity.mareeletrica.evil_duck": "Pato Gigante Malvado",
+ "entity.mareeletrica.evil_egg": "Ovo Explosivo",
+ "item.mareeletrica.cursed_duck_egg": "Ovo Amaldiçoado",
+ "item.mareeletrica.quack_staff": "Cajado do Quack"
 }

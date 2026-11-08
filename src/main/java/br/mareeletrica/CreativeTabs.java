@@ -67,7 +67,7 @@ public final class CreativeTabs {
  static void radical(Sink s){Skate.creative(s::accept);Surf.creative(s::accept);}
  static void animals(Sink s){
   s.add(FightChickens.ITEM);FightChickens.BREED_ITEMS.forEach(s::add);s.add(FightChickens.WHISTLE);s.add(ChickenBattle.ITEM);kit(s,FieldKits.Kind.GALOS);
-  Pato.creative(s::accept);s.add(Frogs.EGG);s.add(Frogs.POCKET);s.add(Robots.ITEM);s.add(Robots.TRASH_ITEM);
+  Pato.creative(s::accept);DuckBoss.creative(s::accept);s.add(Frogs.EGG);s.add(Frogs.POCKET);s.add(Robots.ITEM);s.add(Robots.TRASH_ITEM);
  }
  /** 0.65.2: the old rifle/SMG stickers, suppressors and SMG scopes (replaced by the weapon modules) are gone from the tabs and recipes.
   *  They stay registered only so old copies in chests keep loading; the "adapt" recipes still turn them into modules. */
@@ -79,7 +79,7 @@ public final class CreativeTabs {
   s.add(MareEletrica.POTABLE_WATER);s.add(MareEletrica.HONEY_BREAD);s.add(MareEletrica.HONEY_CANDY);s.add(MareEletrica.HONEY_WATER);s.add(Gadgets.DANONINHO);
   // everything else that no tab claimed
   var placed=new HashSet<Item>();
-  for(Consumer<Sink> f:List.<Consumer<Sink>>of(CreativeTabs::energy,CreativeTabs::machinesTab,CreativeTabs::guns,CreativeTabs::defense,CreativeTabs::vehicles,CreativeTabs::base,CreativeTabs::gear,CreativeTabs::armor,CreativeTabs::camo,CreativeTabs::sports,CreativeTabs::games,CreativeTabs::radical,CreativeTabs::animals,k->Furniture.creative(k::accept),k->GunPaint.creative(k::accept),CreativeTabs::casino)){var x=new Sink();f.accept(x);x.stacks.forEach(st->placed.add(st.getItem()));}
+  for(Consumer<Sink> f:List.<Consumer<Sink>>of(CreativeTabs::energy,CreativeTabs::machinesTab,CreativeTabs::guns,CreativeTabs::defense,CreativeTabs::vehicles,CreativeTabs::base,CreativeTabs::gear,CreativeTabs::armor,CreativeTabs::camo,CreativeTabs::sports,CreativeTabs::games,CreativeTabs::radical,CreativeTabs::animals,k->Furniture.creative(k::accept),k->GunPaint.creative(k::accept),k->DuckBoss.creative(k::accept),CreativeTabs::casino)){var x=new Sink();f.accept(x);x.stacks.forEach(st->placed.add(st.getItem()));}
   for(var e:MareEletrica.ITEMS.getEntries()){var i=e.get();if(!placed.contains(i)&&!legacy(e.getId().getPath()))s.accept(new ItemStack(i));}
  }
 
