@@ -56,3 +56,8 @@ LANG={'pt_br':{"entity.mareeletrica.evil_duck":"Pato Gigante Malvado","entity.ma
 for lang,kv in LANG.items():
     pp=os.path.join(A,'lang',lang+'.json');dd=json.load(open(pp,encoding='utf-8'));dd.update(kv);json.dump(dd,open(pp,'w',encoding='utf-8'),ensure_ascii=False,indent=1)
 print('0.71.0 boss assets ok')
+# 0.71.1: the boss is a normal white duck with a red crown
+cr=json.load(open(os.path.join(A,'models/block/duck_hat_crown.json')))
+cr['textures']={'g':M('duck_red'),'r':M('duck_gold'),'b':M('duck_white'),'particle':M('duck_red')}
+save(os.path.join(A,'models/block/duck_crown_red.json'),cr)
+print('red crown ok')
