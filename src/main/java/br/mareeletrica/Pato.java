@@ -95,12 +95,43 @@ public final class Pato {
    t.add(Component.literal("§7Mão vazia: escolhe a raia • com §efichas§7 na mão: aposta (paga 3×)"));}});
  public static final Supplier<BlockEntityType<RaceEntity>> RACE_ENTITY=MareEletrica.ENTITIES.register("duck_race",()->BlockEntityType.Builder.of(RaceEntity::new,RACE.get()).build(null));
 
- public static void register(IEventBus bus){bus.addListener(Pato::attributes);bus.addListener(Pato::placements);}
+ public static void register(IEventBus bus){bus.addListener(Pato::attributes);bus.addListener(Pato::placements);EFFECTS.register(bus);net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(Pato::duckPlayer);}
+ // ======================================================================= 0.69.0: Poção do Pato — turns the drinker into a duck
+ public static final net.neoforged.neoforge.registries.DeferredRegister<net.minecraft.world.effect.MobEffect> EFFECTS=net.neoforged.neoforge.registries.DeferredRegister.create(net.minecraft.core.registries.Registries.MOB_EFFECT,MareEletrica.ID);
+ public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.effect.MobEffect,DuckEffect> DUCK_EFFECT=EFFECTS.register("duck",DuckEffect::new);
+ public static final DeferredItem<Item> POTION=MareEletrica.ITEMS.register("duck_potion",()->new DuckPotion(new Item.Properties().stacksTo(16)));
+ public static final class DuckEffect extends net.minecraft.world.effect.MobEffect {
+  public DuckEffect(){super(net.minecraft.world.effect.MobEffectCategory.NEUTRAL,0xF4C430);
+   addAttributeModifier(Attributes.SCALE,net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,"duck_size"),-.65,net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);}
+ }
+ public static boolean isDuck(Entity e){return e instanceof LivingEntity l&&l.hasEffect(DUCK_EFFECT);}
+ public static final class DuckPotion extends Item {
+  public DuckPotion(Properties p){super(p);}
+  @Override public net.minecraft.world.item.UseAnim getUseAnimation(ItemStack s){return net.minecraft.world.item.UseAnim.DRINK;}
+  @Override public int getUseDuration(ItemStack s,LivingEntity e){return 32;}
+  @Override public InteractionResultHolder<ItemStack> use(Level l,Player p,InteractionHand h){return net.minecraft.world.item.ItemUtils.startUsingInstantly(l,p,h);}
+  @Override public ItemStack finishUsingItem(ItemStack s,Level l,LivingEntity e){
+   if(!l.isClientSide){e.addEffect(new MobEffectInstance(DUCK_EFFECT,3600,0,false,false,true));quack(e,1F,1.2F);if(e instanceof Player p)msg(p,"§e🦆 QUACK! Você virou um pato por 3 minutos! §7Shift: quack • pulo no ar: bate as asas • leite: volta ao normal");
+    if(l instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.CLOUD,e.getX(),e.getY()+.5,e.getZ(),25,.3,.4,.3,.05);}
+   if(e instanceof Player p&&!p.getAbilities().instabuild){s.shrink(1);if(s.isEmpty())return new ItemStack(Items.GLASS_BOTTLE);p.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));}
+   return s;}
+  @Override public void appendHoverText(ItemStack s,TooltipContext c,List<Component> t,TooltipFlag f){t.add(Component.literal("§7Vira pato por 3 minutos: pequeno, boia, plana, bate as asas e faz QUACK (Shift)."));t.add(Component.literal("§8Leite desfaz."));}
+ }
+ static final Map<UUID,Boolean> SNEAK=new HashMap<>();
+ /** both sides: ducks float, glide, never take fall damage; on the server, pressing Shift quacks */
+ static void duckPlayer(net.neoforged.neoforge.event.tick.PlayerTickEvent.Post e){
+  var p=e.getEntity();if(!p.hasEffect(DUCK_EFFECT)){if(!p.level().isClientSide)SNEAK.remove(p.getUUID());return;}
+  var v=p.getDeltaMovement();p.fallDistance=0;
+  if(p.isInWater()){if(!p.isShiftKeyDown()&&p.getFluidHeight(net.minecraft.tags.FluidTags.WATER)>.12)p.setDeltaMovement(v.x*1.04,Math.max(v.y,.035),v.z*1.04);}
+  else if(!p.onGround()&&v.y<-.16&&!p.getAbilities().flying)p.setDeltaMovement(v.x,-.16,v.z);
+  if(!p.level().isClientSide){boolean sh=p.isShiftKeyDown();Boolean was=SNEAK.put(p.getUUID(),sh);
+   if(sh&&(was==null||!was)){quack(p,1F,1.05F+p.getRandom().nextFloat()*.2F);if(p.level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.NOTE,p.getX(),p.getY()+.8,p.getZ(),1,0,0,0,0);}}
+ }
  static void attributes(EntityAttributeCreationEvent e){e.put(ENTITY.get(),Duck.attributes().build());}
  static void placements(RegisterSpawnPlacementsEvent e){
   e.register(ENTITY.get(),net.minecraft.world.entity.SpawnPlacementTypes.ON_GROUND,Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,(t,l,r,p,rnd)->l.getRawBrightness(p,0)>8&&l.getBlockState(p.below()).is(net.minecraft.tags.BlockTags.ANIMALS_SPAWNABLE_ON),RegisterSpawnPlacementsEvent.Operation.REPLACE);}
  public static void creative(java.util.function.Consumer<ItemStack> out){
-  out.accept(new ItemStack(EGG.get()));out.accept(new ItemStack(WHISTLE.get()));out.accept(new ItemStack(NEST_ITEM.get()));out.accept(new ItemStack(GOLDEN_EGG.get()));
+  out.accept(new ItemStack(EGG.get()));out.accept(new ItemStack(WHISTLE.get()));out.accept(new ItemStack(NEST_ITEM.get()));out.accept(new ItemStack(GOLDEN_EGG.get()));out.accept(new ItemStack(POTION.get()));
   for(var h:HAT_ITEMS)out.accept(new ItemStack(h.get()));}
  static void quack(Entity e,float vol,float pitch){e.level().playSound(null,e.getX(),e.getY(),e.getZ(),QUACK.get(),SoundSource.NEUTRAL,vol,pitch);}
  static int food(ItemStack s){return s.is(Items.BREAD)?30:s.is(Items.COD)||s.is(Items.SALMON)||s.is(Items.COOKED_COD)||s.is(Items.COOKED_SALMON)?25:s.is(Items.WHEAT_SEEDS)||s.is(Items.MELON_SEEDS)||s.is(Items.PUMPKIN_SEEDS)||s.is(Items.BEETROOT_SEEDS)?10:s.is(Items.WHEAT)?14:0;}
@@ -115,6 +146,8 @@ public final class Pato {
   public static final int SLEEP=1,DIVE=2,KING=4,BOARD=8,RACER=16;
   /** client animation clocks */
   public int quackAt=-100,peckAt=-100;public float flap,flapO;
+  /** used when a duck is drawn for a player who drank the Duck Potion */
+  public float fakeWalkPos=-1,fakeWalkSpd;public boolean fakeSwim;
   int fishTimer=400,sniffTimer=60,eggTimer=2400,shotCd,diveTicks,nestCheck,boardCd;
   public Duck(EntityType<? extends Duck> t,Level l){super(t,l);}
   public static AttributeSupplier.Builder attributes(){return Animal.createMobAttributes().add(Attributes.MAX_HEALTH,12).add(Attributes.MOVEMENT_SPEED,.27).add(Attributes.ATTACK_DAMAGE,3).add(Attributes.FOLLOW_RANGE,20);}

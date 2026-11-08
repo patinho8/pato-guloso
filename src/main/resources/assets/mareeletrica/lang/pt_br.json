@@ -1576,5 +1576,16 @@
  "item.mareeletrica.duck_hat_crown": "Coroa de Pato",
  "item.mareeletrica.duck_hat_sunglasses": "Óculos Escuros de Pato",
  "item.mareeletrica.duck_hat_helmet": "Capacete Militar de Pato",
- "item.mareeletrica.duck_hat_scope": "Mini-luneta de Pato"
+ "item.mareeletrica.duck_hat_scope": "Mini-luneta de Pato",
+ "block.mareeletrica.sofa": "Sofá",
+ "block.mareeletrica.armchair": "Poltrona",
+ "block.mareeletrica.chair": "Cadeira",
+ "block.mareeletrica.table": "Mesa",
+ "block.mareeletrica.floor_lamp": "Luminária",
+ "block.mareeletrica.tv": "Televisão",
+ "block.mareeletrica.fridge": "Geladeira",
+ "block.mareeletrica.double_bed": "Cama de Casal",
+ "entity.mareeletrica.seat": "Assento",
+ "item.mareeletrica.duck_potion": "Poção do Pato",
+ "effect.mareeletrica.duck": "Pato"
 }

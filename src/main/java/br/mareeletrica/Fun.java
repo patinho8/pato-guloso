@@ -126,9 +126,12 @@ public final class Fun {
  }
  public static final class ArcadeEntity extends Synced {
   public int best,mazeBest;public String bestName="",mazeBestName="";public final Pong pong=new Pong();
+  /** 0.69.0: records of the new games (index = game id: 2 Blocos, 3 Flappy Pato, 4 Estrada) */
+  public final int[] bests=new int[5];public final String[] bestNames={"","","","",""};
+  public int best(int game){return game==0?best:game==1?mazeBest:bests[game];}public String bestName(int game){return game==0?bestName:game==1?mazeBestName:bestNames[game];}
   public ArcadeEntity(BlockPos p,BlockState s){super(ARCADE_ENTITY.get(),p,s);}
-  @Override protected void saveAdditional(CompoundTag t,HolderLookup.Provider r){super.saveAdditional(t,r);t.putInt("Best",best);t.putString("BestName",bestName);t.putInt("MazeBest",mazeBest);t.putString("MazeBestName",mazeBestName);}
-  @Override protected void loadAdditional(CompoundTag t,HolderLookup.Provider r){super.loadAdditional(t,r);best=t.getInt("Best");bestName=t.getString("BestName");mazeBest=t.getInt("MazeBest");mazeBestName=t.getString("MazeBestName");}
+  @Override protected void saveAdditional(CompoundTag t,HolderLookup.Provider r){super.saveAdditional(t,r);t.putInt("Best",best);t.putString("BestName",bestName);t.putInt("MazeBest",mazeBest);t.putString("MazeBestName",mazeBestName);for(int i=2;i<5;i++){t.putInt("Best"+i,bests[i]);t.putString("BestName"+i,bestNames[i]);}}
+  @Override protected void loadAdditional(CompoundTag t,HolderLookup.Provider r){super.loadAdditional(t,r);best=t.getInt("Best");bestName=t.getString("BestName");mazeBest=t.getInt("MazeBest");mazeBestName=t.getString("MazeBestName");for(int i=2;i<5;i++){bests[i]=t.getInt("Best"+i);bestNames[i]=t.getString("BestName"+i);}}
  }
  /** Client → server: a finished game's score. */
  public record Score(BlockPos pos,int score,int game) implements CustomPacketPayload {
@@ -206,9 +209,9 @@ public final class Fun {
   reg.playToServer(PongCmd.TYPE,PongCmd.CODEC,(p,c)->c.enqueueWork(()->{   if(c.player() instanceof ServerPlayer sp&&sp.distanceToSqr(p.pos().getCenter())<10*10&&sp.level().getBlockEntity(p.pos()) instanceof ArcadeEntity a)a.pong.cmd(sp,p.kind(),p.dir());}));
   reg.playToClient(PongState.TYPE,PongState.CODEC,(p,c)->pongView.accept(p));
   reg.playToServer(Score.TYPE,Score.CODEC,(p,c)->c.enqueueWork(()->{
-   if(!(c.player() instanceof ServerPlayer sp)||sp.distanceToSqr(p.pos().getCenter())>64||p.score()<0||p.score()>(p.game()==1?2_000_000:2000))return;
-   if(sp.level().getBlockEntity(p.pos()) instanceof ArcadeEntity a&&p.score()>(p.game()==1?a.mazeBest:a.best)){
-    if(p.game()==1){a.mazeBest=p.score();a.mazeBestName=sp.getName().getString();}else{a.best=p.score();a.bestName=sp.getName().getString();}a.sync();
+   if(!(c.player() instanceof ServerPlayer sp)||sp.distanceToSqr(p.pos().getCenter())>64||p.score()<0||p.game()<0||p.game()>4||p.score()>(p.game()==0?2000:2_000_000))return;
+   if(sp.level().getBlockEntity(p.pos()) instanceof ArcadeEntity a&&p.score()>a.best(p.game())){
+    if(p.game()==1){a.mazeBest=p.score();a.mazeBestName=sp.getName().getString();}else if(p.game()==0){a.best=p.score();a.bestName=sp.getName().getString();}else{a.bests[p.game()]=p.score();a.bestNames[p.game()]=sp.getName().getString();}a.sync();
     sp.level().playSound(null,p.pos(),SoundEvents.PLAYER_LEVELUP,SoundSource.BLOCKS,1F,1.2F);
     sp.displayClientMessage(Component.literal("§6§lNOVO RECORDE no fliperama: "+p.score()+"!"),false);
    }

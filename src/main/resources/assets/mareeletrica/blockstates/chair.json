@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"mareeletrica:block/chair"},"facing=east":{"model":"mareeletrica:block/chair","y":90},"facing=south":{"model":"mareeletrica:block/chair","y":180},"facing=west":{"model":"mareeletrica:block/chair","y":270}}}

@@ -79,7 +79,7 @@ public final class CreativeTabs {
   s.add(MareEletrica.POTABLE_WATER);s.add(MareEletrica.HONEY_BREAD);s.add(MareEletrica.HONEY_CANDY);s.add(MareEletrica.HONEY_WATER);s.add(Gadgets.DANONINHO);
   // everything else that no tab claimed
   var placed=new HashSet<Item>();
-  for(Consumer<Sink> f:List.<Consumer<Sink>>of(CreativeTabs::energy,CreativeTabs::machinesTab,CreativeTabs::guns,CreativeTabs::defense,CreativeTabs::vehicles,CreativeTabs::base,CreativeTabs::gear,CreativeTabs::armor,CreativeTabs::camo,CreativeTabs::sports,CreativeTabs::games,CreativeTabs::radical,CreativeTabs::animals,CreativeTabs::casino)){var x=new Sink();f.accept(x);x.stacks.forEach(st->placed.add(st.getItem()));}
+  for(Consumer<Sink> f:List.<Consumer<Sink>>of(CreativeTabs::energy,CreativeTabs::machinesTab,CreativeTabs::guns,CreativeTabs::defense,CreativeTabs::vehicles,CreativeTabs::base,CreativeTabs::gear,CreativeTabs::armor,CreativeTabs::camo,CreativeTabs::sports,CreativeTabs::games,CreativeTabs::radical,CreativeTabs::animals,k->Furniture.creative(k::accept),CreativeTabs::casino)){var x=new Sink();f.accept(x);x.stacks.forEach(st->placed.add(st.getItem()));}
   for(var e:MareEletrica.ITEMS.getEntries()){var i=e.get();if(!placed.contains(i)&&!legacy(e.getId().getPath()))s.accept(new ItemStack(i));}
  }
 
@@ -105,6 +105,7 @@ public final class CreativeTabs {
  public static final Supplier<CreativeModeTab> GAMES=tab("games","🎳 Maré Elétrica · Jogos e diversão",()->new ItemStack(Pool.TABLE_ITEM.get()),CreativeTabs::games);
  public static final Supplier<CreativeModeTab> RADICAL=tab("radical","🛹 Maré Elétrica · Skate e surfe",()->new ItemStack(Skate.ITEM.get()),CreativeTabs::radical);
  public static final Supplier<CreativeModeTab> ANIMALS=tab("animals","🐔 Maré Elétrica · Animais e robôs",()->new ItemStack(FightChickens.WHISTLE.get()),CreativeTabs::animals);
+ public static final Supplier<CreativeModeTab> HOME=tab("home","🛋 Maré Elétrica · Casa e móveis",()->new ItemStack(Furniture.TV_ITEM.get()),s->Furniture.creative(s::accept));
  public static final Supplier<CreativeModeTab> CASINO=tab("casino","🎰 Maré Elétrica · Cassino",()->new ItemStack(Casino.CHIP.get()),CreativeTabs::casino);
  public static final Supplier<CreativeModeTab> MATERIALS=tab("materials","🔩 Maré Elétrica · Materiais e comida",()->new ItemStack(MareEletrica.CONTROL_MODULE.get()),CreativeTabs::materials);
  public static void register(){}

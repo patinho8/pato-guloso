@@ -17,14 +17,17 @@ import org.lwjgl.glfw.GLFW;
 /** Arcade cabinet: a menu, Snake (single player, high score kept in the machine), Pong (2 players on the same machine,
  *  or against the computer) and Pato Guloso (maze game, see {@link MazeGame}). Pong runs on the server; this screen just sends the paddle keys and draws what it receives. */
 public final class ArcadeScreen extends Screen {
- enum Mode{MENU,SNAKE,PONG,MAZE}
+ enum Mode{MENU,SNAKE,PONG,MAZE,BLOCKS,FLAPPY,ROAD}
  static final int W=24,H=16,CELL=9;
  final BlockPos pos;final RandomSource rnd=RandomSource.create();Mode mode=Mode.MENU;int menuSel;
  final Deque<int[]> snake=new ArrayDeque<>();int dx=1,dy=0,ndx=1,ndy=0,fx,fy,score,step,tick;boolean running,over;
  static Fun.PongState pong;int pongDir;boolean upHeld,downHeld;
  final MazeGame maze;
+ final ArcadeGames.Game[] extra=new ArcadeGames.Game[3];
+ ArcadeGames.Game extra(){return mode==Mode.BLOCKS?extra[0]:mode==Mode.FLAPPY?extra[1]:mode==Mode.ROAD?extra[2]:null;}
  MazeGame newMaze(){return new MazeGame(()->beep(1.5F+(float)Math.random()*.1F),()->beep(.7F),()->{beep(.5F);beep(.4F);},()->beep(2F),sc->PacketDistributor.sendToServer(new Fun.Score(this.pos,sc,1)));}
- public ArcadeScreen(BlockPos pos){super(Component.literal("Fliperama"));this.pos=pos;maze=newMaze();reset();}
+ public ArcadeScreen(BlockPos pos){super(Component.literal("Fliperama"));this.pos=pos;maze=newMaze();reset();
+  extra[0]=new ArcadeGames.Blocks(this::beep,sc->PacketDistributor.sendToServer(new Fun.Score(pos,sc,2)));extra[1]=new ArcadeGames.Flappy(this::beep,sc->PacketDistributor.sendToServer(new Fun.Score(pos,sc,3)));extra[2]=new ArcadeGames.Road(this::beep,sc->PacketDistributor.sendToServer(new Fun.Score(pos,sc,4)));}
  public static void open(BlockPos pos){Minecraft.getInstance().setScreen(new ArcadeScreen(pos));}
  public String mazeDebug(){return maze.debug();}public int mazeScore(){return maze.score;}public boolean mazeOver(){return maze.over;}
  public static String debugState(){return pong==null?"null":"phase="+pong.phase()+" bx="+pong.bx();}
@@ -35,9 +38,10 @@ public final class ArcadeScreen extends Screen {
  void food(){do{fx=rnd.nextInt(W);fy=rnd.nextInt(H);}while(on(fx,fy));}
  boolean on(int x,int y){for(var c:snake)if(c[0]==x&&c[1]==y)return true;return false;}
  void beep(float pitch){Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BIT.value(),pitch,.5F));}
- static final Mode[] MENU_MODES={Mode.SNAKE,Mode.PONG,Mode.MAZE};
+ static final Mode[] MENU_MODES={Mode.SNAKE,Mode.PONG,Mode.MAZE,Mode.BLOCKS,Mode.FLAPPY,Mode.ROAD};
  @Override public void tick(){
   if(mode==Mode.MAZE){maze.tick();return;}
+  if(extra()!=null){extra().tick();return;}
   if(mode!=Mode.SNAKE||!running||over)return;
   if(++tick<step)return;tick=0;
   dx=ndx;dy=ndy;var h=snake.peekFirst();int nx=h[0]+dx,ny=h[1]+dy;
@@ -49,7 +53,7 @@ public final class ArcadeScreen extends Screen {
  // ---------------- keys ----------------
  static boolean up(int k){return k==GLFW.GLFW_KEY_UP||k==GLFW.GLFW_KEY_W;}
  static boolean down(int k){return k==GLFW.GLFW_KEY_DOWN||k==GLFW.GLFW_KEY_S;}
- void startMode(Mode m){mode=m;beep(1.4F);if(m==Mode.PONG){pong=null;send(0,0);}else if(m==Mode.MAZE)maze.newGame();else reset();}
+ void startMode(Mode m){mode=m;beep(1.4F);if(m==Mode.PONG){pong=null;send(0,0);}else if(m==Mode.MAZE)maze.newGame();else if(extra()!=null){extra().reset();extra().started=false;}else reset();}
  @Override public boolean keyPressed(int key,int scan,int mods){
   if(mode==Mode.MENU){
    if(up(key)||down(key)){menuSel=Math.floorMod(menuSel+(up(key)?-1:1),MENU_MODES.length);beep(1F);return true;}
@@ -58,6 +62,7 @@ public final class ArcadeScreen extends Screen {
    return super.keyPressed(key,scan,mods);
   }
   if(key==GLFW.GLFW_KEY_BACKSPACE){if(mode==Mode.PONG)send(2,0);mode=Mode.MENU;return true;}
+  if(extra()!=null){if(extra().key(key,true))return true;return super.keyPressed(key,scan,mods);}
   if(mode==Mode.MAZE){
    if(key==GLFW.GLFW_KEY_SPACE||key==GLFW.GLFW_KEY_ENTER){maze.start();return true;}
    int d=key==GLFW.GLFW_KEY_RIGHT||key==GLFW.GLFW_KEY_D?0:down(key)?1:key==GLFW.GLFW_KEY_LEFT||key==GLFW.GLFW_KEY_A?2:up(key)?3:-1;
@@ -90,13 +95,15 @@ public final class ArcadeScreen extends Screen {
   g.fill(x0-10,y0-30,x0+gw+10,y0+gh+22,0xFF1A1440);g.fill(x0-6,y0-26,x0+gw+6,y0+gh+18,0xFF2E2470);
   g.fill(x0-2,y0-2,x0+gw+2,y0+gh+2,0xFF00E5FF);g.fill(x0,y0,x0+gw,y0+gh,0xFF070712);
   switch(mode){case MENU->menu(g,x0,y0,gw,gh);case SNAKE->snake(g,x0,y0,gw,gh);case PONG->pong(g,x0,y0,gw,gh);
+   case BLOCKS,FLAPPY,ROAD->{var ga=extra();g.enableScissor(x0,y0,x0+gw,y0+gh);ga.render(g,font,x0,y0,gw,gh,pt);g.disableScissor();var be=Minecraft.getInstance().level!=null&&Minecraft.getInstance().level.getBlockEntity(pos) instanceof Fun.ArcadeEntity a?a:null;int id=mode==Mode.BLOCKS?2:mode==Mode.FLAPPY?3:4;
+    g.drawCenteredString(font,(be==null||be.best(id)==0?"Recorde: —":"Recorde: §6"+be.best(id)+" §7("+be.bestName(id)+")")+" §8• Backspace: menu",x0+gw/2,y0+gh+6,0xFFFFFF);}
    case MAZE->{var be=Minecraft.getInstance().level!=null&&Minecraft.getInstance().level.getBlockEntity(pos) instanceof Fun.ArcadeEntity a?a:null;
     maze.render(g,font,x0,y0,gw,gh,pt,be==null?0:be.mazeBest,be==null?"":be.mazeBestName);}}
  }
  void menu(GuiGraphics g,int x0,int y0,int gw,int gh){
   g.drawCenteredString(font,"§l§bFLIPERAMA",x0+gw/2,y0-20,0xFFFFFF);
-  String[] items={"1  COBRINHA §7(1 jogador)","2  PONG §7(2 jogadores ou vs computador)","3  PATO GULOSO §7(labirinto)"};
-  for(int i=0;i<items.length;i++){int y=y0+gh/2-28+i*20;if(i==menuSel)g.fill(x0+24,y-5,x0+gw-24,y+13,0xFF2E2470);g.drawCenteredString(font,(i==menuSel?"§e▶ ":"")+items[i],x0+gw/2,y,0xFFFFFF);}
+  String[] items={"1  COBRINHA §7(1 jogador)","2  PONG §7(2 jogadores ou vs computador)","3  PATO GULOSO §7(labirinto)","4  BLOCOS §7(encaixe as peças)","5  FLAPPY PATO §7(voe entre os canos)","6  ESTRADA §7(desvie dos carros)"};
+  for(int i=0;i<items.length;i++){int y=y0+gh/2-52+i*18;if(i==menuSel)g.fill(x0+24,y-5,x0+gw-24,y+13,0xFF2E2470);g.drawCenteredString(font,(i==menuSel?"§e▶ ":"")+items[i],x0+gw/2,y,0xFFFFFF);}
   g.drawCenteredString(font,"§7↑↓ escolhe • Enter joga • Esc sai",x0+gw/2,y0+gh+6,0xFFFFFF);
  }
  void snake(GuiGraphics g,int x0,int y0,int gw,int gh){

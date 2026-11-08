@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["  S","PPP","S S"],"key":{"S":{"item":"minecraft:stick"},"P":{"tag":"minecraft:planks"}},"result":{"id":"mareeletrica:chair","count":2}}

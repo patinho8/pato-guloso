@@ -1576,5 +1576,16 @@
  "item.mareeletrica.duck_hat_crown": "Duck Crown",
  "item.mareeletrica.duck_hat_sunglasses": "Duck Sunglasses",
  "item.mareeletrica.duck_hat_helmet": "Duck Army Helmet",
- "item.mareeletrica.duck_hat_scope": "Duck Mini Scope"
+ "item.mareeletrica.duck_hat_scope": "Duck Mini Scope",
+ "block.mareeletrica.sofa": "Sofa",
+ "block.mareeletrica.armchair": "Armchair",
+ "block.mareeletrica.chair": "Chair",
+ "block.mareeletrica.table": "Table",
+ "block.mareeletrica.floor_lamp": "Floor Lamp",
+ "block.mareeletrica.tv": "Television",
+ "block.mareeletrica.fridge": "Fridge",
+ "block.mareeletrica.double_bed": "Double Bed",
+ "entity.mareeletrica.seat": "Seat",
+ "item.mareeletrica.duck_potion": "Duck Potion",
+ "effect.mareeletrica.duck": "Duck"
 }

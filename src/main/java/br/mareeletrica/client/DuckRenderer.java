@@ -36,9 +36,10 @@ public final class DuckRenderer extends EntityRenderer<Duck> {
   switch(e.color()){case 1->{r=.62F;g=.43F;bl=.27F;}case 2->{r=.2F;g=.2F;bl=.22F;}case 3->{r=1F;g=.8F;bl=.3F;}case 4->{int c=java.awt.Color.HSBtoRGB((age*.012F)%1F,.55F,1F);r=(c>>16&255)/255F;g=(c>>8&255)/255F;bl=(c&255)/255F;}default->{}}
   hr=r;hg=g;hb=bl;if(e.color()==1){hr=.2F;hg=.5F;hb=.3F;}   // brown ones have the green mallard head
   if(e.isBaby()){r=hr=1F;g=hg=.88F;bl=hb=.35F;}
-  boolean sleep=e.flag(Duck.SLEEP),sit=e.isInSittingPose()||sleep||e.isPassenger(),swim=e.isInWater()&&!e.flag(Duck.DIVE),dive=e.flag(Duck.DIVE),board=e.flag(Duck.BOARD),racer=e.racer();
+  boolean sleep=e.flag(Duck.SLEEP),sit=e.isInSittingPose()||sleep||e.isPassenger(),swim=(e.isInWater()||e.fakeSwim)&&!e.flag(Duck.DIVE),dive=e.flag(Duck.DIVE),board=e.flag(Duck.BOARD),racer=e.racer();
   float walkPos=e.walkAnimation.position(pt),walkSpd=Math.min(1,e.walkAnimation.speed(pt));
   if(racer){walkPos=age*1.6F;walkSpd=1;}
+  if(e.fakeWalkPos>=0){walkPos=e.fakeWalkPos;walkSpd=e.fakeWalkSpd;}
   p.pushPose();
   float s=e.getScale();
   p.mulPose(Axis.YP.rotationDegrees(180-body));
