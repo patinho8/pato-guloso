@@ -1,6 +1,6 @@
 # 🦆⚡ Pato Guloso — Maré Elétrica
 
-## ⬇ [BAIXAR O MOD (0.73.0)](https://github.com/patinho8/pato-guloso/raw/main/baixar/mare-eletrica-0.73.0.jar)
+## ⬇ [BAIXAR O MOD (0.74.0)](https://github.com/patinho8/pato-guloso/raw/main/baixar/mare-eletrica-0.74.0.jar)
 Coloque o arquivo na pasta `mods` do **Minecraft 1.21.1 com NeoForge**.
 
 Mod de Minecraft **NeoForge 1.21.1** (`mareeletrica`): hidrelétricas, armas, veículos, esportes, jogos (sinuca, arcade, boliche, golfe, minigolfe, pingue-pongue), skate, surfe e muito mais.

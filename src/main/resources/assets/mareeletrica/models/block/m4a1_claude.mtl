@@ -1,0 +1,39 @@
+newmtl brass
+map_Kd #brass
+
+newmtl dark
+map_Kd #dark
+
+newmtl engrave
+map_Kd #engrave
+
+newmtl hg
+map_Kd #hg
+
+newmtl lower
+map_Kd #lower
+
+newmtl mag
+map_Kd #mag
+
+newmtl polish
+map_Kd #polish
+
+newmtl polymer
+map_Kd #polymer
+
+newmtl red
+map_Kd #red
+
+newmtl rubber
+map_Kd #rubber
+
+newmtl steel
+map_Kd #steel
+
+newmtl upper
+map_Kd #upper
+
+newmtl white
+map_Kd #white
+

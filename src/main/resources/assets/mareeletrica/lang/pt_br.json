@@ -1605,5 +1605,15 @@
  "block.mareeletrica.led_lamp_rainbow": "Lâmpada LED Arco-íris",
  "entity.mareeletrica.evil_feather": "Pena Afiada",
  "entity.mareeletrica.quack_wave": "Onda de Quack",
- "entity.mareeletrica.evil_duckling": "Patinho Kamikaze"
+ "entity.mareeletrica.evil_duckling": "Patinho Kamikaze",
+ "item.mareeletrica.acc_vertical_grip": "Empunhadura Vertical",
+ "item.mareeletrica.acc_angled_grip": "Empunhadura Angulada",
+ "item.mareeletrica.acc_bipod": "Bipé",
+ "item.mareeletrica.acc_flashlight": "Lanterna Tática",
+ "item.mareeletrica.acc_laser_red": "Laser Vermelho",
+ "item.mareeletrica.acc_laser_green": "Laser Verde",
+ "item.mareeletrica.acc_combo": "Lanterna + Laser",
+ "item.mareeletrica.acc_extended_mag": "Pente Estendido",
+ "item.mareeletrica.acc_drum_mag": "Carregador de Tambor",
+ "block.mareeletrica.shower": "Chuveiro"
 }

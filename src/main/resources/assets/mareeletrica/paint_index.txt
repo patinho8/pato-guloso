@@ -74,14 +74,6 @@ m249 magazine 4
 m249 optic_1 5
 m249 optic_2 5
 m249 optic_3 5
-m4a1 body 0
-m4a1 body 1
-m4a1 body 2
-m4a1 view 0
-m4a1 view 1
-m4a1 view 2
-m4a1 moving 3
-m4a1 magazine 4
 m4a1 optic_1 5
 m4a1 optic_2 5
 m4a1 optic_3 5
@@ -244,6 +236,14 @@ sniper view 2
 sniper view 0
 sniper view 1
 sniper view 5
+m4a1 body 0
+m4a1 body 1
+m4a1 body 2
+m4a1 view 0
+m4a1 view 1
+m4a1 view 2
+m4a1 moving 3
+m4a1 magazine 4
 desert_eagle body 0
 desert_eagle body 1
 desert_eagle view 0
@@ -265,7 +265,6 @@ decal famas 6.400 9.600 8.500 5.700 3.2
 decal galil 6.550 9.450 9.150 6.000 2.8
 decal glock 6.650 9.350 8.200 5.150 1.92
 decal m249 6.400 9.600 9.500 5.000 3.04
-decal m4a1 6.450 9.550 9.050 -4.300 3.12
 decal m870 6.600 9.400 9.100 5.400 2.72
 decal mac10 6.700 9.300 9.700 5.800 1.76
 decal mp40 7.482 8.518 9.600 4.700 2.0
@@ -282,5 +281,6 @@ decal usp 6.600 9.400 8.200 5.150 1.92
 decal uzi 6.600 9.400 9.100 4.500 2.4
 decal ak47 6.040 9.680 9.000 1.000 3.2
 decal sniper 6.770 9.271 8.350 3.152 3.2
+decal m4a1 6.992 9.008 8.424 -1.117 1.69
 decal desert_eagle 6.275 9.725 4.445 11.851 3.2
 decal sniperh 6.000 10.000 8.800 5.500 3.2

@@ -28,7 +28,7 @@ def view(yaw,pitch,W,H):
  pr.sort(key=lambda t:t[0])
  for _,Qr,c in pr:d.polygon([(W/2+q[0]*K,H/2-q[1]*K) for q in Qr],fill=c,outline=tuple(max(0,v-18) for v in c))
  return img
-W,H=int(60*K),int(36*K)
+W,H=int((float(sys.argv[4]) if len(sys.argv)>4 else 60)*K),int((float(sys.argv[5]) if len(sys.argv)>5 else 36)*K)
 views=[view(0,0,W,H),view(-35,18,W,H),view(180,0,W,H),view(-90,5,int(W*.5),H),view(35,-20,W,H),view(0,85,W,int(H*.6))]
 out=Image.new('RGB',(W*2,H*3))
 for i,v in enumerate(views):out.paste(v,((i%2)*W,(i//2)*H))

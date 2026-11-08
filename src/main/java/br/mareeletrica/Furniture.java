@@ -71,7 +71,7 @@ public final class Furniture {
  public static final DeferredItem<BlockItem> SOFA_ITEM=item(SOFA,"Clique para sentar. Coloque vários lado a lado."),ARMCHAIR_ITEM=item(ARMCHAIR,"Clique para sentar."),CHAIR_ITEM=item(CHAIR,"Clique para sentar."),
   TABLE_ITEM=item(TABLE,""),LAMP_ITEM=item(LAMP,"Clique: liga/desliga."),TV_ITEM=item(TV,"Clique: troca de canal • Shift+clique: liga/desliga"),FRIDGE_ITEM=item(FRIDGE,"Guarda 27 itens. 2 blocos de altura."),
   BED_ITEM=item(BED,"Cama larga para dormir (2 blocos de comprimento).");
- public static void creative(java.util.function.Consumer<ItemStack> out){for(var i:List.of(SOFA_ITEM,ARMCHAIR_ITEM,CHAIR_ITEM,TABLE_ITEM,LAMP_ITEM,TV_ITEM,FRIDGE_ITEM,BED_ITEM))out.accept(new ItemStack(i.get()));}
+ public static void creative(java.util.function.Consumer<ItemStack> out){for(var i:List.of(SOFA_ITEM,ARMCHAIR_ITEM,CHAIR_ITEM,TABLE_ITEM,LAMP_ITEM,TV_ITEM,FRIDGE_ITEM,BED_ITEM))out.accept(new ItemStack(i.get()));out.accept(new ItemStack(Shower.ITEM.get()));}
  public static void register(){}
 
  /** shapes are written for a block facing north; rotated for the others */

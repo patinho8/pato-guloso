@@ -167,6 +167,8 @@ def obj_emit(tag,key,objname,force=None):
         decals[tag]=(min(allx),max(allx),yc,zc,round(min(3.2,h*.8,L*.8),2))
 obj_emit('ak47','body','armory21_ak47_new_body');obj_emit('ak47','view','armory21_ak47_new_view');obj_emit('ak47','magazine','armory21_ak47_new_magazine',force=4)
 obj_emit('sniper','body','armory21_sniper_claude_body');obj_emit('sniper','view','armory21_sniper_claude_view')
+obj_emit('m4a1','body','armory21_m4a1_claude_body');obj_emit('m4a1','view','armory21_m4a1_claude_view')
+obj_emit('m4a1','moving','armory21_m4a1_claude_moving',force=3);obj_emit('m4a1','magazine','armory21_m4a1_claude_magazine',force=4)
 obj_emit('desert_eagle','body','armory21_desert_eagle_claude_body');obj_emit('desert_eagle','view','armory21_desert_eagle_claude_view')
 obj_emit('desert_eagle','moving','armory21_desert_eagle_claude_moving',force=3);obj_emit('desert_eagle','magazine','armory21_desert_eagle_claude_magazine',force=4)
 obj_emit('sniperh','body','armory21_sniper_patinho_body');obj_emit('sniperh','view','armory21_sniper_patinho_view')

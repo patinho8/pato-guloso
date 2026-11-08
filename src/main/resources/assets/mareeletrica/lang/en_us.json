@@ -1605,5 +1605,15 @@
  "block.mareeletrica.led_lamp_rainbow": "LED Lamp (rainbow)",
  "entity.mareeletrica.evil_feather": "Sharp Feather",
  "entity.mareeletrica.quack_wave": "Quack Wave",
- "entity.mareeletrica.evil_duckling": "Kamikaze Duckling"
+ "entity.mareeletrica.evil_duckling": "Kamikaze Duckling",
+ "item.mareeletrica.acc_vertical_grip": "Vertical Grip",
+ "item.mareeletrica.acc_angled_grip": "Angled Grip",
+ "item.mareeletrica.acc_bipod": "Bipod",
+ "item.mareeletrica.acc_flashlight": "Tactical Flashlight",
+ "item.mareeletrica.acc_laser_red": "Red Laser",
+ "item.mareeletrica.acc_laser_green": "Green Laser",
+ "item.mareeletrica.acc_combo": "Light + Laser",
+ "item.mareeletrica.acc_extended_mag": "Extended Magazine",
+ "item.mareeletrica.acc_drum_mag": "Drum Magazine",
+ "block.mareeletrica.shower": "Shower"
 }
