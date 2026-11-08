@@ -9,6 +9,7 @@ def java_region(name):
     return 0
 # imported (OBJ) guns: rules on the face centre (model units) and material
 def obj_region(tag,mat,z,y):
+    if tag=='desert_eagle':return 1 if mat in('barrel',) else 0
     if tag=='ak47':
         if mat=='mag':return 4
         if z<-10.4:return 1

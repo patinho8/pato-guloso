@@ -21,6 +21,9 @@ for m,ids in cfg.get('materials',{}).items():
     for i in ids:mat_of[i]=m
 SWATCH=cfg.get('swatches')   # for cube models painted with a swatch texture: {"x,y":"material"}
 parts={'body':[],'view':[]}
+MOVING=set(cfg.get('moving',[]));MAGAZINE=set(cfg.get('magazine',[]))
+if MOVING:parts['moving']=[]
+if MAGAZINE:parts['magazine']=[]
 for i,e in enumerate(src['elements']):
     if e.get('visibility') is False:continue
     M=rot(e.get('rotation',[0,0,0]));o=np.array(e.get('origin',[0,0,0]),float)
@@ -40,9 +43,11 @@ for i,e in enumerate(src['elements']):
         if SWATCH and face:u=face['uv'];m=SWATCH.get(f"{int(u[0]-1)},{int(u[1]-1)}",m)
         n=np.mean(P,axis=0)-cen;nn=np.cross(P[1]-P[0],P[2]-P[0])
         if np.dot(nn,n)<0:P=P[::-1]
+        if i in MOVING:parts['moving'].append((P,m));continue
+        if i in MAGAZINE:parts['magazine'].append((P,m));continue
         parts['body'].append((P,m))
         if i not in cfg.get('stock',[]):parts['view'].append((P,m))
-fam=cfg['family'];tag=cfg['tag'];mats=sorted({m for P,m in parts['body']})
+fam=cfg['family'];tag=cfg['tag'];mats=sorted({m for k in parts for P,m in parts[k]})
 def write_obj(name,faces):
     L=[f'mtllib {fam}_{tag}.mtl'];vt=[];out=[];vi=1;cur=None
     for P,m in sorted(faces,key=lambda t:t[1]):
@@ -53,7 +58,7 @@ def write_obj(name,faces):
     open(os.path.join(A,'models/block',name+'.obj'),'w').write('\n'.join(L+vt+out)+'\n')
 for k,f in parts.items():write_obj(f'armory21_{fam}_{tag}_{k}',f)
 open(os.path.join(A,f'models/block/{fam}_{tag}.mtl'),'w').write(''.join(f'newmtl {m}\nmap_Kd #{m}\n\n' for m in mats))
-allp=np.array([p for P,_ in parts['body'] for p in P]);print(tag,'bounds px',allp.min(0).round(1),allp.max(0).round(1),'materials',mats)
+allp=np.array([p for k in parts for P,_ in parts[k] for p in P]);print(tag,'bounds px',allp.min(0).round(1),allp.max(0).round(1),'materials',mats)
 # ---------- textures ----------
 random.seed(hash(tag)&0xffff)
 COL={'wood':(128,70,34),'wood_d':(92,48,22),'metal':(48,50,54),'metal_l':(86,90,96),'black':(24,24,26),'green':(74,86,52),'green_d':(52,61,37),
@@ -82,7 +87,7 @@ for sk in cfg.get('skins',[0]):
     for m,spec in cfg.get('skin_colors',{}).get(str(sk),{}).items():
         if m not in mats:continue
         n=f'{fam}_{tag}_{m}_{sk}';paint(n,spec[:3],spec[3] if len(spec)>3 else None);tex[m]='mareeletrica:block/'+n
-    for part in ('body','view'):
+    for part in [k for k in ('body','view','moving','magazine') if k in parts]:
         json.dump({"loader":"neoforge:obj","model":f"mareeletrica:models/block/armory21_{fam}_{tag}_{part}.obj","flip_v":True,"textures":tex},open(os.path.join(A,f'models/block/armory21_{fam}_{part}_{sk}.json'),'w'))
-    json.dump({"textures":{"particle":tex['particle']},"elements":[]},open(os.path.join(A,f'models/block/armory21_{fam}_moving_{sk}.json'),'w'))
+    if 'moving' not in parts:json.dump({"textures":{"particle":tex['particle']},"elements":[]},open(os.path.join(A,f'models/block/armory21_{fam}_moving_{sk}.json'),'w'))
 print('ok',tag)

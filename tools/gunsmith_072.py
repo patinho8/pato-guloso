@@ -471,7 +471,7 @@ def desert_eagle():return pistol(-5,12.3,1.85,'de','paint')
 def usp():return pistol(-3,11.6,1.55,'usp','rubber')
 def glock():return pistol(-3,11.3,1.5,'glock','rubber')
 def beretta():return pistol(-3,11.5,1.4,'beretta','paint')
-GUNS=['desert_eagle','usp','m4a1','m870','mp5','smg','mp40','p90','glock','scar','ump45','spas12','beretta','uzi','famas','m249','barrett','mac10','galil','aug','saiga12','svd']
+GUNS=['usp','m4a1','m870','mp5','smg','mp40','p90','glock','scar','ump45','spas12','beretta','uzi','famas','m249','barrett','mac10','galil','aug','saiga12','svd']
 # ---------------- optics ----------------
 ZOOMS={'desert_eagle':[1,2,3],'usp':[1,2,3],'m4a1':[1,3,6],'ak47':[1,2,4],'m870':[1,2,3],'mp5':[1,2,3],'smg':[1,2,4],'sniper':[5,12,24],'mp40':[1,2,3],'p90':[1,2,3],'python':[1,2,3],
  'glock':[1,2,3],'scar':[1,3,6],'ump45':[1,2,3],'spas12':[1,2,3],'beretta':[1,2,3],'uzi':[1,2,3],'famas':[1,3,6],'m249':[1,2,4],'barrett':[4,8,12],'mac10':[1,2,3],'galil':[1,3,6],'aug':[1,3,6],'saiga12':[1,2,3],'svd':[4,8,12]}
@@ -562,6 +562,7 @@ STYLE={'desert_eagle':0,'usp':0,'glock':1,'beretta':0,'python':2,'m4a1':2,'ak47'
 EXTRA={   # guns not rebuilt here: just their sight mounts and muzzle data
  'ak47':dict(mount=(11.3,1.6,10.8),side_ak=True,bore=9.6,muzzle=-23.2,iron=11.1),
  'python':dict(mount=(11.0,5.6,10.2),bore=9.9,muzzle=-7.0,iron=12.1,pistol=True),
+ 'desert_eagle':dict(rail=(12.02,-5.9,0.7),bore=9.6,muzzle=-6.87,iron=12.4,pistol=True),   # 0.73.0: OBJ from tools/make_deagle_claude.py
  'sniper':dict(rail=(12.5,-6,6),bore=8.6,muzzle=-49.8,iron=13.5)}
 FAMILY_ORDER=['desert_eagle','usp','m4a1','ak47','m870','mp5','smg','sniper','mp40','p90','python','glock','scar','ump45','spas12','beretta','uzi','famas','m249','barrett','mac10','galil','aug','saiga12','svd']
 STOCK=('stock','buttpad','buffer_tube','cheek','butt')

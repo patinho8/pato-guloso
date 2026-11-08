@@ -1,0 +1,36 @@
+newmtl accent
+map_Kd #accent
+
+newmtl barrel
+map_Kd #barrel
+
+newmtl brass
+map_Kd #brass
+
+newmtl dark
+map_Kd #dark
+
+newmtl engrave
+map_Kd #engrave
+
+newmtl frame
+map_Kd #frame
+
+newmtl grip
+map_Kd #grip
+
+newmtl grip_d
+map_Kd #grip_d
+
+newmtl polish
+map_Kd #polish
+
+newmtl red
+map_Kd #red
+
+newmtl slide
+map_Kd #slide
+
+newmtl white
+map_Kd #white
+
