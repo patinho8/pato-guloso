@@ -29,7 +29,8 @@ public final class SniperItem extends Item {
   var bullet=new DmtProjectileEntity(MareEletrica.DMT_PROJECTILE.get(),p.level());bullet.setSniper(true);bullet.setOwner(p);bullet.setPos(p.getEyePosition());bullet.shoot(aim.x,aim.y,aim.z,40,spread(p));p.level().addFreshEntity(bullet);
   int silencer=RifleLoadout.suppressor(gun);float recoil=recoil(p);p.getCooldowns().addCooldown(gun.getItem(),35);p.stopUsingItem();smoke(p,aim,silencer>0?3:6);
   p.level().playSound(null,p.blockPosition(),silencer>0?MareEletrica.SNIPER_SILENCED.get():MareEletrica.SNIPER_SHOT.get(),SoundSource.PLAYERS,shotVolume(silencer),silencer>0?.94F:1F);
-  PacketDistributor.sendToPlayer(p,new GunPackets.Shot(true,recoil,(p.getRandom().nextFloat()-.5F)*3.5F));
+  float hv=HeavyRecoil.camera(p,WeaponFamily.SNIPER);HeavyRecoil.shove(p,WeaponFamily.SNIPER);
+  PacketDistributor.sendToPlayer(p,new GunPackets.Shot(true,recoil*hv,(p.getRandom().nextFloat()-.5F)*3.5F*hv));
  }
  @Override public boolean shouldCauseReequipAnimation(ItemStack oldStack,ItemStack newStack,boolean changed){return changed||oldStack.getItem()!=newStack.getItem();}
  @Override public void appendHoverText(ItemStack s,TooltipContext c,java.util.List<Component> lines,TooltipFlag f){lines.add(Component.literal("M2: mirar • M1: disparar • R: trocar pente • J: acessórios"));lines.add(Component.literal("Mira "+RifleLoadout.zoom(s)+"× • regulagem "+RifleLoadout.calibration(s,0)+" blocos • 60 de dano (20 em golems e chefes)"));lines.add(Component.literal("Shift duas vezes: deitar/levantar. Bipé estabiliza ao ficar parado."));}

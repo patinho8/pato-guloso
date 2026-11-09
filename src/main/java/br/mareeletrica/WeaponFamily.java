@@ -17,6 +17,10 @@ public enum WeaponFamily {
  public Item ammo(){return switch(this){case DESERT_EAGLE,PYTHON->MareEletrica.REVOLVER_ROUND.get();case USP,GLOCK,BERETTA->Arsenal.USP_ROUND.get();case M4A1,AK47,SCAR,FAMAS,M249,GALIL,AUG->Arsenal.RIFLE_ROUND.get();case M870,SPAS12,SAIGA12->Arsenal.SHOTGUN_SHELL.get();case MP5,SMG,MP40,P90,UMP45,UZI,MAC10->MareEletrica.SMG_ROUND.get();case SNIPER,BARRETT,SVD->MareEletrica.SNIPER_ROUND.get();};}
  public Item item(){return switch(this){case DESERT_EAGLE->MareEletrica.REVOLVER.get();case USP->Arsenal.USP.get();case M4A1->Arsenal.M4A1.get();case AK47->Arsenal.AK47.get();case M870->Arsenal.M870.get();case MP5->Arsenal.MP5.get();case MP40->Arsenal.MP40.get();case P90->Arsenal.P90.get();case PYTHON->Arsenal.PYTHON.get();case GLOCK->Arsenal.GLOCK.get();case SCAR->Arsenal.SCAR.get();case UMP45->Arsenal.UMP45.get();case SPAS12->Arsenal.SPAS12.get();case BERETTA->Arsenal.BERETTA.get();case UZI->Arsenal.UZI.get();case FAMAS->Arsenal.FAMAS.get();case M249->Arsenal.M249.get();case BARRETT->Arsenal.BARRETT.get();case MAC10->Arsenal.MAC10.get();case GALIL->Arsenal.GALIL.get();case AUG->Arsenal.AUG.get();case SAIGA12->Arsenal.SAIGA12.get();case SVD->Arsenal.SVD.get();case SMG->MareEletrica.SMG.get();case SNIPER->MareEletrica.SNIPER.get();};}
  public static WeaponFamily of(ItemStack s){if(s.getItem() instanceof GunItem g)return valueOf(g.profile.name());if(s.is(MareEletrica.SMG.get()))return SMG;if(MareEletrica.isSniper(s))return SNIPER;return null;}
+ /** 0.81.0: big guns kick much harder — camera multiplier (1 = unchanged) */
+ public float heavyRecoil(){return switch(this){case BARRETT->2.6F;case SNIPER->1.6F;case SVD->2.2F;case M249->1.8F;case M870,SPAS12->1.8F;case SAIGA12->1.6F;default->1F;};}
+ /** 0.81.0: how hard one shot shoves the shooter back (blocks/tick) */
+ public float shove(){return switch(this){case BARRETT->.75F;case SNIPER->.5F;case SVD->.42F;case M870,SPAS12->.32F;case SAIGA12->.22F;case M249->.08F;default->0F;};}
  public String modules(){return this==SNIPER?"RifleModules":this==SMG?"SmgModules":"ArsenalModules";}
  public int reserve(){return this==SNIPER?4:3;}
 }

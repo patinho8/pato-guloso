@@ -25,11 +25,11 @@ public final class RifleHands {
   float swayX=Mth.sin(phase)*walk*.012F,swayY=Mth.cos(phase*2)*walk*.008F;
   float[] ins=InspectClient.gunPose(f,e.getPartialTick(),smooth>.05F||reloadPose>.01F||kick>.01F);
   float[] rg=reloading?ReloadPath.gun(f,progress):new float[]{-.14F,.32F,-.12F,28F,6F,0F};   // 0.79.0: each gun type has its own reload pose (and weight)
-  var rifle=new Matrix4f().translation(side*(Mth.lerp(smooth,.30F,0)+reloadPose*rg[0])+swayX+LeanClient.local()*.05F,Mth.lerp(smooth,-.37F,aimY)+swayY+reloadPose*rg[1],Mth.lerp(smooth,pistol?-.68F:-.80F,pistol?-.83F:-1.06F)+reloadPose*rg[2]+kick*(f==WeaponFamily.DESERT_EAGLE?.31F:.17F))
+  var rifle=new Matrix4f().translation(side*(Mth.lerp(smooth,.30F,0)+reloadPose*rg[0])+swayX+LeanClient.local()*.05F,Mth.lerp(smooth,-.37F,aimY)+swayY+reloadPose*rg[1],Mth.lerp(smooth,pistol?-.68F:-.80F,pistol?-.83F:-1.06F)+reloadPose*rg[2]+kick*(f==WeaponFamily.DESERT_EAGLE?.31F:f.heavyRecoil()>1F?.17F+.06F*f.heavyRecoil():.17F))
    .translate(side*ins[0],ins[1],ins[2]).rotateY(side*ins[4]).rotateX(ins[3]).rotateZ(side*ins[5])
    .rotateY((float)Math.toRadians(side*reloadPose*rg[5]))
    .rotateZ((float)Math.toRadians(-side*reloadPose*rg[3]-LeanClient.local()*5F))
-   .rotateX((float)Math.toRadians(kick*(f==WeaponFamily.DESERT_EAGLE?42F:f==WeaponFamily.PYTHON?34F:f==WeaponFamily.SPAS12?20F:f==WeaponFamily.BARRETT?26F:pistol?15F:11F)+reloadPose*rg[4]+(f==WeaponFamily.PYTHON&&reloading?ReloadPath.pyTilt(progress)*12F:0F)))
+   .rotateX((float)Math.toRadians(kick*(f==WeaponFamily.DESERT_EAGLE?42F:f==WeaponFamily.PYTHON?34F:f==WeaponFamily.SPAS12||f==WeaponFamily.M870||f==WeaponFamily.SAIGA12?26F:f==WeaponFamily.BARRETT?36F:f==WeaponFamily.SVD||f==WeaponFamily.SNIPER?28F:f==WeaponFamily.M249?16F:pistol?15F:11F)+reloadPose*rg[4]+(f==WeaponFamily.PYTHON&&reloading?ReloadPath.pyTilt(progress)*12F:0F)))
    .scale(scale).translate(0,GY,GZ).scale(big).translate(0,-GY,-GZ).translate(-.5F,-.5F,-.9F);
   var pose=e.getPoseStack();var buffers=e.getMultiBufferSource();int light=e.getPackedLight();
   if(!player.isInvisible()&&mc.getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer renderer){var model=renderer.getModel();var grip=rifle.transformPosition(new Vector3f(.5F,.23F,.76F));var support=new Vector3f(.5F,pistol?.24F:.42F,pistol?.69F:f==WeaponFamily.SMG?.1F:-.12F);{float[] sp=ArmoryRenderer.support(f);if(sp!=null)support.set(.5F,sp[0]/16,sp[1]/16);}
