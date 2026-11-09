@@ -45,9 +45,9 @@ public final class Jets {
  public static final DeferredItem<Item> BOMB=MareEletrica.ITEMS.register("jet_bomb",()->new Item(new Item.Properties().stacksTo(6)));
  public static final int MAX_BOMBS=3;public static final float MAX_HEALTH=90F;
  public static final Supplier<EntityType<JetEntity>> JET=MareEletrica.ACTORS.register("fighter_jet",()->
-  EntityType.Builder.<JetEntity>of(JetEntity::new,MobCategory.MISC).sized(5.2F,2.3F).clientTrackingRange(16).updateInterval(1).build(MareEletrica.ID+":fighter_jet"));
+  EntityType.Builder.<JetEntity>of(JetEntity::new,MobCategory.MISC).sized(5.2F,2.3F).clientTrackingRange(16).updateInterval(1).fireImmune().build(MareEletrica.ID+":fighter_jet"));
  public static final Supplier<EntityType<JetEntity>> B2=MareEletrica.ACTORS.register("b2_bomber",()->
-  EntityType.Builder.<JetEntity>of(JetEntity::new,MobCategory.MISC).sized(9F,2.2F).clientTrackingRange(20).updateInterval(1).build(MareEletrica.ID+":b2_bomber"));
+  EntityType.Builder.<JetEntity>of(JetEntity::new,MobCategory.MISC).sized(9F,2.2F).clientTrackingRange(20).updateInterval(1).fireImmune().build(MareEletrica.ID+":b2_bomber"));
  public static final int B2_BOMBS=12;public static final float B2_HEALTH=220F;
  public static final Supplier<EntityType<JetBombEntity>> BOMB_ENTITY=MareEletrica.ACTORS.register("jet_bomb",()->
   EntityType.Builder.<JetBombEntity>of(JetBombEntity::new,MobCategory.MISC).sized(.9F,.9F).clientTrackingRange(16).updateInterval(1).build(MareEletrica.ID+":jet_bomb"));
@@ -151,6 +151,7 @@ public final class Jets {
    return InteractionResult.CONSUME;
   }
   @Override public boolean hurt(DamageSource source,float amount){
+   if(source.is(net.minecraft.tags.DamageTypeTags.IS_FIRE))return false;   // 0.81.1: jets do not catch fire
    if(level().isClientSide||isRemoved()||isInvulnerableTo(source))return false;
    if(source.getEntity()!=null&&hasPassenger(source.getEntity()))return false;
    if(!source.is(net.minecraft.tags.DamageTypeTags.IS_PROJECTILE)&&!source.is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION)&&!(source.getDirectEntity() instanceof net.minecraft.world.entity.projectile.Projectile)&&!source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY))return false;   // bullets AND explosions (rockets, flak, tank shells, grenades) bring it down
@@ -239,7 +240,7 @@ public final class Jets {
    setDeltaMovement(v);move(MoverType.SELF,v);
    setYRot(yaw(q));setXRot(pitch(q));
   }
-  @Override public void tick(){
+  @Override public void tick(){clearFire();
    qO.set(q);
    super.tick();
    if(level().isClientSide){

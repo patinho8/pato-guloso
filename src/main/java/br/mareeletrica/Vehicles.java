@@ -39,9 +39,9 @@ public final class Vehicles {
  public static final DeferredItem<PlaceItem> HELI_ITEM=MareEletrica.ITEMS.register("helicopter",()->new PlaceItem(new Item.Properties().stacksTo(1),true));
  public static final DeferredItem<PlaceItem> TANK_ITEM=MareEletrica.ITEMS.register("battle_tank",()->new PlaceItem(new Item.Properties().stacksTo(1),false));
  public static final Supplier<EntityType<Helicopter>> HELI=MareEletrica.ACTORS.register("helicopter",()->
-  EntityType.Builder.<Helicopter>of(Helicopter::new,MobCategory.MISC).sized(5.4F,4.0F).clientTrackingRange(16).updateInterval(1).build(MareEletrica.ID+":helicopter"));
+  EntityType.Builder.<Helicopter>of(Helicopter::new,MobCategory.MISC).sized(5.4F,4.0F).clientTrackingRange(16).updateInterval(1).fireImmune().build(MareEletrica.ID+":helicopter"));
  public static final Supplier<EntityType<Tank>> TANK=MareEletrica.ACTORS.register("battle_tank",()->
-  EntityType.Builder.<Tank>of(Tank::new,MobCategory.MISC).sized(5.2F,3.6F).clientTrackingRange(16).updateInterval(1).build(MareEletrica.ID+":battle_tank"));
+  EntityType.Builder.<Tank>of(Tank::new,MobCategory.MISC).sized(5.2F,3.6F).clientTrackingRange(16).updateInterval(1).fireImmune().build(MareEletrica.ID+":battle_tank"));
  private Vehicles(){}
  public static void register(){}
  public static void creative(CreativeModeTab.Output out){out.accept(HELI_ITEM.get());out.accept(TANK_ITEM.get());}
@@ -143,6 +143,7 @@ public final class Vehicles {
   }
   protected abstract String help();
   @Override public boolean hurt(DamageSource s,float amount){
+   if(s.is(net.minecraft.tags.DamageTypeTags.IS_FIRE))return false;   // 0.81.1: vehicles do not catch fire
    if(level().isClientSide||isRemoved()||isInvulnerableTo(s))return false;
    if(s.getEntity()!=null&&hasPassenger(s.getEntity()))return false;
    if(s.getEntity() instanceof Player pl&&pl.isCreative()&&s.getDirectEntity()==pl){ejectPassengers();discard();return true;}
@@ -177,6 +178,7 @@ public final class Vehicles {
    return false;
   }
   @Override public void tick(){
+   clearFire();
    float yawBefore=getYRot();
    super.tick();
    if(level().isClientSide&&!isControlledByLocalInstance()){
