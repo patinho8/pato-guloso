@@ -80,7 +80,7 @@ public final class VisualAcc {
   if(tick==t+60)shot("noite_lanterna");
   if(tick==t+62)hold(gun(WeaponFamily.GLOCK,0,id(Accessory.Kind.COMBO),0,id(Accessory.Kind.DRUM_MAG)));
   if(tick==t+80)shot("noite_glock");
-  if(tick==t+82){hold(gun(M,0,id(Accessory.Kind.VERTICAL_GRIP),id(Accessory.Kind.LASER_GREEN),0));mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);}
+  if(tick==t+82){hold(gun(M,0,id(Accessory.Kind.VERTICAL_GRIP),id(Accessory.Kind.LASER_GREEN),0));mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT);srv(()->{var l=sp().serverLevel();l.setDayTime(6000);for(var mob:l.getEntitiesOfClass(net.minecraft.world.entity.Mob.class,sp().getBoundingBox().inflate(60)))mob.discard();});}
   if(tick==t+100)shot("terceira");
   if(tick==t+102){mc.options.setCameraType(CameraType.FIRST_PERSON);srv(()->{var p=sp();var l=p.serverLevel();l.setDayTime(6000);p.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
     l.setBlockAndUpdate(o.offset(3,2,-15),Shower.SHOWER.get().defaultBlockState().setValue(Shower.ShowerBlock.FACING,net.minecraft.core.Direction.SOUTH).setValue(Shower.ShowerBlock.ON,true));

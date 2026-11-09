@@ -25,7 +25,7 @@ tube(G,'boca',B,0,15.95,16.1,.8,'dark')
 G='inferior2'
 K.trigger(G,-12.4,24.2,guard=True,gmat='steel2',w=1.2,L=9,depth=5.2)
 c(G,'seletor',[-6,25,-3.5],[-3.4,26.2,-2.9],'steel')
-GR=dict(rot=[0,0,4],origin=[-1.5,24.2,0])
+GR=dict(rot=[0,0,0],origin=[-1.5,24.2,0])
 c(G,'punho',[-6,2,-2.8],[3,24.4,2.8],'steel2',**GR)
 both(G,'punho_placa',-5.6,4,2.6,21,2.8,3.1,'dark',**GR)
 for k in range(9):both(G,'punho_estria',-5.2,4.8+k*1.8,2.2,5.4+k*1.8,3.1,3.2,'steel2',**GR)

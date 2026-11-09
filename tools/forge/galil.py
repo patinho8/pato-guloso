@@ -25,7 +25,7 @@ for k in range(4):c(G,'qc_fenda',[54,B+1.6,-.3],[59.4,B+2.0,.3],'dark',rot=[k*90
 tube(G,'boca',B,0,59.95,60.1,1.0,'dark')
 G='inferior'
 ak_trigger_group(K,G,-24,25.4)
-GR=dict(rot=[0,0,16],origin=[-31,25.4,0])
+GR=dict(rot=[0,0,0],origin=[-31,25.4,0])
 c(G,'punho',[-35,8,-2.4],[-27,25.6,2.4],'poly',**GR)
 K.checker(G,-34,10,3,8,1.8,2.4,**GR)
 c(G,'punho_dedo',[-27.6,14,-2.2],[-26.4,16.4,2.2],'poly',**GR)

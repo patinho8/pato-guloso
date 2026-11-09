@@ -277,7 +277,7 @@ def centered_item(es):
   for k in ['from','to']:e[k]=[round(e[k][a]+delta[a],5) for a in range(3)]
   if 'rotation' in e:e['rotation']['origin']=[round(e['rotation']['origin'][a]+delta[a],5) for a in range(3)]
  return es
-DISPLAY={'gui':{'rotation':[10,105,-14],'translation':[0,0,0],'scale':[.68]*3},'ground':{'rotation':[0,0,90],'translation':[0,2,0],'scale':[.4]*3},'fixed':{'rotation':[0,90,0],'scale':[.6]*3},'thirdperson_righthand':{'rotation':[0,0,0],'translation':[0,1,-1],'scale':[.75]*3},'thirdperson_lefthand':{'rotation':[0,0,0],'translation':[0,1,-1],'scale':[.75]*3}}
+DISPLAY={'gui':{'rotation':[10,105,-14],'translation':[0,0,0],'scale':[.68]*3},'ground':{'rotation':[0,0,90],'translation':[0,2,0],'scale':[.4]*3},'fixed':{'rotation':[0,90,0],'scale':[.6]*3},'thirdperson_righthand':{'rotation':[0,0,0],'translation':[0,2.1,-2],'scale':[1.0]*3},'thirdperson_lefthand':{'rotation':[0,0,0],'translation':[0,2.1,-2],'scale':[1.0]*3}}
 def recipe(id,pattern,key):dump(D/(id+'.json'),{'type':'minecraft:crafting_shaped','pattern':pattern,'key':{k:{'item':v} for k,v in key.items()},'result':{'id':'mareeletrica:'+id,'count':1}})
 def main():
  langs={l:json.loads((A/'lang'/(l+'.json')).read_text()) for l in ['pt_br','en_us']}

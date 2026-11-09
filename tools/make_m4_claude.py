@@ -67,7 +67,7 @@ for k in range(12):
 c(G,'gravacao_linha',[-20.4,23.6,-2.42],[-12.0,23.75,-2.35],'engrave')
 # ======================= PUNHO (A2, inclinado 24°) =======================
 G='punho'
-GR=dict(rot=[0,0,18],origin=[-31,23.2,0])
+GR=dict(rot=[0,0,0],origin=[-31,23.2,0])
 c(G,'punho',[-35,6.2,-2.2],[-28.4,25.6,2.2],'polymer',**GR)
 c(G,'punho_juncao',[-34.4,20.2,-2.1],[-28.0,23.6,2.1],'polymer')
 c(G,'punho_dedo',[-28.8,13.6,-2.0],[-27.6,15.6,2.0],'polymer',**GR)

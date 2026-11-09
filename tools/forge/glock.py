@@ -36,7 +36,7 @@ K.trigger(G,-6.6,17.2,guard=True,gmat='frame',w=1.2,L=10,depth=5.2)
 c(G,'gatilho_seguranca',[-6.4,13.8,-.12],[-5.8,16.8,.12],'dark')
 c(G,'reten_carregador',[-12.2,13.6,-2.85],[-10.8,15.6,2.85],'frame')
 # punho 22°
-GR=dict(rot=[0,0,16],origin=[-16,17.2,0])
+GR=dict(rot=[0,0,0],origin=[-16,17.2,0])
 c(G,'punho',[-21.0,-5.6,-2.85],[-11.4,17.4,2.85],'frame',**GR)
 c(G,'punho_cauda',[-23.6,15.6,-2.3],[-20.4,17.6,2.3],'frame',rot=[0,0,-12],origin=[-21,17,0])
 for k in range(3):c(G,'punho_dedo',[-11.8,-1.6+k*5.0,-2.6],[-10.8,1.6+k*5.0,2.6],'frame',**GR)

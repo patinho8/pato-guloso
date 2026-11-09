@@ -75,8 +75,11 @@ public final class Pato {
  private Pato(){}
  public static final String[] COLORS={"branco","marrom","preto","dourado","arco-íris"};
  public static final String[] HATS={"","boné","cartola","coroa","óculos escuros","capacete militar","mini-luneta"};
- public static final String[] MODES={"Seguir","Sentar","Guarda-costas","Pescar","Farejar"};
- public static final int FOLLOW=0,SIT=1,GUARD=2,FISH=3,SNIFF=4;
+ public static final String[] MODES={"Seguir","Sentar","Guarda-costas","Pescar","Farejar","Coletar"};
+ public static final int FOLLOW=0,SIT=1,GUARD=2,FISH=3,SNIFF=4,COLLECT=5;
+ /** 0.76.0: total XP needed for each level (1..10) */
+ public static final int[] LEVEL_XP={0,30,80,150,240,350,480,630,800,1000};
+ public static final String[] PERKS={"","","§b🔔 Alarme§7: avisa quando um monstro chega perto de você","§e🧺 Modo Coletar§7: busca itens no chão e traz pra você","","§d✨ Marca os monstros§7 (eles brilham através das paredes)","","§a❤ Cura§7: quando você está quase morrendo, ele te dá regeneração","","","§6⭐ PATO LENDÁRIO§7: brilho dourado e mais ovos dourados"};
  public static final Supplier<EntityType<Duck>> ENTITY=MareEletrica.ACTORS.register("duck",()->
   EntityType.Builder.<Duck>of(Duck::new,MobCategory.CREATURE).sized(.5F,.62F).eyeHeight(.52F).clientTrackingRange(10).build(MareEletrica.ID+":duck"));
  public static final Supplier<SoundEvent> QUACK=MareEletrica.SOUNDS.register("duck_quack",()->SoundEvent.createVariableRangeEvent(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,"duck_quack")));
@@ -142,17 +145,31 @@ public final class Pato {
   static final EntityDataAccessor<Integer> COLOR=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),HAT=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),
    FED=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),MODE=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),
    FLAGS=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),HUNGER=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),
-   HAPPY=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),LANE=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT);
-  public static final int SLEEP=1,DIVE=2,KING=4,BOARD=8,RACER=16;
+   HAPPY=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),LANE=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),
+   XP=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT);
+  public static final int SLEEP=1,DIVE=2,KING=4,BOARD=8,RACER=16,BATH=32;
   /** client animation clocks */
   public int quackAt=-100,peckAt=-100;public float flap,flapO;
   /** used when a duck is drawn for a player who drank the Duck Potion */
   public float fakeWalkPos=-1,fakeWalkSpd;public boolean fakeSwim;
   int fishTimer=400,sniffTimer=60,eggTimer=2400,shotCd,diveTicks,nestCheck,boardCd;
+  // 0.76.0 companion: bath, alarm, heal, collect
+  BlockPos bathPos;public int bathTicks,bathCheck=200,alarmCd,healCd,petCd,companionTicks;boolean bathEntered;float bathPhase;
+  /** 0.76.0: shared by every duck, so one monster is announced once even with several ducks around */
+  static final java.util.Map<java.util.UUID,Long> WARNED=new java.util.HashMap<>();ItemEntity collectTarget;
   public Duck(EntityType<? extends Duck> t,Level l){super(t,l);}
   public static AttributeSupplier.Builder attributes(){return Animal.createMobAttributes().add(Attributes.MAX_HEALTH,12).add(Attributes.MOVEMENT_SPEED,.27).add(Attributes.ATTACK_DAMAGE,3).add(Attributes.FOLLOW_RANGE,20);}
-  @Override protected void defineSynchedData(SynchedEntityData.Builder b){super.defineSynchedData(b);b.define(COLOR,0);b.define(HAT,0);b.define(FED,0);b.define(MODE,0);b.define(FLAGS,0);b.define(HUNGER,70);b.define(HAPPY,60);b.define(LANE,0);}
+  @Override protected void defineSynchedData(SynchedEntityData.Builder b){super.defineSynchedData(b);b.define(COLOR,0);b.define(HAT,0);b.define(FED,0);b.define(MODE,0);b.define(FLAGS,0);b.define(HUNGER,70);b.define(HAPPY,60);b.define(LANE,0);b.define(XP,0);}
   public int color(){return entityData.get(COLOR);}public int hat(){return entityData.get(HAT);}public int fed(){return entityData.get(FED);}public int mode(){return entityData.get(MODE);}
+  public int xp(){return entityData.get(XP);}
+  public int duckLevel(){int x=xp(),l=1;for(int i=1;i<LEVEL_XP.length;i++)if(x>=LEVEL_XP[i])l=i+1;return l;}
+  /** XP towards the next level, as text */
+  String xpText(){int l=duckLevel();return l>=10?"§6MÁX":xp()+"/"+LEVEL_XP[l];}
+  public void addXp(int n){if(!isTame()||racer()||n<=0)return;int before=duckLevel();entityData.set(XP,Math.min(xp()+n,LEVEL_XP[9]+0));int now=duckLevel();
+   if(now>before){resize();heal(getMaxHealth());var o=getOwner();level().playSound(null,blockPosition(),SoundEvents.PLAYER_LEVELUP,SoundSource.NEUTRAL,.9F,1.4F);
+    if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,getX(),getY()+.5,getZ(),25,.3,.4,.3,.25);
+    if(o instanceof Player p){p.sendSystemMessage(Component.literal("§6🦆 "+getName().getString()+" subiu para o §lnível "+now+"§6! §7(mais vida, força e velocidade)"));
+     for(int k=before+1;k<=now&&k<PERKS.length;k++)if(!PERKS[k].isEmpty())p.sendSystemMessage(Component.literal("§7   Novo: "+PERKS[k]));}}}
   public int hunger(){return entityData.get(HUNGER);}public int happy(){return entityData.get(HAPPY);}public int lane(){return entityData.get(LANE);}
   public boolean flag(int f){return (entityData.get(FLAGS)&f)!=0;}
   void flag(int f,boolean on){int v=entityData.get(FLAGS);entityData.set(FLAGS,on?v|f:v&~f);}
@@ -160,8 +177,9 @@ public final class Pato {
   void setHunger(int v){entityData.set(HUNGER,Mth.clamp(v,0,100));}void setHappy(int v){entityData.set(HAPPY,Mth.clamp(v,0,100));}
   public void setMode(int m){entityData.set(MODE,m);setOrderedToSit(m==SIT);setTarget(null);getNavigation().stop();}
   /** chubby: every meal makes it a little bigger; the King is bigger still */
-  void resize(){var a=getAttribute(Attributes.SCALE);if(a!=null)a.setBaseValue((1+Math.min(fed(),60)*.008)*(king()?1.15:1));
-   var h=getAttribute(Attributes.MAX_HEALTH);if(h!=null)h.setBaseValue(king()?24:12);var d=getAttribute(Attributes.ATTACK_DAMAGE);if(d!=null)d.setBaseValue(king()?6:3);}
+  void resize(){int lv=duckLevel()-1;var a=getAttribute(Attributes.SCALE);if(a!=null)a.setBaseValue((1+Math.min(fed(),60)*.008+lv*.01)*(king()?1.15:1));
+   var h=getAttribute(Attributes.MAX_HEALTH);if(h!=null)h.setBaseValue((king()?24:12)+lv*2);var d=getAttribute(Attributes.ATTACK_DAMAGE);if(d!=null)d.setBaseValue((king()?6:3)+lv*.5);
+   var sp=getAttribute(Attributes.MOVEMENT_SPEED);if(sp!=null)sp.setBaseValue(.27+lv*.006);}
   public boolean racer(){return flag(RACER);}
   /** set appearance directly (creative/testing) */
   public void setLook(int color,int hat,int fed){entityData.set(COLOR,color);entityData.set(HAT,hat);entityData.set(FED,fed);flag(KING,fed>=40);resize();}
@@ -175,16 +193,17 @@ public final class Pato {
    goalSelector.addGoal(3,new MeleeAttackGoal(this,1.4,true));
    goalSelector.addGoal(4,new BreedGoal(this,1.0));
    goalSelector.addGoal(5,new TemptGoal(this,1.2,Ingredient.of(Items.BREAD,Items.WHEAT_SEEDS,Items.WHEAT),false));
-   goalSelector.addGoal(6,new FollowOwnerGoal(this,1.3,5F,2F){@Override public boolean canUse(){return (mode()==FOLLOW||mode()==GUARD||ownerFar())&&!flag(SLEEP)&&super.canUse();}
-    @Override public boolean canContinueToUse(){return (mode()==FOLLOW||mode()==GUARD||ownerFar())&&super.canContinueToUse();}});
+   goalSelector.addGoal(6,new FollowOwnerGoal(this,1.3,5F,2F){@Override public boolean canUse(){return (mode()==FOLLOW||mode()==GUARD||collectIdle()||ownerFar())&&!flag(SLEEP)&&bathTicks<=0&&super.canUse();}
+    @Override public boolean canContinueToUse(){return (mode()==FOLLOW||mode()==GUARD||collectIdle()||ownerFar())&&bathTicks<=0&&super.canContinueToUse();}});
    goalSelector.addGoal(7,new FollowParentGoal(this,1.1));
-   goalSelector.addGoal(8,new WaterAvoidingRandomStrollGoal(this,1.0){@Override public boolean canUse(){return !flag(SLEEP)&&mode()!=SNIFF&&super.canUse();}});
+   goalSelector.addGoal(8,new WaterAvoidingRandomStrollGoal(this,1.0){@Override public boolean canUse(){return !flag(SLEEP)&&mode()!=SNIFF&&mode()!=COLLECT&&bathTicks<=0&&super.canUse();}});
    goalSelector.addGoal(9,new LookAtPlayerGoal(this,Player.class,6F));
    goalSelector.addGoal(10,new RandomLookAroundGoal(this));
    targetSelector.addGoal(1,new OwnerHurtByTargetGoal(this){@Override public boolean canUse(){return mode()==GUARD&&super.canUse();}});
    targetSelector.addGoal(2,new OwnerHurtTargetGoal(this){@Override public boolean canUse(){return mode()==GUARD&&super.canUse();}});
    targetSelector.addGoal(3,new NearestAttackableTargetGoal<>(this,Mob.class,10,true,false,t->t instanceof Enemy&&mode()==GUARD&&isTame()&&getOwner()!=null&&t.distanceTo(getOwner())<14));
   }
+  boolean collectIdle(){return mode()==COLLECT&&(duckLevel()<3||collectTarget==null&&getMainHandItem().isEmpty());}
   boolean ownerFar(){var o=getOwner();return o!=null&&distanceToSqr(o)>22*22;}
   @Override public boolean isFood(ItemStack s){return food(s)>0;}
   @Override public AgeableMob getBreedOffspring(ServerLevel l,AgeableMob other){var d=ENTITY.get().create(l);if(d!=null){d.entityData.set(COLOR,random.nextBoolean()?color():other instanceof Duck o?o.color():color());
@@ -214,7 +233,7 @@ public final class Pato {
    if(f>0){   // feeding
     if(!client){
      if(hunger()>=100&&!isBaby()){msg(p,"§e🦆 Ele tá cheio! (fome 100/100)");return InteractionResult.CONSUME;}
-     if(!p.getAbilities().instabuild)s.shrink(1);setHunger(hunger()+f);setHappy(happy()+8);heal(3);quack(this,.8F,1.3F);level().broadcastEntityEvent(this,(byte)71);
+     if(!p.getAbilities().instabuild)s.shrink(1);setHunger(hunger()+f);setHappy(happy()+8);heal(3);addXp(3);quack(this,.8F,1.3F);level().broadcastEntityEvent(this,(byte)71);
      if(isBaby())ageUp(AgeableMob.getSpeedUpSecondsWhenFeeding(-getAge()),true);
      else{int before=fed();entityData.set(FED,fed()+(f>=25?2:1));
       if(!king()&&fed()>=40){flag(KING,true);msg(p,"§6§l👑 O SEU PATO VIROU O PATO REI! §7(coroa, capa e mais forte)");level().playSound(null,blockPosition(),SoundEvents.PLAYER_LEVELUP,SoundSource.NEUTRAL,1F,1.2F);
@@ -232,11 +251,12 @@ public final class Pato {
     if(p.isShiftKeyDown()){   // onto your head / back down
      if(!client){if(getVehicle()==p){stopRiding();moveTo(p.getX(),p.getY(),p.getZ());}else{setOrderedToSit(false);getNavigation().stop();startRiding(p,true);msg(p,"§7🦆 No seu ombro! Shift+clique num bloco com a mão vazia para descer.");}}
      return InteractionResult.sidedSuccess(client);}
-    if(!client){setHappy(happy()+15);level().broadcastEntityEvent(this,(byte)7);quack(this,.6F,1.5F);
-     msg(p,"§a🦆 "+getName().getString()+" §7• fome "+bar(hunger())+" §7• felicidade "+bar(happy())+" §7• "+(isBaby()?"filhote":king()?"§6PATO REI":"adulto")+" §7• modo §e"+MODES[mode()]);}
+    if(!client){setHappy(happy()+15);level().broadcastEntityEvent(this,(byte)7);quack(this,.6F,1.5F);if(petCd<=0){addXp(2);petCd=600;}
+     msg(p,"§a🦆 "+getName().getString()+" §6Nv "+duckLevel()+" §7("+xpText()+" XP) • fome "+bar(hunger())+" §7• felicidade "+bar(happy())+" §7• "+(isBaby()?"filhote":king()?"§6PATO REI":"adulto")+" §7• modo §e"+MODES[mode()]);}
     return InteractionResult.sidedSuccess(client);}
    return super.mobInteract(p,hand);
   }
+  @Override public boolean killedEntity(ServerLevel l,LivingEntity victim){if(victim instanceof net.minecraft.world.entity.monster.Enemy)addXp(10);return super.killedEntity(l,victim);}
   static String bar(int v){return (v<25?"§c":v<60?"§e":"§a")+v+"%";}
   @Override public boolean doHurtTarget(Entity t){
    boolean ok=super.doHurtTarget(t);level().broadcastEntityEvent(this,(byte)71);
@@ -271,10 +291,13 @@ public final class Pato {
     if(flag(SLEEP)&&tickCount%30==0)level().addParticle(ParticleTypes.NOTE,getX(),getY()+.8*getScale(),getZ(),.0,0,0);
     if(isTame()&&hunger()<20&&tickCount%40==0)level().addParticle(ParticleTypes.ANGRY_VILLAGER,getX(),getY()+.8*getScale(),getZ(),0,0,0);
     if(color()==4&&tickCount%6==0)level().addParticle(ParticleTypes.END_ROD,getRandomX(.4),getY()+.4,getRandomZ(.4),0,.01,0);
+    if(isTame()&&duckLevel()>=10&&tickCount%5==0)level().addParticle(ParticleTypes.WAX_OFF,getRandomX(.5),getY()+random.nextDouble()*.6,getRandomZ(.5),0,.02,0);
+    if(flag(BATH)&&tickCount%8==0)level().addParticle(random.nextBoolean()?ParticleTypes.SPLASH:ParticleTypes.BUBBLE_POP,getRandomX(.4),getY()+.15,getRandomZ(.4),0,.05,0);
     return;}
    if(racer())return;
    if(!isTame())return;
    var owner=getOwner();
+   if(companion(owner))return;
    // hunger & happiness
    if(tickCount%1200==0){setHunger(hunger()-4);setHappy(happy()-(hunger()<25?3:1));}
    if(hunger()<20&&owner!=null&&distanceToSqr(owner)<9&&random.nextInt(500)==0&&!isPassenger()){owner.hurt(damageSources().mobAttack(this),1);level().broadcastEntityEvent(this,(byte)71);quack(this,1.2F,.8F);
@@ -290,13 +313,89 @@ public final class Pato {
    if((m==FOLLOW||m==SIT)&&!level().isDay()){
     if(--nestCheck<=0){nestCheck=60;var nest=findNest(14);
      if(nest!=null){Vec3 c=Vec3.atBottomCenterOf(nest).add(0,.25,0);if(position().distanceToSqr(c)>.6)getNavigation().moveTo(c.x,c.y,c.z,1.0);else{getNavigation().stop();moveTo(c.x,getY(),c.z);if(!flag(SLEEP))flag(SLEEP,true);}}}
-    if(flag(SLEEP)&&--eggTimer<=0){eggTimer=2400+random.nextInt(2400);
+    if(flag(SLEEP)&&--eggTimer<=0){eggTimer=(duckLevel()>=10?1200:2400)+random.nextInt(2400);
      if(hunger()>40&&happy()>50&&random.nextInt(3)>0){spawnAtLocation(new ItemStack(GOLDEN_EGG.get()));quack(this,1F,1.2F);if(owner instanceof Player p&&distanceToSqr(p)<32*32)msg(p,"§6🥚 Seu pato botou um OVO DOURADO no ninho!");}}
    }else if(flag(SLEEP))flag(SLEEP,false);
    if(flag(SLEEP)&&getNavigation().isInProgress())flag(SLEEP,false);
    if(m==FISH)fish(owner);
    if(m==SNIFF)sniff(owner);
   }
+  /** 0.76.0: bath, alarm, healing and fetching; true while splashing in the tub (nothing else to do then) */
+  boolean companion(LivingEntity owner){
+   if(petCd>0)petCd--;if(alarmCd>0)alarmCd--;if(healCd>0)healCd--;
+   // 0.76.0: the alarm also works while the duck is in the tub
+   if(owner instanceof Player ap&&!isPassenger()&&alarmCd<=0&&tickCount%10==0&&duckLevel()>=2&&distanceToSqr(owner)<24*24)alarm(ap,duckLevel());
+   if(bathTicks>0)return bathTick(owner);
+   if(owner==null||isPassenger()||flag(BOARD))return false;
+   double od=distanceToSqr(owner);
+   if(od<12*12&&++companionTicks>=1200){companionTicks=0;addXp(1);}
+   int lv=duckLevel();
+   if(lv>=7&&healCd<=0&&od<12*12&&owner.getHealth()<owner.getMaxHealth()*.3F&&happy()>40){healCd=2400;owner.addEffect(new MobEffectInstance(MobEffects.REGENERATION,120,1));
+    quack(this,1F,1.5F);if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.HEART,owner.getX(),owner.getY()+1.2,owner.getZ(),8,.4,.4,.4,0);
+    if(owner instanceof Player p)msg(p,"§a❤ "+getName().getString()+" cuidou de você! §7(regeneração)");addXp(2);}
+   if(mode()==COLLECT&&lv>=3&&owner instanceof Player p)collect(p);
+   if(--bathCheck<=0){bathCheck=200;
+    if((mode()==FOLLOW||mode()==COLLECT&&getMainHandItem().isEmpty())&&getTarget()==null&&od<16*16&&random.nextInt(6)==0&&!flag(SLEEP)){var tub=findTub(10);if(tub!=null)goBath(tub,false);}}
+   return false;}
+  void alarm(Player p,int lv){
+   double r=8+lv;Mob best=null;double bd=1e9;
+   for(var m:level().getEntitiesOfClass(Mob.class,p.getBoundingBox().inflate(r),m->m instanceof Enemy&&m.isAlive()&&!(m instanceof Duck))){
+    Long w=WARNED.get(m.getUUID());if(w!=null&&level().getGameTime()-w<600)continue;double d=m.distanceToSqr(p);if(d<bd){bd=d;best=m;}}
+   long now=level().getGameTime();if(WARNED.size()>256)WARNED.entrySet().removeIf(en->now-en.getValue()>600||now<en.getValue());
+   if(best==null)return;WARNED.put(best.getUUID(),now);alarmCd=60;
+   Vec3 to=best.position().subtract(p.position());double ang=Mth.wrapDegrees(Math.toDegrees(Math.atan2(-to.x,to.z))-p.getYRot());
+   String dir=Math.abs(ang)<45?"na sua frente":Math.abs(ang)>135?"atrás de você":ang>0?"à sua direita":"à sua esquerda";
+   quack(this,1.6F,1.6F);level().broadcastEntityEvent(this,(byte)70);
+   p.displayClientMessage(Component.literal("§c⚠ 🦆 QUACK! §f"+best.getName().getString()+" §c"+dir+" §7("+(int)Math.sqrt(bd)+" blocos)"),true);
+   level().playSound(null,p.blockPosition(),SoundEvents.NOTE_BLOCK_BELL.value(),SoundSource.NEUTRAL,.6F,1.8F);
+   if(lv>=5)best.addEffect(new MobEffectInstance(MobEffects.GLOWING,140,0));
+   addXp(1);}
+  void collect(Player p){
+   var held=getMainHandItem();
+   if(!held.isEmpty()){
+    if(distanceToSqr(p)<2.4*2.4){var give=held.copy();setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND,ItemStack.EMPTY);if(!p.getInventory().add(give))spawnAtLocation(give);
+     quack(this,.8F,1.4F);level().broadcastEntityEvent(this,(byte)71);addXp(1);level().playSound(null,p.blockPosition(),SoundEvents.ITEM_PICKUP,SoundSource.PLAYERS,.4F,1.4F);}
+    else if(tickCount%10==0)getNavigation().moveTo(p,1.35);
+    return;}
+   if(collectTarget!=null&&(!collectTarget.isAlive()||collectTarget.distanceToSqr(p)>18*18))collectTarget=null;
+   if(collectTarget==null&&tickCount%20==0){double bd=1e9;
+    for(var it:level().getEntitiesOfClass(ItemEntity.class,getBoundingBox().inflate(12),i->i.isAlive()&&!i.hasPickUpDelay()&&i.distanceToSqr(p)<18*18&&i.getOwner()!=p)){double d=it.distanceToSqr(this);if(d<bd){bd=d;collectTarget=it;}}}
+   if(collectTarget==null)return;
+   if(distanceToSqr(collectTarget)<1.4*1.4){var st=collectTarget.getItem().copy();collectTarget.discard();collectTarget=null;
+    setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND,st);setGuaranteedDrop(net.minecraft.world.entity.EquipmentSlot.MAINHAND);quack(this,.6F,1.6F);level().broadcastEntityEvent(this,(byte)71);}
+   else if(tickCount%10==0)getNavigation().moveTo(collectTarget,1.3);}
+  // ---------------- bathtub
+  int bathWalk;boolean bathWithOwner;
+  BlockPos findTub(int r){var at=blockPosition();BlockPos best=null;double bd=1e9;
+   for(var q:BlockPos.betweenClosed(at.offset(-r,-3,-r),at.offset(r,3,r))){var st=level().getBlockState(q);if(st.getBlock() instanceof Bath.BathBlock&&st.getValue(Bath.FILLED)){double d=q.distSqr(at);if(d<bd){bd=d;best=q.immutable();}}}return best;}
+  /** off to the tub (with the owner when they get in) */
+  public boolean goBath(BlockPos tub,boolean withOwner){
+   if(bathTicks>0||isPassenger()||racer())return false;var st=level().getBlockState(tub);if(!(st.getBlock() instanceof Bath.BathBlock)||!st.getValue(Bath.FILLED))return false;
+   bathPos=tub;bathTicks=withOwner?6000:500+random.nextInt(500);bathWithOwner=withOwner;bathEntered=false;bathWalk=0;flag(SLEEP,false);setTarget(null);return true;}
+  boolean bathTick(LivingEntity owner){
+   var st=level().getBlockState(bathPos);
+   boolean ok=st.getBlock() instanceof Bath.BathBlock&&st.getValue(Bath.FILLED)&&getTarget()==null&&!isPassenger()&&(owner==null||distanceToSqr(owner)<24*24);
+   if(bathWithOwner&&owner!=null&&!(owner.getVehicle() instanceof Furniture.Seat)&&bathTicks>60)bathTicks=60;
+   if(!ok||--bathTicks<=0||!bathEntered&&++bathWalk>400){leaveBath();return false;}
+   if(!bathEntered){
+    if(position().distanceToSqr(Vec3.atBottomCenterOf(bathPos))<2.4*2.4){bathEntered=true;flag(BATH,true);setNoGravity(true);getNavigation().stop();quack(this,1F,1.5F);bathPhase=random.nextFloat()*6;
+     if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.SPLASH,bathPos.getX()+.5,bathPos.getY()+.6,bathPos.getZ()+.5,20,.3,.1,.3,.1);}
+    else{if(tickCount%10==0)getNavigation().moveTo(bathPos.getX()+.5,bathPos.getY()+1,bathPos.getZ()+.5,1.25);return false;}}
+   // paddle up and down the tub
+   BlockPos o=Bath.BathBlock.other(bathPos,st);Vec3 a=Vec3.atBottomCenterOf(bathPos),b=Vec3.atBottomCenterOf(o),mid=a.add(b).scale(.5),ax=b.subtract(a).normalize(),side=new Vec3(-ax.z,0,ax.x);
+   bathPhase+=.012F;Vec3 p=mid.add(ax.scale(Mth.sin(bathPhase)*.5)).add(side.scale(Mth.sin(bathPhase*1.7F)*.14));Vec3 v=ax.scale(Mth.cos(bathPhase)*.5).add(side.scale(Mth.cos(bathPhase*1.7F)*.24));
+   setPos(p.x,bathPos.getY()+.3,p.z);setDeltaMovement(Vec3.ZERO);getNavigation().stop();fallDistance=0;
+   if(v.lengthSqr()>1e-4){float yaw=(float)Math.toDegrees(Math.atan2(-v.x,v.z));setYRot(yaw);yBodyRot=yaw;yHeadRot=yaw;}
+   if(tickCount%40==0)setHappy(happy()+1);
+   if(random.nextInt(300)==0){quack(this,.7F,1.4F);level().broadcastEntityEvent(this,(byte)70);}
+   return true;}
+  void leaveBath(){
+   if(bathEntered){flag(BATH,false);setNoGravity(false);addXp(5);setHappy(happy()+10);
+    var st=level().getBlockState(bathPos);BlockPos out=null;
+    if(st.getBlock() instanceof Bath.BathBlock)for(BlockPos h:new BlockPos[]{bathPos,Bath.BathBlock.other(bathPos,st)})for(var d:Direction.Plane.HORIZONTAL){var q=h.relative(d);if(out==null&&level().getBlockState(q).isAir()&&level().getBlockState(q.above()).isAir())out=q;}
+    if(out!=null)moveTo(out.getX()+.5,out.getY(),out.getZ()+.5);else moveTo(getX(),bathPos.getY()+1,getZ());
+    if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.SPLASH,getX(),getY()+.4,getZ(),25,.25,.2,.25,.15);}
+   bathTicks=0;bathPos=null;bathEntered=false;}
   BlockPos findNest(int r){BlockPos best=null;double bd=1e9;var at=blockPosition();
    for(var p:BlockPos.betweenClosed(at.offset(-r,-3,-r),at.offset(r,3,r)))if(level().getBlockState(p).is(NEST.get())){double d=p.distSqr(at);if(d<bd){bd=d;best=p.immutable();}}return best;}
   void fish(LivingEntity owner){
@@ -308,7 +407,7 @@ public final class Pato {
    if(flag(DIVE)){setDeltaMovement(getDeltaMovement().add(0,-.03,0));if(--diveTicks<=0){flag(DIVE,false);setDeltaMovement(0,.35,0);
      int r=random.nextInt(100);var fish=new ItemStack(r<55?Items.COD:r<85?Items.SALMON:r<95?Items.TROPICAL_FISH:Items.PUFFERFISH);
      var it=new ItemEntity(level(),getX(),getY()+.6,getZ(),fish);if(owner!=null){Vec3 d=owner.position().subtract(position()).normalize();it.setDeltaMovement(d.x*.35,.35,d.z*.35);}level().addFreshEntity(it);
-     quack(this,1F,1.3F);setHappy(happy()+3);if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.SPLASH,getX(),getY()+.3,getZ(),20,.3,.1,.3,.1);}}
+     quack(this,1F,1.3F);setHappy(happy()+3);addXp(5);if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.SPLASH,getX(),getY()+.3,getZ(),20,.3,.1,.3,.1);}}
    else if(--fishTimer<=0){fishTimer=300+random.nextInt(400);flag(DIVE,true);diveTicks=40;if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.SPLASH,getX(),getY()+.3,getZ(),12,.2,.1,.2,.1);}
   }
   void sniff(LivingEntity owner){
@@ -317,17 +416,17 @@ public final class Pato {
     String id=net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(st.getBlock()).getPath();int v=id.contains("ancient")?6:id.contains("diamond")?5:id.contains("emerald")?4:id.contains("gold")?3:id.contains("redstone")||id.contains("lapis")?2:id.contains("iron")||id.contains("copper")?1:0;
     double d=p.distSqr(at);if(v>bv||v==bv&&d<bd){bv=v;bd=d;best=p.immutable();}}
    if(best==null){if(owner instanceof Player p&&distanceToSqr(p)<20*20&&random.nextInt(4)==0)msg(p,"§7🦆 *fareja* ... nada por aqui.");return;}
-   getNavigation().moveTo(best.getX()+.5,best.getY()+1,best.getZ()+.5,1.0);
+   getNavigation().moveTo(best.getX()+.5,best.getY()+1,best.getZ()+.5,1.0);addXp(bv>=5?6:3);
    String name=Component.translatable(level().getBlockState(best).getBlock().getDescriptionId()).getString();
    quack(this,bv>=5?1.6F:.9F,bv>=5?1.6F:1.1F);level().broadcastEntityEvent(this,(byte)70);
    if(level() instanceof ServerLevel sl){Vec3 a=position().add(0,.6,0),d=Vec3.atCenterOf(best).subtract(a);for(int i=1;i<10;i++){Vec3 q=a.add(d.scale(i/10.0));sl.sendParticles(bv>=5?ParticleTypes.HAPPY_VILLAGER:ParticleTypes.WAX_ON,q.x,q.y,q.z,1,0,0,0,0);}}
    if(owner instanceof Player p&&distanceToSqr(p)<24*24)msg(p,(bv>=5?"§b§l🦆 QUACK! ":"§e🦆 Quack! ")+"§7Cheiro de §f"+name+"§7 a §f"+(int)Math.sqrt(bd)+" blocos"+(best.getY()<getY()-1?" ↓":best.getY()>getY()+1?" ↑":""));
   }
   @Override public void addAdditionalSaveData(CompoundTag t){super.addAdditionalSaveData(t);
-   t.putInt("DuckColor",color());t.putInt("DuckHat",hat());t.putInt("DuckFed",fed());t.putInt("DuckMode",mode());t.putInt("DuckHunger",hunger());t.putInt("DuckHappy",happy());t.putBoolean("DuckKing",king());t.putBoolean("DuckRacer",racer());}
+   t.putInt("DuckColor",color());t.putInt("DuckHat",hat());t.putInt("DuckFed",fed());t.putInt("DuckMode",mode());t.putInt("DuckHunger",hunger());t.putInt("DuckHappy",happy());t.putBoolean("DuckKing",king());t.putBoolean("DuckRacer",racer());t.putInt("DuckXp",xp());}
   @Override public void readAdditionalSaveData(CompoundTag t){super.readAdditionalSaveData(t);
    entityData.set(COLOR,t.getInt("DuckColor"));entityData.set(HAT,t.getInt("DuckHat"));entityData.set(FED,t.getInt("DuckFed"));entityData.set(MODE,t.getInt("DuckMode"));
-   if(t.contains("DuckHunger")){setHunger(t.getInt("DuckHunger"));setHappy(t.getInt("DuckHappy"));}flag(KING,t.getBoolean("DuckKing"));flag(RACER,t.getBoolean("DuckRacer"));resize();}
+   if(t.contains("DuckHunger")){setHunger(t.getInt("DuckHunger"));setHappy(t.getInt("DuckHappy"));}flag(KING,t.getBoolean("DuckKing"));flag(RACER,t.getBoolean("DuckRacer"));entityData.set(XP,t.getInt("DuckXp"));setNoGravity(false);resize();}
   @Override public void checkDespawn(){if(racer()&&tickCount>2400)discard();else super.checkDespawn();}
  }
 
@@ -357,10 +456,10 @@ public final class Pato {
     else{var t=s.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,net.minecraft.world.item.component.CustomData.EMPTY).copyTag();int m=(t.getInt("Mode")+1)%MODES.length;t.putInt("Mode",m);
      s.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,net.minecraft.world.item.component.CustomData.of(t));
      for(var d:ducks){d.setMode(m);quack(d,.7F,1.2F);}
-     msg(p,"§e🦆 Modo: §f"+MODES[m]+" §7("+ducks.size()+" pato"+(ducks.size()>1?"s":"")+") • "+new String[]{"seguem você","ficam sentados","atacam monstros perto de você","pescam e trazem peixe","farejam minérios"}[m]);}}
+     msg(p,"§e🦆 Modo: §f"+MODES[m]+" §7("+ducks.size()+" pato"+(ducks.size()>1?"s":"")+") • "+new String[]{"seguem você","ficam sentados","atacam monstros perto de você","pescam e trazem peixe","farejam minérios","buscam itens do chão e trazem pra você (nível 3+)"}[m]);}}
    return InteractionResultHolder.sidedSuccess(s,l.isClientSide);}
   @Override public void appendHoverText(ItemStack s,TooltipContext c,List<Component> t,TooltipFlag f){
-   t.add(Component.literal("§7Botão direito: troca o modo dos seus patos"));t.add(Component.literal("§8Seguir → Sentar → Guarda-costas → Pescar → Farejar"));t.add(Component.literal("§7Shift + botão direito: chama todos os patos"));}
+   t.add(Component.literal("§7Botão direito: troca o modo dos seus patos"));t.add(Component.literal("§8Seguir → Sentar → Guarda-costas → Pescar → Farejar → Coletar"));t.add(Component.literal("§7Shift + botão direito: chama todos os patos"));}
  }
  // ======================================================================= nest
  public static final class NestBlock extends Block {

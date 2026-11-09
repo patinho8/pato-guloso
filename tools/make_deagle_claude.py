@@ -37,7 +37,7 @@ def tube(group,name,axis_y,axis_z,x0,x1,r,mat,sides=8):
     for k in range(sides//2):
         a=180/sides*k
         cube(group,name,[x0,axis_y-r*math.tan(math.pi/sides),axis_z-r],[x1,axis_y+r*math.tan(math.pi/sides),axis_z+r],mat,rot=[a,0,0],origin=[x0,axis_y,axis_z])
-GRIP=dict(rot=[0,0,-18],origin=[-17.5,15.6,0])
+GRIP=dict(rot=[0,0,0],origin=[-17.5,15.6,0])
 BORE=22.4
 # ================================ FERROLHO (anda para trás no tiro) ================================
 G='ferrolho'

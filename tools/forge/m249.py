@@ -36,7 +36,7 @@ both(G,'bipe_pe',34,24.8,37,27.4,1.2,2.6,'steel')
 G='inferior'
 K.trigger(G,-28,25.6,guard=True,gmat='steel',w=1.3,L=12,depth=6.4)
 c(G,'seguranca',[-24,26,-3.8],[-22,27.2,3.8],'polish')
-GR=dict(rot=[0,0,16],origin=[-34,25.6,0])
+GR=dict(rot=[0,0,0],origin=[-34,25.6,0])
 c(G,'punho',[-38,8,-2.6],[-30,25.8,2.6],'poly',**GR)
 K.checker(G,-37,10,3,8,1.9,2.6,**GR)
 c(G,'punho_base',[-38.4,7.2,-2.8],[-29.6,8.2,2.8],'poly',**GR)

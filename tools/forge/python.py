@@ -20,7 +20,7 @@ c(G,'cao',[-19.6,B-.6,-.8],[-16.4,B+3.4,.8],'steel2',rot=[0,0,24],origin=[-17,B-
 c(G,'cao_espora',[-21.6,B+2.2,-.9],[-18.4,B+3.6,.9],'steel2',rot=[0,0,24],origin=[-17,B-1,0])
 for k in range(3):c(G,'cao_estria',[-21.4+k*.9,B+3.6,-.85],[-21.0+k*.9,B+3.8,.85],'dark',rot=[0,0,24],origin=[-17,B-1,0])
 K.trigger(G,-9.6,21.4,guard=True,gmat='steel',w=1.0,L=9.4,depth=5.0)
-GR=dict(rot=[0,0,16],origin=[-15.4,21.4,0])
+GR=dict(rot=[0,0,0],origin=[-15.4,21.4,0])
 c(G,'punho_armacao',[-19,4,-1.6],[-12,21.6,1.6],'steel',**GR)
 both(G,'punho_madeira',-19.6,2.4,-11.2,20.4,1.6,2.6,'wood',**GR)
 K.checker(G,-18.8,4.4,5,9,1.5,2.6,mat='wood2',**GR)

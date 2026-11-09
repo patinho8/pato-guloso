@@ -24,7 +24,7 @@ for k in range(4):both(G,'freio_furo',55+k*2.2,B-.7,56.2+k*2.2,B+.7,2.35,2.6,'da
 tube(G,'boca',B,0,63.95,64.1,1.5,'dark')
 G='inferior'
 ak_trigger_group(K,G,-24,25.2)
-GR=dict(rot=[0,0,16],origin=[-31,25.2,0])
+GR=dict(rot=[0,0,0],origin=[-31,25.2,0])
 c(G,'punho',[-35,8,-2.5],[-27,25.4,2.5],'poly',**GR)
 K.checker(G,-34,10,3,8,1.8,2.5,**GR)
 c(G,'punho_base',[-35.4,7.2,-2.7],[-26.6,8.2,2.7],'poly',**GR)

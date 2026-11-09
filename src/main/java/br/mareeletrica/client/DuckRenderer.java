@@ -36,7 +36,7 @@ public final class DuckRenderer extends EntityRenderer<Duck> {
   switch(e.color()){case 1->{r=.62F;g=.43F;bl=.27F;}case 2->{r=.2F;g=.2F;bl=.22F;}case 3->{r=1F;g=.8F;bl=.3F;}case 4->{int c=java.awt.Color.HSBtoRGB((age*.012F)%1F,.55F,1F);r=(c>>16&255)/255F;g=(c>>8&255)/255F;bl=(c&255)/255F;}default->{}}
   hr=r;hg=g;hb=bl;if(e.color()==1){hr=.2F;hg=.5F;hb=.3F;}   // brown ones have the green mallard head
   if(e.isBaby()){r=hr=1F;g=hg=.88F;bl=hb=.35F;}
-  boolean sleep=e.flag(Duck.SLEEP),sit=e.isInSittingPose()||sleep||e.isPassenger(),swim=(e.isInWater()||e.fakeSwim)&&!e.flag(Duck.DIVE),dive=e.flag(Duck.DIVE),board=e.flag(Duck.BOARD),racer=e.racer();
+  boolean sleep=e.flag(Duck.SLEEP),sit=e.isInSittingPose()||sleep||e.isPassenger(),swim=(e.isInWater()||e.fakeSwim||e.flag(Duck.BATH))&&!e.flag(Duck.DIVE),dive=e.flag(Duck.DIVE),board=e.flag(Duck.BOARD),racer=e.racer();
   float walkPos=e.walkAnimation.position(pt),walkSpd=Math.min(1,e.walkAnimation.speed(pt));
   if(racer){walkPos=age*1.6F;walkSpd=1;}
   if(e.fakeWalkPos>=0){walkPos=e.fakeWalkPos;walkSpd=e.fakeWalkSpd;}
@@ -81,6 +81,9 @@ public final class DuckRenderer extends EntityRenderer<Duck> {
   pivot(p,-8F,-8.5F,-4.5F);
   part("duck_head",p,b,hr,hg,hb,light,overlay);part("duck_beak",p,b,1,1,1,light,overlay);part(sleep?"duck_eyes_closed":"duck_eyes",p,b,1,1,1,light,overlay);
   int hat=e.hat();if(hat==0&&e.king())hat=3;if(hat>0&&hat<HAT_PARTS.length)part(HAT_PARTS[hat],p,b,1,1,1,light,overlay);
+  var held=e.getMainHandItem();   // 0.76.0: what it fetched, in its beak
+  if(!held.isEmpty()){p.pushPose();pivot(p,8F,8.9F,1.0F);p.mulPose(Axis.XP.rotationDegrees(90));p.scale(.5F,.5F,.5F);
+   mc.getItemRenderer().renderStatic(held,net.minecraft.world.item.ItemDisplayContext.GROUND,light,OverlayTexture.NO_OVERLAY,p,b,e.level(),e.getId());p.popPose();}
   if(e.king()&&e.hat()!=0&&e.hat()!=3&&e.hat()!=4){p.translate(0,(e.hat()==2?4.6:1.6)/16,0);part("duck_hat_crown",p,b,1,1,1,light,overlay);}   // the King keeps a crown on top of any hat
   p.popPose();
   p.popPose();

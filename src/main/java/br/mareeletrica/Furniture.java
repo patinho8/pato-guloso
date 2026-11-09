@@ -71,11 +71,11 @@ public final class Furniture {
  public static final DeferredItem<BlockItem> SOFA_ITEM=item(SOFA,"Clique para sentar. Coloque vários lado a lado."),ARMCHAIR_ITEM=item(ARMCHAIR,"Clique para sentar."),CHAIR_ITEM=item(CHAIR,"Clique para sentar."),
   TABLE_ITEM=item(TABLE,""),LAMP_ITEM=item(LAMP,"Clique: liga/desliga."),TV_ITEM=item(TV,"Clique: troca de canal • Shift+clique: liga/desliga"),FRIDGE_ITEM=item(FRIDGE,"Guarda 27 itens. 2 blocos de altura."),
   BED_ITEM=item(BED,"Cama larga para dormir (2 blocos de comprimento).");
- public static void creative(java.util.function.Consumer<ItemStack> out){for(var i:List.of(SOFA_ITEM,ARMCHAIR_ITEM,CHAIR_ITEM,TABLE_ITEM,LAMP_ITEM,TV_ITEM,FRIDGE_ITEM,BED_ITEM))out.accept(new ItemStack(i.get()));out.accept(new ItemStack(Shower.ITEM.get()));}
+ public static void creative(java.util.function.Consumer<ItemStack> out){for(var i:List.of(SOFA_ITEM,ARMCHAIR_ITEM,CHAIR_ITEM,TABLE_ITEM,LAMP_ITEM,TV_ITEM,FRIDGE_ITEM,BED_ITEM))out.accept(new ItemStack(i.get()));out.accept(new ItemStack(Shower.ITEM.get()));out.accept(new ItemStack(Bath.ITEM.get()));}
  public static void register(){}
 
  /** shapes are written for a block facing north; rotated for the others */
- static VoxelShape shape(double[][] boxes,Direction f){VoxelShape s=Shapes.empty();for(var b:boxes)s=Shapes.or(s,Multiblock.box(f,b[0],b[1],b[2],b[3],b[4],b[5]));return s;}
+ public static VoxelShape shape(double[][] boxes,Direction f){VoxelShape s=Shapes.empty();for(var b:boxes)s=Shapes.or(s,Multiblock.box(f,b[0],b[1],b[2],b[3],b[4],b[5]));return s;}
 
  public static class ShapeBlock extends HorizontalDirectionalBlock {
   final VoxelShape[] shapes=new VoxelShape[4];
@@ -97,7 +97,7 @@ public final class Furniture {
  public static final class Seat extends Entity {
   public Seat(EntityType<? extends Seat> t,Level l){super(t,l);noPhysics=true;}
   @Override protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder b){}
-  @Override public void tick(){super.tick();if(!level().isClientSide&&(getPassengers().isEmpty()||!(level().getBlockState(blockPosition()).getBlock() instanceof SeatBlock)))discard();}
+  @Override public void tick(){super.tick();if(!level().isClientSide&&(getPassengers().isEmpty()||!(level().getBlockState(blockPosition()).getBlock() instanceof SeatBlock||level().getBlockState(blockPosition()).getBlock() instanceof Bath.BathBlock)))discard();}
   @Override protected Vec3 getPassengerAttachmentPoint(Entity e,EntityDimensions d,float s){return Vec3.ZERO;}
   @Override protected void positionRider(Entity r,Entity.MoveFunction m){super.positionRider(r,m);if(r instanceof net.minecraft.world.entity.LivingEntity le){float y=getYRot();le.setYBodyRot(y);float d=net.minecraft.util.Mth.wrapDegrees(le.getYRot()-y);le.setYRot(y+net.minecraft.util.Mth.clamp(d,-100,100));le.setYHeadRot(le.getYRot());}}
   @Override public Vec3 getDismountLocationForPassenger(net.minecraft.world.entity.LivingEntity e){return Vec3.atBottomCenterOf(blockPosition().above());}

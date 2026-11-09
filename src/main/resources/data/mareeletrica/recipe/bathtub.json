@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  "Q Q",
+  "QWQ",
+  "G G"
+ ],
+ "key": {
+  "Q": {
+   "item": "minecraft:quartz_block"
+  },
+  "W": {
+   "item": "minecraft:water_bucket"
+  },
+  "G": {
+   "item": "minecraft:gold_nugget"
+  }
+ },
+ "result": {
+  "id": "mareeletrica:bathtub",
+  "count": 1
+ }
+}

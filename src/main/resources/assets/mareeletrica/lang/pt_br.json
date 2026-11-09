@@ -1615,5 +1615,6 @@
  "item.mareeletrica.acc_combo": "Lanterna + Laser",
  "item.mareeletrica.acc_extended_mag": "Pente Estendido",
  "item.mareeletrica.acc_drum_mag": "Carregador de Tambor",
- "block.mareeletrica.shower": "Chuveiro"
+ "block.mareeletrica.shower": "Chuveiro",
+ "block.mareeletrica.bathtub": "Banheira"
 }

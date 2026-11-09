@@ -213,6 +213,7 @@ spas12 body 1
 spas12 body 2
 spas12 view 0
 spas12 view 1
+spas12 view 2
 spas12 moving 3
 spas12 magazine 4
 m249 body 0
@@ -253,14 +254,14 @@ sniperh view 2
 decal ak47 6.040 9.680 9.000 1.000 3.2
 decal sniper 6.770 9.271 8.350 3.152 3.2
 decal m4a1 6.224 9.776 9.927 -7.882 2.59
-decal desert_eagle 5.224 10.776 3.983 11.952 3.2
+decal desert_eagle 5.224 10.776 3.808 10.844 3.2
 decal mp5 6.643 9.395 9.704 6.200 3.0
-decal glock 5.925 10.075 0.078 10.133 3.2
-decal usp 5.852 10.148 0.132 10.149 3.2
-decal beretta 5.707 10.293 -0.024 10.313 3.2
+decal glock 5.925 10.075 -0.728 11.712 3.2
+decal usp 5.852 10.148 -0.672 11.712 3.2
+decal beretta 5.816 10.184 -0.784 11.712 3.2
 decal ump45 6.456 9.544 9.884 2.744 3.2
 decal scar 6.549 9.451 9.848 -1.000 2.53
-decal mp40 6.690 9.310 2.902 10.964 3.2
+decal mp40 6.690 9.381 2.432 11.636 2.71
 decal uzi 6.549 9.451 9.164 10.520 2.94
 decal mac10 6.596 9.404 9.128 14.660 2.53
 decal p90 6.409 9.591 7.328 12.140 3.0
@@ -274,5 +275,5 @@ decal spas12 6.596 9.451 7.796 7.280 3.2
 decal m249 6.586 9.456 7.584 6.480 3.17
 decal barrett 6.419 9.622 9.216 -4.400 2.71
 decal smg 6.783 9.217 6.001 4.998 3.2
-decal python 6.107 9.893 0.217 10.056 3.2
+decal python 6.107 9.893 0.000 11.600 3.2
 decal sniperh 6.000 10.000 8.800 5.500 3.2

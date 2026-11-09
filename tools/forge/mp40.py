@@ -34,7 +34,7 @@ G='inferior'
 c(G,'armacao',[-40,23.8,-2.6],[-12,29.2,2.6],'bake')
 c(G,'armacao_frente',[-14,22.6,-2.2],[-8,29,2.2],'bake')
 K.trigger(G,-22.4,23.8,guard=True,gmat='steel',w=1.2,L=11,depth=5.8)
-GR=dict(rot=[0,0,14],origin=[-34,23.8,0])
+GR=dict(rot=[0,0,0],origin=[-34,23.8,0])
 c(G,'punho',[-38.8,6,-2.6],[-29.4,24,2.6],'bake',**GR)
 for k in range(9):both(G,'punho_estria',-38,8+k*1.7,-30.2,8.7+k*1.7,2.6,2.8,'bake',**GR)
 c(G,'punho_parafuso',[-35,14,2.75],[-33.6,15.4,2.95],'polish',**GR)
