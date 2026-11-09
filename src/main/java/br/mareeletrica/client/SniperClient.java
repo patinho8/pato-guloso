@@ -52,9 +52,12 @@ public final class SniperClient {
   for(int y=0;y<h;y++){int dy=y-cy,dx=Math.abs(dy)>=r?0:(int)Math.sqrt(r*r-dy*dy);g.fill(0,y,cx-dx,y+1,0xFF030405);g.fill(cx+dx,y,w,y+1,0xFF030405);}
   ring(g,cx,cy,r,2,0xFF0B0D10);reticle(g,cx,cy,r);g.drawCenteredString(mc.font,label,cx,h-18,0xC8D3D8);}
  /** 0.67.3: hip-fire crosshair = a small round dot (white with a dark outline) */
- private static void redDot(GuiGraphics g){int cx=g.guiWidth()/2,cy=g.guiHeight()/2;
+ private static void redDot(GuiGraphics g){   // 0.78.2: drawn in real screen pixels (3 px dot + 1 px outline), no longer grows with the GUI scale
+  var win=Minecraft.getInstance().getWindow();float k=(float)win.getGuiScale();int cx=win.getWidth()/2,cy=win.getHeight()/2;
+  g.pose().pushPose();g.pose().scale(1F/k,1F/k,1F);
   g.fill(cx-1,cy-2,cx+2,cy+3,0x90000000);g.fill(cx-2,cy-1,cx+3,cy+2,0x90000000);
-  g.fill(cx-1,cy-1,cx+2,cy+2,0xFFF4F6F6);g.fill(cx,cy-1,cx+1,cy+2,0xFFFFFFFF);}
+  g.fill(cx-1,cy-1,cx+2,cy+2,0xFFF4F6F6);g.fill(cx,cy-1,cx+1,cy+2,0xFFFFFFFF);
+  g.pose().popPose();}
  private static void ammo(GuiGraphics g,net.minecraft.world.item.ItemStack s){var f=WeaponFamily.of(s);if(f!=null)g.drawCenteredString(Minecraft.getInstance().font,Magazines.rounds(s)+" / "+Accessory.capacity(s,f)+"  ·  "+(ModularLoadout.hasOptic(s)?zoom()+"×":"FERRO"),g.guiWidth()/2,g.guiHeight()-22,0xD4E7DF);}
  private static void arsenalReticle(GuiGraphics g,net.minecraft.world.item.ItemStack s){if(ModularLoadout.hasOptic(s))opticReticle(g,GunLoadout.zoom(s));ammo(g,s);}
  /** 0.72.0: what you see through a short optic: 1× red dot, 2× holographic ring, 3× prism chevron (glowing, in the middle of the screen) */
