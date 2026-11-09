@@ -8,7 +8,8 @@ import org.joml.Vector3f;
  *  All positions are in gun model space (1 unit = 1 block, 16 units per block). */
 public final class ReloadPath {
  /** 0.79.0 (tools/mag_anchors.py): magazine x | bottom y,z | top y,z (model px), one row per WeaponFamily */
- static final float[][] MAG={{8.0F,-2.18F,9.29F,7.62F,11.01F,8.0F,15.32F,16.36F},{8.0F,-7.73F,11.66F,5.71F,11.71F,8.0F,12.29F,14.96F},{8.0F,-3.69F,6.86F,6.15F,4.79F,7.82F,11.55F,15.77F},{8.0F,-1.87F,-1.33F,7.46F,0.07F,0F,0F,0F},{8F,0F,0F,0F,0F,8.0F,7.62F,-0.64F},{8.0F,-3.97F,1.86F,5.64F,1.2F,6.13F,11.76F,-10.43F},{8.0F,-7.79F,4.76F,2.36F,4.94F,6.27F,11.22F,5.48F},{8F,0F,0F,0F,0F,0F,0F,0F},{8.0F,-7.72F,0.62F,4.63F,0.19F,6.03F,10.64F,10.38F},{8.0F,9.27F,10.29F,10.57F,10.29F,8.0F,6.82F,4.22F},{8F,0F,0F,0F,0F,8.0F,12.71F,11.94F},{8.0F,-7.84F,11.66F,5.71F,11.71F,8.0F,12.18F,15.02F},{8.0F,-4.27F,4.85F,3.48F,3.77F,5.56F,10.53F,-1.0F},{8.0F,-3.76F,1.34F,5.85F,0.71F,6.17F,11.72F,-7.41F},{8F,0F,0F,0F,0F,8.0F,8.7F,-1.36F},{8.0F,-7.95F,11.71F,5.6F,11.66F,7.96F,12.01F,14.96F},{8.0F,-5.63F,11.64F,5.53F,11.64F,8.0F,12.37F,15.63F},{8.0F,-4.59F,17.77F,3.48F,17.11F,8.0F,13.16F,13.58F},{6.04F,-1.12F,4.56F,7.39F,0.98F,10.08F,7.9F,3.41F},{8.0F,-2.58F,1.47F,4.19F,0.88F,10.45F,9.5F,-2.29F},{8.0F,-6.5F,11.6F,5.46F,11.6F,8.0F,11.94F,15.52F},{8.0F,-4.58F,5.95F,6.0F,4.04F,7.19F,9.42F,9.08F},{8.0F,-4.4F,20.25F,3.98F,17.97F,6.03F,10.5F,8.4F},{8.0F,-2.68F,8.17F,6.18F,7.01F,10.13F,9.34F,9.08F},{8.0F,-0.1F,7.31F,5.95F,4.26F,9.75F,8.99F,7.44F}};
+ static final float[][] MAG={{8.0F,-2.18F,9.29F,7.62F,11.01F,8.0F,15.32F,16.36F},{8.0F,-7.73F,11.66F,5.71F,11.71F,8.0F,12.29F,14.96F},{8.0F,-3.69F,6.86F,6.15F,4.79F,7.82F,11.55F,15.77F},{8.0F,-1.87F,-1.33F,7.46F,0.07F,0F,0F,0F},{8F,0F,0F,0F,0F,8.0F,7.62F,-0.64F},{8.0F,-3.97F,1.86F,5.64F,1.2F,6.13F,11.76F,-10.43F},{8.0F,-7.79F,4.76F,2.36F,4.94F,6.27F,11.22F,5.48F},{8.0F,1.71F,1.51F,6.3F,1.51F,0F,0F,0F},{8.0F,-7.72F,0.62F,4.63F,0.19F,6.03F,10.64F,10.38F},{8.0F,9.27F,10.29F,10.57F,10.29F,8.0F,6.82F,4.22F},{8F,0F,0F,0F,0F,8.0F,12.71F,11.94F},{8.0F,-7.84F,11.66F,5.71F,11.71F,8.0F,12.18F,15.02F},{8.0F,-4.27F,4.85F,3.48F,3.77F,5.56F,10.53F,-1.0F},{8.0F,-3.76F,1.34F,5.85F,0.71F,6.17F,11.72F,-7.41F},{8F,0F,0F,0F,0F,8.0F,8.7F,-1.36F},{8.0F,-7.95F,11.71F,5.6F,11.66F,7.96F,12.01F,14.96F},{8.0F,-5.63F,11.64F,5.53F,11.64F,8.0F,12.37F,15.63F},{8.0F,-4.59F,17.77F,3.48F,17.11F,8.0F,13.16F,13.58F},{6.04F,-1.12F,4.56F,7.39F,0.98F,10.08F,7.9F,3.41F},{8.0F,-2.58F,1.47F,4.19F,0.88F,10.45F,9.5F,-2.29F},{8.0F,-6.5F,11.6F,5.46F,11.6F,8.0F,11.94F,15.52F},{8.0F,-4.58F,5.95F,6.0F,4.04F,7.19F,9.42F,9.08F},{8.0F,-4.4F,20.25F,3.98F,17.97F,6.03F,10.5F,8.4F},{8.0F,-2.68F,8.17F,6.18F,7.01F,10.13F,9.34F,9.08F},{8.0F,-0.1F,7.31F,5.95F,4.26F,9.75F,8.99F,7.44F}};
+ static final float[] MAG_HUNTER={8.0F,2.9F,4.0F,8.1F,4.0F,0F,0F,0F};
  private ReloadPath(){}
  private static float s(float x){x=Mth.clamp(x,0,1);return x*x*(3-2*x);}
  private static float seg(float p,float a,float b){return s((p-a)/(b-a));}
@@ -38,7 +39,7 @@ public final class ReloadPath {
  // ---------------- 0.80.0: round-by-round timing (shared with Magazines.loosePre/Per/Post) ----------------
  static int curN=0,curD=1;static WeaponFamily curF;
  /** call once per frame with the gun in hand */
- public static void cur(net.minecraft.world.item.ItemStack s){var t=br.mareeletrica.RifleLoadout.tag(s);curF=WeaponFamily.of(s);curN=t.getInt("ShellLoad");curD=Math.max(1,t.getInt("ReloadDuration"));}
+ public static void cur(net.minecraft.world.item.ItemStack s){var t=br.mareeletrica.RifleLoadout.tag(s);curF=WeaponFamily.of(s);curHunter=s.is(br.mareeletrica.MareEletrica.HUNTER.get());curN=t.getInt("ShellLoad");curD=Math.max(1,t.getInt("ReloadDuration"));}
  static float tk(float p){return p*curD;}
  /** which round (0..n-1) and how far into its cycle (0..1); round<0 = before, round>=n = after */
  static int rnd(float p){if(curF==null)return -1;float t=tk(p)-br.mareeletrica.Magazines.loosePre(curF);return t<0?-1:Math.min(curN,(int)(t/br.mareeletrica.Magazines.loosePer(curF)));}
@@ -69,12 +70,14 @@ public final class ReloadPath {
   case FAMAS,AUG->Style.BULLPUP;                    // magazine behind the grip
   case M870,SPAS12->Style.TUBE;                     // shell by shell under the receiver, then the pump
   case M4A1,SCAR,MP5,UMP45,SMG,MP40,UZI,MAC10->Style.RIFLE;
+  case SNIPER->Style.HEAVY;                          // 0.80.1: both bolt snipers now swap a real box magazine
   default->Style.OTHER;};}
  public static boolean choreo(WeaponFamily f){return style(f)!=Style.OTHER;}
  /** 0 = feather light, 1 = machine gun */
  public static float weight(WeaponFamily f){return switch(f){case GLOCK,USP,BERETTA->.15F;case DESERT_EAGLE->.4F;case UZI,MAC10->.25F;case MP5,UMP45,SMG,MP40->.35F;
-  case M4A1,SCAR,FAMAS,AUG->.5F;case AK47,GALIL->.55F;case SAIGA12,SVD,M870,SPAS12->.65F;case BARRETT->.9F;case M249->1F;default->.5F;};}
- static float[] row(WeaponFamily f){int i=f.ordinal();return i<MAG.length?MAG[i]:new float[8];}
+  case M4A1,SCAR,FAMAS,AUG->.5F;case AK47,GALIL->.55F;case SAIGA12,SVD,M870,SPAS12->.65F;case SNIPER->.75F;case BARRETT->.9F;case M249->1F;default->.5F;};}
+ static boolean curHunter;
+ static float[] row(WeaponFamily f){if(f==WeaponFamily.SNIPER&&curHunter)return MAG_HUNTER;int i=f.ordinal();return i<MAG.length?MAG[i]:new float[8];}
  static float len(float[] m){return (float)Math.sqrt((m[3]-m[1])*(m[3]-m[1])+(m[4]-m[2])*(m[4]-m[2]));}
  /** unit vector from the magazine bottom to its top (y,z) */
  static float[] axis(float[] m){float l=Math.max(.01F,len(m));return new float[]{(m[3]-m[1])/l,(m[4]-m[2])/l};}

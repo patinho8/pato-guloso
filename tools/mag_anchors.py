@@ -20,9 +20,21 @@ for f in FAM:
     x=(min(q[0] for q in v)+max(q[0] for q in v))/2
     out[f]=[round(x,2),round(y0,2),round(zb,2),round(y1,2),round(zt,2)]+mv(f)
     print(f.ljust(13),out[f],'len %.2f'%((y1-y0)**2+(zt-zb)**2)**.5)
+# the Hunter sniper (skin 13) has its own model and magazine
+def verts13(name):
+    j=json.load(open(B+f'armory21_{name}_13.json'))
+    if 'model' not in j:return []
+    p=j['model'].split(':')[1];return [[float(t)*16 for t in l.split()[1:4]] for l in open('src/main/resources/assets/mareeletrica/'+p) if l.startswith('v ')]
+v=verts13('sniper_magazine');ys=[q[1] for q in v];y0,y1=min(ys),max(ys)
+bot=[q for q in v if q[1]<y0+.35];top=[q for q in v if q[1]>y1-.35]
+hunter=[round((min(q[0] for q in v)+max(q[0] for q in v))/2,2),round(y0,2),round(sum(q[2] for q in bot)/len(bot),2),round(y1,2),round(sum(q[2] for q in top)/len(top),2),0,0,0]
+print('sniper hunter',hunter)
 json.dump(out,open('tools/mag_anchors.json','w'))
 J='src/main/java/br/mareeletrica/client/ReloadPath.java';j=open(J).read()
 row='static final float[][] MAG={'+','.join('{'+','.join(f'{v}F' for v in out[f])+'}' for f in FAM)+'};'
+hrow='static final float[] MAG_HUNTER={'+','.join(f'{v}F' for v in hunter)+'};'
+if 'static final float[] MAG_HUNTER=' in j:j=re.sub(r'static final float\[\] MAG_HUNTER=\{.*?\};',hrow,j)
+else:j=j.replace(' private ReloadPath(){}',' '+hrow+'\n private ReloadPath(){}',1)
 if 'static final float[][] MAG=' in j:j=re.sub(r'static final float\[\]\[\] MAG=\{.*?\}\};',row,j)
 else:j=j.replace(' private ReloadPath(){}',' /** 0.79.0 (tools/mag_anchors.py): magazine x | bottom y,z | top y,z | moving part x, top y, rear z (model px), one row per WeaponFamily */\n '+row+'\n private ReloadPath(){}',1)
 open(J,'w').write(j)
