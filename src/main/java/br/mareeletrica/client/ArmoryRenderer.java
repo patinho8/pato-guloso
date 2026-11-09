@@ -41,15 +41,7 @@ public final class ArmoryRenderer {
    float swing=first?ReloadPath.pySwing(prog):0;
    pose.pushPose();pose.translate(6.4/16.0,6.6/16.0,0);pose.mulPose(Axis.ZP.rotationDegrees(swing*70F));pose.translate(-6.4/16.0,-6.6/16.0,0);
    PaintClient.model(s,f,"magazine",base+"magazine_"+skin,pose,buffers,light);pose.popPose();
-   float[] loader=first?ReloadPath.pyLoaderOffset(prog):null;
-   boolean spent=!first||ReloadPath.pySpentVisible(prog),seated=!first||ReloadPath.pySeatedVisible(prog);
-   float fall=first?ReloadPath.pySpentFall(prog):0;
-   if((spent&&fall<.97F)||seated||loader!=null){
-    pose.pushPose();
-    if(loader!=null)pose.translate(loader[0],loader[1],loader[2]);else if(spent&&!seated)pose.translate(0,-fall*.65F,0);
-    pose.translate(6.4/16.0,6.6/16.0,0);pose.mulPose(Axis.ZP.rotationDegrees(swing*70F));pose.translate(-6.4/16.0,-6.6/16.0,0);
-    DmtGearLayer.model(base+"rounds_0",pose,buffers,light);pose.popPose();
-   }
+   // 0.80.0: the rounds in the cylinder are no longer drawn (cleaner look); they go in one by one during the reload
   }else if(f==WeaponFamily.P90){
    // P90: the support hand pulls the top magazine up and back, throws it away, then slides a fresh one in from above
    float[] o=first?ReloadPath.p90Offset(prog):new float[3];

@@ -17,7 +17,7 @@ import org.joml.Quaternionf;
 public final class RifleHands {
  /** 0.76.0: guns ~30% bigger in first person, grown around the grip so the hand stays put */
  static final float BIG=.85F,GY=.23F-.5F,GZ=.76F-.9F;
- public static void render(RenderHandEvent e){var mc=Minecraft.getInstance();var player=mc.player;if(player==null)return;var gun=player.getMainHandItem();var f=WeaponFamily.of(gun);if(f==null)return;boolean pistol=f.pistol(),right=player.getMainArm()==HumanoidArm.RIGHT;float side=right?1:-1;float progress=ArmoryRenderer.progress(gun,e.getPartialTick()),reload=ArmoryRenderer.drop(progress);boolean reloading=Magazines.reloading(gun);float reloadPose=reloading?ArmoryRenderer.reloadPose(progress):0;float aim=SniperClient.aimAmount(e.getPartialTick()),smooth=aim*aim*(3-2*aim),kick=SniperClient.kick;
+ public static void render(RenderHandEvent e){var mc=Minecraft.getInstance();var player=mc.player;if(player==null)return;var gun=player.getMainHandItem();ReloadPath.cur(gun);var f=WeaponFamily.of(gun);if(f==null)return;boolean pistol=f.pistol(),right=player.getMainArm()==HumanoidArm.RIGHT;float side=right?1:-1;float progress=ArmoryRenderer.progress(gun,e.getPartialTick()),reload=ArmoryRenderer.drop(progress);boolean reloading=Magazines.reloading(gun);float reloadPose=reloading?ArmoryRenderer.reloadPose(progress):0;float aim=SniperClient.aimAmount(e.getPartialTick()),smooth=aim*aim*(3-2*aim),kick=SniperClient.kick;
   float scale=pistol?.62F:.66F,sight=ArmoryRenderer.sightY(gun),aimY=-(GY+BIG*(sight/16F-.5F-GY))*scale;
   float walk=(float)Math.min(1,player.getDeltaMovement().horizontalDistance()*(ProneSystem.prone(player)?26:8)),phase=(player.tickCount+e.getPartialTick())*.72F;
   float swayX=Mth.sin(phase)*walk*.012F,swayY=Mth.cos(phase*2)*walk*.008F;
@@ -27,7 +27,7 @@ public final class RifleHands {
    .translate(side*ins[0],ins[1],ins[2]).rotateY(side*ins[4]).rotateX(ins[3]).rotateZ(side*ins[5])
    .rotateY((float)Math.toRadians(side*reloadPose*rg[5]))
    .rotateZ((float)Math.toRadians(-side*reloadPose*rg[3]-LeanClient.local()*5F))
-   .rotateX((float)Math.toRadians(kick*(f==WeaponFamily.DESERT_EAGLE?42F:f==WeaponFamily.PYTHON?34F:f==WeaponFamily.SPAS12?20F:f==WeaponFamily.BARRETT?26F:pistol?15F:11F)+reloadPose*rg[4]+(f==WeaponFamily.PYTHON&&reloading?ReloadPath.pyTilt(progress)*26F:0F)))
+   .rotateX((float)Math.toRadians(kick*(f==WeaponFamily.DESERT_EAGLE?42F:f==WeaponFamily.PYTHON?34F:f==WeaponFamily.SPAS12?20F:f==WeaponFamily.BARRETT?26F:pistol?15F:11F)+reloadPose*rg[4]+(f==WeaponFamily.PYTHON&&reloading?ReloadPath.pyTilt(progress)*12F:0F)))
    .scale(scale).translate(0,GY,GZ).scale(BIG).translate(0,-GY,-GZ).translate(-.5F,-.5F,-.9F);
   var pose=e.getPoseStack();var buffers=e.getMultiBufferSource();int light=e.getPackedLight();
   if(!player.isInvisible()&&mc.getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer renderer){var model=renderer.getModel();var grip=rifle.transformPosition(new Vector3f(.5F,.23F,.76F));var support=new Vector3f(.5F,pistol?.24F:.42F,pistol?.69F:f==WeaponFamily.SMG?.1F:-.12F);{float[] sp=ArmoryRenderer.support(f);if(sp!=null)support.set(.5F,sp[0]/16,sp[1]/16);}
@@ -38,9 +38,10 @@ public final class RifleHands {
    if(f!=WeaponFamily.DESERT_EAGLE||reloading)arm(pose,buffers,light,right?model.leftArm:model.rightArm,right?model.leftSleeve:model.rightSleeve,!right,player.isModelPartShown(right?PlayerModelPart.LEFT_SLEEVE:PlayerModelPart.RIGHT_SLEEVE),new Vector3f(-side*.35F,-.64F,.04F),support);
   }
   pose.pushPose();pose.mulPose(rifle);RifleRenderer.parts(gun,pose,buffers,light,ProneSystem.supported(player),true);
-  if(reloading&&ReloadPath.shellInHand(f,progress)){var sp=ArmoryRenderer.support(f);var h=ReloadPath.hand2(f,progress,new Vector3f(.5F,sp!=null?sp[0]/16:.42F,sp!=null?sp[1]/16:-.12F));
-   pose.pushPose();pose.translate(h.x+.02F,h.y+.05F,h.z);pose.mulPose(com.mojang.math.Axis.XP.rotationDegrees(90));pose.scale(.32F,.32F,.32F);
-   mc.getItemRenderer().renderStatic(new net.minecraft.world.item.ItemStack(f.ammo()),net.minecraft.world.item.ItemDisplayContext.FIXED,light,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,pose,buffers,mc.level,0);pose.popPose();}
+  if(reloading&&ReloadPath.shellInHand(f,progress)){var sp=ArmoryRenderer.support(f);var h=f==WeaponFamily.PYTHON?ReloadPath.hand(f,progress,new Vector3f(.5F,sp!=null?sp[0]/16:.42F,sp!=null?sp[1]/16:-.12F)):ReloadPath.hand2(f,progress,new Vector3f(.5F,sp!=null?sp[0]/16:.42F,sp!=null?sp[1]/16:-.12F));
+   // 0.80.0: a small 3D round / shell between the fingers (model centred on 8,8,8 px), pointing forward
+   pose.pushPose();pose.translate(h.x,h.y+.06F,h.z-.02F);if(f==WeaponFamily.PYTHON)pose.scale(1.4F,1.4F,1.4F);pose.translate(-.5F,-.5F,-.5F);
+   DmtGearLayer.model(f==WeaponFamily.PYTHON?"loose_round":"loose_shell",pose,buffers,light);pose.popPose();}
   if(SniperClient.flashTicks>0&&RifleLoadout.suppressor(gun)==0){pose.pushPose();pose.translate(0,(ArmoryRenderer.bore(gun,f)-8.9)/16,(ArmoryRenderer.muzzle(gun,f)+10.5)/16);DmtGearLayer.model("gun_flash",pose,buffers,15728880);pose.popPose();}
   if(kick>.08F){pose.pushPose();pose.translate((1-kick)*.6,.1+kick*.16,.05);pose.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(kick*180));DmtGearLayer.model("gun_case",pose,buffers,light);pose.popPose();}pose.popPose();
  }

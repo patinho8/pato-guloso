@@ -21,7 +21,14 @@ public final class SniperClient {
  public static float aimAmount(float partial){return Mth.lerp(partial,previousAim,aim);}
  public static int zoom(){var p=Minecraft.getInstance().player;return p==null?1:p.getMainHandItem().getItem() instanceof GunItem?GunLoadout.zoom(p.getMainHandItem()):p.getMainHandItem().is(MareEletrica.SMG.get())?SmgLoadout.zoom(p.getMainHandItem()):RifleLoadout.zoom(p.getMainHandItem());}
  public static float reloadAmount(net.minecraft.world.item.ItemStack stack){return ArmoryRenderer.drop(ArmoryRenderer.progress(stack,0));}
- public static double mouseScale(){var mc=Minecraft.getInstance();return scoped()?Math.max(.006,1.0/zoom()):1;}
+ public static double mouseScale(){var mc=Minecraft.getInstance();return scoped()?Math.max(.006,1.0/viewZoom()):1;}
+ /** 0.80.0: only the sniper rifles get the full-screen scope; every other gun aims the same way, with a light zoom that grows a little with the optic */
+ public static boolean sniperFamily(net.minecraft.world.item.ItemStack s){var f=WeaponFamily.of(s);return f==WeaponFamily.SNIPER||f==WeaponFamily.BARRETT||f==WeaponFamily.SVD;}
+ public static double viewZoom(){var p=Minecraft.getInstance().player;if(p==null)return 1;var s=p.getMainHandItem();int z=zoom();
+  if(!(s.getItem() instanceof GunItem)||sniperFamily(s))return z;
+  double v=z<=1?(ModularLoadout.hasOptic(s)?1.25:1.15):z==2?1.5:z==3?1.75:z<=4?1.95:2.2;   // iron 1.15× · red dot 1.25× · holo 1.5× · prism 1.75× · 4× 1.95× · 6× 2.2×
+  var f=WeaponFamily.of(s);if(f!=null&&f.pistol())v*=.94;else if(f==WeaponFamily.M249)v*=1.05;
+  return v;}
  public static void shot(GunPackets.Shot p){var mc=Minecraft.getInstance();if(mc.player==null)return;if(p.sniper()){waitRelease=mc.options.keyUse.isDown();mc.options.keyUse.setDown(false);if(mc.player.isUsingItem())mc.gameMode.releaseUsingItem(mc.player);mc.player.stopUsingItem();aim=previousAim=0;}mc.player.setXRot(Mth.clamp(mc.player.getXRot()-p.pitch(),-89,89));mc.player.setYRot(mc.player.getYRot()+p.yaw());flashTicks=2;kickTicks=14;kick=p.sniper()?1F:mc.player.getMainHandItem().getItem() instanceof GunItem g?Math.min(.9F,.2F+g.profile.recoil*.13F):mc.player.getMainHandItem().is(MareEletrica.SMG.get())?.38F:.6F;}
  public static void prone(GunPackets.Prone state){var mc=Minecraft.getInstance();if(mc.level!=null&&mc.level.getEntity(state.entity()) instanceof net.minecraft.world.entity.player.Player p)ProneSystem.set(p,state.active());}
  public static void shiftPress(){if(clock-lastShift<=7&&clock>lastShift){PacketDistributor.sendToServer(new GunPackets.Command(2));lastShift=-100;}else lastShift=clock;}
@@ -36,8 +43,8 @@ public final class SniperClient {
  }
  @SubscribeEvent public static void logout(ClientPlayerNetworkEvent.LoggingOut e){triggerHeld=attackPressed=false;triggerItem=null;flashTicks=0;waitRelease=false;aim=previousAim=kick=0;}
  @SubscribeEvent public static void fov(ComputeFovModifierEvent e){if(ProneSystem.prone(e.getPlayer()))e.setNewFovModifier(1F);}
- public static double opticalFov(double base,int magnification){return Math.toDegrees(2*Math.atan(Math.tan(Math.toRadians(base)/2)/Math.max(1,magnification)));}
- @SubscribeEvent public static void optical(ViewportEvent.ComputeFov e){var mc=Minecraft.getInstance();if(!e.usedConfiguredFov()||mc.player==null||!mc.options.getCameraType().isFirstPerson())return;float amount=aimAmount((float)e.getPartialTick());if(amount>0)e.setFOV(Mth.lerp(amount,e.getFOV(),opticalFov(mc.options.fov().get(),zoom())));}
+ public static double opticalFov(double base,double magnification){return Math.toDegrees(2*Math.atan(Math.tan(Math.toRadians(base)/2)/Math.max(1,magnification)));}
+ @SubscribeEvent public static void optical(ViewportEvent.ComputeFov e){var mc=Minecraft.getInstance();if(!e.usedConfiguredFov()||mc.player==null||!mc.options.getCameraType().isFirstPerson())return;float amount=aimAmount((float)e.getPartialTick());if(amount>0)e.setFOV(Mth.lerp(amount,e.getFOV(),opticalFov(mc.options.fov().get(),viewZoom())));}
 
  @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.HIGHEST) public static void hand(RenderHandEvent e){var mc=Minecraft.getInstance();if(mc.player!=null&&!RemoteClient.active()&&SniperItem.firearm(mc.player.getMainHandItem())){e.setCanceled(true);if(e.getHand()==net.minecraft.world.InteractionHand.MAIN_HAND&&(!scoped()||!(MareEletrica.isSniper(mc.player.getMainHandItem())||scopeOptic(mc.player.getMainHandItem()))))RifleHands.render(e);}}
  @SubscribeEvent public static void crosshair(RenderGuiLayerEvent.Pre e){var held=Minecraft.getInstance().player;if(held!=null&&SniperItem.firearm(held.getMainHandItem())&&e.getName().equals(VanillaGuiLayers.CROSSHAIR))e.setCanceled(true);if(scoped()&&!e.getName().equals(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,"sniper_scope")))e.setCanceled(true);}
@@ -46,7 +53,7 @@ public final class SniperClient {
   if(SniperItem.firearm(gun)){String text=gun.getItem() instanceof GunItem weapon?weapon.profile.title+"  "+GunLoadout.rounds(gun)+"/"+(WeaponFamily.of(gun)==null?weapon.profile.capacity:Accessory.capacity(gun,WeaponFamily.of(gun)))+" · R: recarga · J: painel":gun.is(MareEletrica.SMG.get())?"SMG  "+SmgLoadout.rounds(gun)+"/30 · R: recarga · J: painel":"Sniper  "+Magazines.rounds(gun)+"/5 · R: recarga · J: acessórios";int x=8,y=g.guiHeight()-65;g.fill(x-3,y-3,x+mc.font.width(text)+5,y+23,0xA0192027);g.drawString(mc.font,text,x,y,0xDBE7EC);g.drawString(mc.font,ProneSystem.prone(mc.player)?(ProneSystem.supported(mc.player)?"BIPÉ APOIADO":"DEITADO · sem apoio estável"):"Shift 2×: deitar",x,y+12,ProneSystem.supported(mc.player)?0x88EEAB:0xA9BBC8);}
  }
  /** 0.72.0: an arsenal gun wearing a rifle scope (4× or more) looks through the same scope as the snipers */
- public static boolean scopeOptic(net.minecraft.world.item.ItemStack gun){return gun.getItem() instanceof GunItem&&ModularLoadout.hasOptic(gun)&&GunLoadout.zoom(gun)>=4;}
+ public static boolean scopeOptic(net.minecraft.world.item.ItemStack gun){return gun.getItem() instanceof GunItem&&ModularLoadout.hasOptic(gun)&&GunLoadout.zoom(gun)>=4&&sniperFamily(gun);}
  /** the sniper scope: black all around a round lens with the Valorant-style reticle */
  static void scopeView(GuiGraphics g,String label){var mc=Minecraft.getInstance();int w=g.guiWidth(),h=g.guiHeight(),cx=w/2,cy=h/2,r=Math.max(20,(int)(h*.44));
   for(int y=0;y<h;y++){int dy=y-cy,dx=Math.abs(dy)>=r?0:(int)Math.sqrt(r*r-dy*dy);g.fill(0,y,cx-dx,y+1,0xFF030405);g.fill(cx+dx,y,w,y+1,0xFF030405);}

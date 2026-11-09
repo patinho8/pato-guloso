@@ -30,6 +30,7 @@ public class GunItem extends Item {
  @Override public UseAnim getUseAnimation(ItemStack s){return UseAnim.NONE;}
  public static void reload(ServerPlayer p){Magazines.reload(p);}
  public static void fire(ServerPlayer p){
+  if(valid(p)&&Magazines.shellLoading(p.getMainHandItem())&&Magazines.rounds(p.getMainHandItem())>0)Magazines.stopLoose(p,p.getMainHandItem());   // 0.80.0: firing interrupts a round-by-round reload
   if(!valid(p)||Magazines.reloading(p.getMainHandItem())||p.getCooldowns().isOnCooldown(p.getMainHandItem().getItem()))return;
   var kit=GunLoadout.of(p);var profile=WeaponProfile.of(kit.gun);int count=GunLoadout.rounds(kit.gun);
   if(count==0){trigger(p,false);p.getCooldowns().addCooldown(kit.gun.getItem(),6);p.displayClientMessage(Component.literal("Carregador vazio. R para recarregar."),true);return;}

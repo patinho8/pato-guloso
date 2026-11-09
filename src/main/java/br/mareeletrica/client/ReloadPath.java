@@ -33,8 +33,17 @@ public final class ReloadPath {
  private static final Vector3f P90_BASE=new Vector3f(.5F,.84F,.62F);
 
  // ---------------- Python: cylinder swings out, rounds fall, the hand brings a speedloader from the belt, cylinder closes ----------------
- public static float pySwing(float p){return p<.02F?0:p<.14F?seg(p,.02F,.14F):p<.78F?1:p<.88F?1-seg(p,.78F,.88F):0;}
- public static float pyTilt(float p){return p<.10F?seg(p,0,.10F):p<.34F?1:p<.44F?1-seg(p,.34F,.44F):0;}
+ public static float pySwing(float p){float t=tk(p),D=curD;return t<1?0:t<6?seg(t,1,6):t<D-10?1:t<D-5?1-seg(t,D-10,D-5):0;}
+ public static float pyTilt(float p){float t=tk(p);return t<5?seg(t,0,5):t<12?1:t<16?1-seg(t,12,16):0;}
+ // ---------------- 0.80.0: round-by-round timing (shared with Magazines.loosePre/Per/Post) ----------------
+ static int curN=0,curD=1;static WeaponFamily curF;
+ /** call once per frame with the gun in hand */
+ public static void cur(net.minecraft.world.item.ItemStack s){var t=br.mareeletrica.RifleLoadout.tag(s);curF=WeaponFamily.of(s);curN=t.getInt("ShellLoad");curD=Math.max(1,t.getInt("ReloadDuration"));}
+ static float tk(float p){return p*curD;}
+ /** which round (0..n-1) and how far into its cycle (0..1); round<0 = before, round>=n = after */
+ static int rnd(float p){if(curF==null)return -1;float t=tk(p)-br.mareeletrica.Magazines.loosePre(curF);return t<0?-1:Math.min(curN,(int)(t/br.mareeletrica.Magazines.loosePer(curF)));}
+ static float rndU(float p){if(curF==null)return 0;float t=tk(p)-br.mareeletrica.Magazines.loosePre(curF);int per=br.mareeletrica.Magazines.loosePer(curF);return t<0?0:(t%per)/per;}
+ static boolean looseRound(float p){int r=rnd(p);return r>=0&&r<curN&&rndU(p)<.62F;}
  public static float pySpentFall(float p){return seg(p,.14F,.30F);}
  /** Spent rounds are visible while seated (before .30, falling out from .14); the new cluster arrives with the loader. */
  public static boolean pySpentVisible(float p){return p<.30F;}
@@ -138,7 +147,7 @@ public final class ReloadPath {
   var st=style(f);if(st==Style.OTHER)return 0;
   float a=st==Style.PISTOL?.82F:st==Style.TUBE?.84F:.84F,b=st==Style.PISTOL?.88F:st==Style.TUBE?.92F:.89F,c=b+.02F;
   float travel=(st==Style.PISTOL?2.6F:st==Style.TUBE?3.2F:st==Style.HEAVY?3.6F:3F)/16F;
-  if(st==Style.TUBE){if(p<a||p>c+.04F)return 0;return p<b?travel*seg(p,a,b):travel*(1-seg(p,b,c+.04F));}
+  if(st==Style.TUBE){float t=tk(p),D=curD;float s0=D-10,s1=D-6,s2=D-2;if(t<s0)return 0;return t<s1?travel*seg(t,s0,s1):travel*(1-seg(t,s1,s2));}   // pump at the very end
   if(p<a||p>c)return 0;return p<b?travel*seg(p,a,b):travel*(1-seg(p,b,c));   // eased back, snaps forward
  }
 
@@ -146,22 +155,25 @@ public final class ReloadPath {
  public static final int SHELLS=4;static final float TS=.06F,TE=.80F;
  /** which shell cycle and where in it (0..1) */
  static float cyc(float p){return Mth.clamp((p-TS)/((TE-TS)/SHELLS),0,SHELLS);}
- public static boolean shellInHand(WeaponFamily f,float p){if(style(f)!=Style.TUBE||p<TS||p>=TE)return false;float c=cyc(p)%1F;return c>.18F&&c<.8F;}
+ public static boolean shellInHand(WeaponFamily f,float p){if(!br.mareeletrica.Magazines.loose(f))return false;int r=rnd(p);if(r<0||r>=curN)return false;float c=rndU(p);return f==WeaponFamily.PYTHON?c<.62F:c>.18F&&c<.8F;}
  static Vector3f port(float[] m){return new Vector3f(8F/16F,4.4F/16F,(m[7]+5.2F)/16F);}
  static Vector3f tubeHand(WeaponFamily f,float p,float[] m,Vector3f dflt){
   Vector3f port=port(m),pouch=new Vector3f(port).add(-7F/16F,-12F/16F,5F/16F),pump=new Vector3f(dflt).add(0,0,boltPull(f,p));
-  if(p<TS)return new Vector3f(dflt).lerp(pouch,seg(p,0,TS));
-  if(p<TE){float c=cyc(p)%1F;
+  float t=tk(p),D=curD;int r=rnd(p);
+  if(r<0)return new Vector3f(dflt).lerp(pouch,seg(t,0,br.mareeletrica.Magazines.loosePre(f)));
+  if(r<curN){float c=rndU(p);
    if(c<.18F)return pouch;                                                     // takes a shell
    if(c<.55F)return new Vector3f(pouch).lerp(new Vector3f(port).add(0,-1.5F/16F,1F/16F),seg(c,.18F,.55F));
    if(c<.8F)return new Vector3f(port).add(0,-1.5F/16F,1F/16F).lerp(new Vector3f(port).add(0,0,-1.8F/16F),seg(c,.55F,.8F));   // thumbs it in
    return new Vector3f(port).lerp(pouch,seg(c,.8F,1F));}
-  if(p<.84F)return new Vector3f(pouch).lerp(dflt,seg(p,TE,.84F));
+  float end=D-br.mareeletrica.Magazines.loosePost(f);
+  if(t<end+4)return new Vector3f(pouch).lerp(dflt,seg(t,end,end+4));
   return pump;                                                                  // back to the fore-end: pump
  }
 
  /** gun pose while reloading (times the reload envelope): {dx,dy,dz, roll, pitch}, plus a dip when the magazine seats */
  public static float[] gun(WeaponFamily f,float p){
+  if(f==WeaponFamily.PYTHON)return new float[]{-.04F,.20F,-.26F,16F,2F,20F};   // 0.80.0: on its side, cylinder towards the camera
   float w=weight(f);float[] g=switch(style(f)){
    // dx,dy,dz, roll, pitch, yaw (muzzle swings to the support side so the magazine well faces the camera)
    case PISTOL->new float[]{-.02F,.36F,-.10F,20F,20F,26F};
@@ -172,11 +184,11 @@ public final class ReloadPath {
    case TUBE->new float[]{-.08F,.24F,.06F,40F,4F,36F};
    default->new float[]{-.14F,.32F,-.12F,28F,6F,0F};};
   // the magazine seats (or the pump is racked): a small jolt, bigger on heavy guns
-  float seat=style(f)==Style.PISTOL?.70F:style(f)==Style.TUBE?.88F:.74F;
+  float seat=style(f)==Style.PISTOL?.70F:style(f)==Style.TUBE?Math.max(0,1F-8F/curD):.74F;
   float j=p>seat&&p<seat+.08F?Mth.sin((p-seat)/.08F*Mth.PI):0;
   g[1]-=j*(.012F+.03F*w);g[4]+=j*(2F+6F*w);
   // heavy guns sag while one hand is off the gun
-  float off=p>.12F&&p<.74F?1:0;g[1]-=off*.05F*w;g[3]-=off*4F*w;
+  float off=style(f)!=Style.TUBE&&p>.12F&&p<.74F?1:0;g[1]-=off*.05F*w;g[3]-=off*4F*w;
   return g;
  }
  /** Support-hand target for these families while reloading; other families get the default back. */
@@ -186,14 +198,18 @@ public final class ReloadPath {
    if(p>.86F)return new Vector3f(P90_BASE).lerp(dflt,seg(p,.86F,1));
    var o=p90Offset(p);return new Vector3f(P90_BASE).add(o[0],o[1],o[2]);
   }
-  if(f==WeaponFamily.PYTHON){
-   if(p<.14F)return new Vector3f(dflt).lerp(HC,seg(p,0,.14F));
-   if(p<.30F)return new Vector3f(HC);
-   if(p<.44F)return new Vector3f(HC).lerp(BELT_PY,seg(p,.30F,.44F));
-   if(p<.72F){var o=pyLoaderOffset(p);return new Vector3f(CYL_OUT).add(o[0],o[1],o[2]);}
-   if(p<.78F)return new Vector3f(CYL_OUT).lerp(HC2,seg(p,.72F,.78F));
-   if(p<.88F)return new Vector3f(HC2).lerp(HC,seg(p,.78F,.88F));
-   return new Vector3f(HC).lerp(dflt,seg(p,.88F,1));
+  if(f==WeaponFamily.PYTHON){   // 0.80.0: opens, ejects, then one round at a time from the belt into the cylinder, closes
+   float t=tk(p),D=curD;int r=rnd(p);float u=rndU(p);
+   Vector3f chamber=new Vector3f(CYL_OUT).add(0,.02F,.07F),near=new Vector3f(CYL_OUT).add(0,-.10F,.30F);
+   if(t<6)return new Vector3f(dflt).lerp(HC,seg(t,0,6));
+   if(t<13){float k=Mth.sin(seg(t,6,13)*Mth.PI);return new Vector3f(HC).add(0,0,-.05F*k);}        // pushes the ejector rod
+   if(r<0)return new Vector3f(HC).lerp(BELT_PY,seg(t,13,16));
+   if(r<curN){
+    if(u<.35F)return new Vector3f(BELT_PY).lerp(near,seg(u,0,.35F));
+    if(u<.62F)return new Vector3f(near).lerp(chamber,seg(u,.35F,.62F));                         // thumbs the round in
+    return new Vector3f(chamber).lerp(r==curN-1?HC2:BELT_PY,seg(u,.62F,1F));}
+   if(t<D-5)return new Vector3f(HC2).lerp(HC,seg(t,D-10,D-5));                                  // closes the cylinder
+   return new Vector3f(HC).lerp(dflt,seg(t,D-5,D));
   }
   return dflt;
  }
