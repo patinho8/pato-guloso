@@ -98,7 +98,7 @@ public final class Pato {
    t.add(Component.literal("§7Mão vazia: escolhe a raia • com §efichas§7 na mão: aposta (paga 3×)"));}});
  public static final Supplier<BlockEntityType<RaceEntity>> RACE_ENTITY=MareEletrica.ENTITIES.register("duck_race",()->BlockEntityType.Builder.of(RaceEntity::new,RACE.get()).build(null));
 
- public static void register(IEventBus bus){bus.addListener(Pato::attributes);bus.addListener(Pato::placements);EFFECTS.register(bus);net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(Pato::duckPlayer);}
+ public static void register(IEventBus bus){bus.addListener(Pato::attributes);bus.addListener(Pato::placements);EFFECTS.register(bus);net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(Pato::duckPlayer);net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(Duck::shoulderOff);}
  // ======================================================================= 0.69.0: Poção do Pato — turns the drinker into a duck
  public static final net.neoforged.neoforge.registries.DeferredRegister<net.minecraft.world.effect.MobEffect> EFFECTS=net.neoforged.neoforge.registries.DeferredRegister.create(net.minecraft.core.registries.Registries.MOB_EFFECT,MareEletrica.ID);
  public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.effect.MobEffect,DuckEffect> DUCK_EFFECT=EFFECTS.register("duck",DuckEffect::new);
@@ -147,6 +147,7 @@ public final class Pato {
    FLAGS=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),HUNGER=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),
    HAPPY=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),LANE=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT),
    XP=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.INT);
+  static final EntityDataAccessor<Boolean> GLIDE=SynchedEntityData.defineId(Duck.class,EntityDataSerializers.BOOLEAN);
   public static final int SLEEP=1,DIVE=2,KING=4,BOARD=8,RACER=16,BATH=32;
   /** client animation clocks */
   public int quackAt=-100,peckAt=-100;public float flap,flapO;
@@ -159,7 +160,7 @@ public final class Pato {
   static final java.util.Map<java.util.UUID,Long> WARNED=new java.util.HashMap<>();ItemEntity collectTarget;
   public Duck(EntityType<? extends Duck> t,Level l){super(t,l);}
   public static AttributeSupplier.Builder attributes(){return Animal.createMobAttributes().add(Attributes.MAX_HEALTH,12).add(Attributes.MOVEMENT_SPEED,.27).add(Attributes.ATTACK_DAMAGE,3).add(Attributes.FOLLOW_RANGE,20);}
-  @Override protected void defineSynchedData(SynchedEntityData.Builder b){super.defineSynchedData(b);b.define(COLOR,0);b.define(HAT,0);b.define(FED,0);b.define(MODE,0);b.define(FLAGS,0);b.define(HUNGER,70);b.define(HAPPY,60);b.define(LANE,0);b.define(XP,0);}
+  @Override protected void defineSynchedData(SynchedEntityData.Builder b){super.defineSynchedData(b);b.define(COLOR,0);b.define(HAT,0);b.define(FED,0);b.define(MODE,0);b.define(FLAGS,0);b.define(HUNGER,70);b.define(HAPPY,60);b.define(LANE,0);b.define(XP,0);b.define(GLIDE,false);}
   public int color(){return entityData.get(COLOR);}public int hat(){return entityData.get(HAT);}public int fed(){return entityData.get(FED);}public int mode(){return entityData.get(MODE);}
   public int xp(){return entityData.get(XP);}
   public int duckLevel(){int x=xp(),l=1;for(int i=1;i<LEVEL_XP.length;i++)if(x>=LEVEL_XP[i])l=i+1;return l;}
@@ -226,7 +227,7 @@ public final class Pato {
    if(!isTame()&&f>0&&!isBaby()){
     if(!client){if(!p.getAbilities().instabuild)s.shrink(1);quack(this,.7F,1.2F);
      if(random.nextInt(3)==0&&!net.neoforged.neoforge.event.EventHooks.onAnimalTame(this,p)){tame(p);setMode(FOLLOW);setCustomName(Component.literal("Pato de "+p.getGameProfile().getName()));setCustomNameVisible(true);
-      level().broadcastEntityEvent(this,(byte)7);msg(p,"§a🦆 Você adotou um pato! §7Pegue o §eApito de Pato§7 para dar ordens • clique: carinho • Shift+clique: na cabeça");}
+      level().broadcastEntityEvent(this,(byte)7);msg(p,"§a🦆 Você adotou um pato! §7Pegue o §eApito de Pato§7 para dar ordens • clique: carinho • Shift+clique: no ombro");}
      else level().broadcastEntityEvent(this,(byte)6);}
     return InteractionResult.sidedSuccess(client);}
    if(!isTame()||!isOwnedBy(p))return super.mobInteract(p,hand);
@@ -249,7 +250,10 @@ public final class Pato {
    if(s.is(Items.SHEARS)&&hat()>0){if(!client){p.getInventory().placeItemBackInInventory(new ItemStack(HAT_ITEMS.get(hat()-1).get()));entityData.set(HAT,0);}return InteractionResult.sidedSuccess(client);}
    if(s.isEmpty()&&hand==InteractionHand.MAIN_HAND){
     if(p.isShiftKeyDown()){   // onto your head / back down
-     if(!client){if(getVehicle()==p){stopRiding();moveTo(p.getX(),p.getY(),p.getZ());}else{setOrderedToSit(false);getNavigation().stop();startRiding(p,true);msg(p,"§7🦆 No seu ombro! Shift+clique num bloco com a mão vazia para descer.");}}
+     if(!client){if(getVehicle()==p)hopOff(p);
+      else if(shoulderDucks(p).size()>=2)msg(p,"§e🦆 Os dois ombros já têm pato!");
+      else{setOrderedToSit(false);getNavigation().stop();startRiding(p,true);quack(this,.7F,1.5F);
+       msg(p,"§a🦆 "+getName().getString()+" subiu no seu "+(shoulderDucks(p).indexOf(this)==0?"ombro direito":"ombro esquerdo")+"! §7Ele vigia monstros e plana com você nas quedas • Shift+clique num bloco com a mão vazia: descer");}}
      return InteractionResult.sidedSuccess(client);}
     if(!client){setHappy(happy()+15);level().broadcastEntityEvent(this,(byte)7);quack(this,.6F,1.5F);if(petCd<=0){addXp(2);petCd=600;}
      msg(p,"§a🦆 "+getName().getString()+" §6Nv "+duckLevel()+" §7("+xpText()+" XP) • fome "+bar(hunger())+" §7• felicidade "+bar(happy())+" §7• "+(isBaby()?"filhote":king()?"§6PATO REI":"adulto")+" §7• modo §e"+MODES[mode()]);}
@@ -262,13 +266,34 @@ public final class Pato {
    boolean ok=super.doHurtTarget(t);level().broadcastEntityEvent(this,(byte)71);
    if(ok&&t instanceof LivingEntity le){le.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,60,1));le.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,40,1));quack(this,1.6F,.7F);}   // the terrifying QUACK
    return ok;}
+  // ---------------- 0.77.0: on your shoulder (right first, then left)
+  public static java.util.List<Duck> shoulderDucks(Player p){var l=new java.util.ArrayList<Duck>();for(var e:p.getPassengers())if(e instanceof Duck d)l.add(d);return l;}
+  @Override public Vec3 getVehicleAttachmentPoint(Entity v){
+   if(!(v instanceof Player p))return super.getVehicleAttachmentPoint(v);
+   int i=shoulderDucks(p).indexOf(this);double side=i==1?-1:1;float yaw=(float)Math.toRadians(p.yBodyRot);
+   double rx=-Math.cos(yaw),rz=-Math.sin(yaw);   // the player's right
+   double up=p.isCrouching()?1.16:p.isSwimming()||p.isFallFlying()||p.isVisuallyCrawling()?.4:1.46;
+   Vec3 want=p.position().add(rx*side*.36+Math.sin(yaw)*.04,up,rz*side*.36-Math.cos(yaw)*.04);
+   return p.getPassengerRidingPosition(this).subtract(want);}
+  public void hopOff(Player p){stopRiding();double yaw=Math.toRadians(p.yBodyRot);moveTo(p.getX()-Math.cos(yaw)*.8,p.getY(),p.getZ()-Math.sin(yaw)*.8,p.getYRot(),0);setDeltaMovement(0,.25,0);quack(this,.7F,1.3F);}
+  static void shoulderOff(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock e){
+   var p=e.getEntity();if(p.level().isClientSide||!p.isShiftKeyDown()||e.getHand()!=InteractionHand.MAIN_HAND||!p.getMainHandItem().isEmpty())return;
+   var ds=shoulderDucks(p);if(ds.isEmpty())return;for(var d:ds)d.hopOff(p);msg(p,"§7🦆 "+(ds.size()>1?"Os patos desceram":ds.get(0).getName().getString()+" desceu")+" do ombro.");e.setCanceled(true);}
+  /** on the shoulder: spreads its wings when the owner falls (slow falling) */
+  void shoulderTick(Player p){
+   if(level().isClientSide)return;
+   if(p.fallDistance>2.5F&&!p.getAbilities().flying&&!p.isFallFlying()&&!p.isInWater()){
+    p.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,15,0,false,false,true));p.fallDistance=0;
+    if(tickCount%12==0)quack(this,.5F,1.6F);if(level() instanceof ServerLevel sl&&tickCount%3==0)sl.sendParticles(ParticleTypes.CLOUD,getX(),getY()+.3,getZ(),1,.2,.05,.2,0);
+    entityData.set(GLIDE,true);}
+   else if(entityData.get(GLIDE)&&p.onGround())entityData.set(GLIDE,false);}
   // ---------------- riding on your head (like the tiny frog)
   private int headSync;
   @Override public boolean startRiding(Entity v,boolean force){boolean ok=super.startRiding(v,force);if(ok&&v instanceof Player)headSync=3;return ok;}
   @Override public void removeVehicle(){var v=getVehicle();super.removeVehicle();if(v instanceof net.minecraft.server.level.ServerPlayer sp)sp.connection.send(new net.minecraft.network.protocol.game.ClientboundSetPassengersPacket(sp));}
   @Override public void rideTick(){super.rideTick();
    if(headSync>0&&--headSync==0&&getVehicle() instanceof net.minecraft.server.level.ServerPlayer sp)sp.connection.send(new net.minecraft.network.protocol.game.ClientboundSetPassengersPacket(sp));
-   if(getVehicle() instanceof Player p){setYRot(p.getYHeadRot());yBodyRot=getYRot();yHeadRot=getYRot();setXRot(0);fallDistance=0;}}
+   if(getVehicle() instanceof Player p){setYRot(p.yBodyRot);yBodyRot=getYRot();yHeadRot=p.getYHeadRot();setXRot(0);fallDistance=0;shoulderTick(p);}}
   @Override public boolean isInvulnerableTo(DamageSource s){return (getVehicle() instanceof Player||racer())&&!s.is(net.minecraft.world.damagesource.DamageTypes.GENERIC_KILL)||super.isInvulnerableTo(s);}
   @Override public boolean removeWhenFarAway(double d){return false;}
   // ---------------- skate & surf: rides on the front of your board
@@ -284,7 +309,7 @@ public final class Pato {
   }
   @Override public void aiStep(){
    super.aiStep();
-   flapO=flap;boolean flying=!onGround()&&!isInWater()&&!isPassenger()&&!flag(BOARD);flap=flying||flag(BOARD)&&level().isClientSide&&random.nextInt(30)==0?flap+.5F:flap*.8F;
+   flapO=flap;boolean flying=!onGround()&&!isInWater()&&!isPassenger()&&!flag(BOARD);flap=flying||isPassenger()&&entityData.get(GLIDE)||flag(BOARD)&&level().isClientSide&&random.nextInt(30)==0?flap+.5F:flap*.8F;
    // floats on water like a real duck (unless diving)
    if(isInWater()&&!flag(DIVE)){double up=getFluidHeight(net.minecraft.tags.FluidTags.WATER);if(up>.25)setDeltaMovement(getDeltaMovement().multiply(.9,.5,.9).add(0,.06,0));}
    if(level().isClientSide){
@@ -324,7 +349,7 @@ public final class Pato {
   boolean companion(LivingEntity owner){
    if(petCd>0)petCd--;if(alarmCd>0)alarmCd--;if(healCd>0)healCd--;
    // 0.76.0: the alarm also works while the duck is in the tub
-   if(owner instanceof Player ap&&!isPassenger()&&alarmCd<=0&&tickCount%10==0&&duckLevel()>=2&&distanceToSqr(owner)<24*24)alarm(ap,duckLevel());
+   if(owner instanceof Player ap&&(!isPassenger()||getVehicle()==owner)&&alarmCd<=0&&tickCount%10==0&&duckLevel()>=2&&distanceToSqr(owner)<24*24)alarm(ap,duckLevel());
    if(bathTicks>0)return bathTick(owner);
    if(owner==null||isPassenger()||flag(BOARD))return false;
    double od=distanceToSqr(owner);

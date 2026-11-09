@@ -41,7 +41,7 @@ public final class DuckRenderer extends EntityRenderer<Duck> {
   if(racer){walkPos=age*1.6F;walkSpd=1;}
   if(e.fakeWalkPos>=0){walkPos=e.fakeWalkPos;walkSpd=e.fakeWalkSpd;}
   p.pushPose();
-  float s=e.getScale();
+  float s=e.getScale();if(e.getVehicle() instanceof net.minecraft.world.entity.player.Player)s*=.72F;   // 0.77.0: a bit smaller on the shoulder
   p.mulPose(Axis.YP.rotationDegrees(180-body));
   if(e.isPassenger()&&e.getVehicle()!=null&&!(e.getVehicle() instanceof net.minecraft.world.entity.player.Player))p.translate(0,0,0);
   p.scale(s,s,s);
