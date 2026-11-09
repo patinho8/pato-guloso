@@ -16,7 +16,7 @@ import org.joml.Quaternionf;
 /** Both skin arms track the actual grip points while raising the rifle and recoiling. */
 public final class RifleHands {
  /** 0.76.0: guns ~30% bigger in first person, grown around the grip so the hand stays put */
- static final float BIG=1.3F,GY=.23F-.5F,GZ=.76F-.9F;
+ static final float BIG=.75F,GY=.23F-.5F,GZ=.76F-.9F;
  public static void render(RenderHandEvent e){var mc=Minecraft.getInstance();var player=mc.player;if(player==null)return;var gun=player.getMainHandItem();var f=WeaponFamily.of(gun);if(f==null)return;boolean pistol=f.pistol(),right=player.getMainArm()==HumanoidArm.RIGHT;float side=right?1:-1;float progress=ArmoryRenderer.progress(gun,e.getPartialTick()),reload=ArmoryRenderer.drop(progress);boolean reloading=Magazines.reloading(gun);float reloadPose=reloading?ArmoryRenderer.reloadPose(progress):0;float aim=SniperClient.aimAmount(e.getPartialTick()),smooth=aim*aim*(3-2*aim),kick=SniperClient.kick;
   float scale=pistol?.62F:.66F,sight=ArmoryRenderer.sightY(gun),aimY=-(GY+BIG*(sight/16F-.5F-GY))*scale;
   float walk=(float)Math.min(1,player.getDeltaMovement().horizontalDistance()*(ProneSystem.prone(player)?26:8)),phase=(player.tickCount+e.getPartialTick())*.72F;
