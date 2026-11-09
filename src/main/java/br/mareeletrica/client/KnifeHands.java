@@ -37,23 +37,28 @@ public final class KnifeHands {
   "hrt3_knife",new float[][]{Z,k(.25F,0,.10F,-.05F,0,-55,0,0),k(.55F,0,-.02F,-.22F,0,30,0,0),k(1,0,0,0,0,0,0,0)},
   "banana",new float[][]{Z,k(.25F,0,.12F,0,0,-45,20,0),k(.55F,0,-.08F,-.14F,0,50,-15,0),k(1,0,0,0,0,0,0,0)});
 
+ /** 0.78.0: a hand-made second swing for every knife (hit again and it comes out); the 3rd hit is a wide finisher. */
+ private static final Map<String,float[][]> ATTACK2=Map.of(
+  "butterfly_knife",new float[][]{Z,k(.20F,.10F,.03F,.02F,30,0,-20,1),k(.50F,-.14F,0,-.13F,-38,6,-42,1),k(.80F,-.05F,0,-.04F,-12,0,-12,1),k(1,0,0,0,0,0,0,0)},   // flat backhand, right to left
+  "karambit",new float[][]{Z,k(.20F,.13F,.02F,0,42,-10,-62,0),k(.45F,-.04F,-.02F,-.17F,-8,0,-72,0),k(.70F,-.17F,.02F,-.10F,-46,0,-50,0),k(.88F,-.05F,0,-.04F,-12,0,-14,0),k(1,0,0,0,0,0,0,0)},   // horizontal hook across
+  "xeno_hunter",new float[][]{Z,k(.22F,.06F,.17F,.02F,10,-62,26,0),k(.50F,-.07F,-.13F,-.17F,-10,46,-22,0),k(.80F,-.02F,-.04F,-.05F,-3,15,-6,0),k(1,0,0,0,0,0,0,0)},   // big diagonal chop
+  "hrt3_knife",new float[][]{Z,k(.20F,0,0,.07F,0,5,0,0),k(.45F,0,-.02F,-.34F,-6,0,95,0),k(.75F,0,0,-.10F,-2,0,30,0),k(1,0,0,0,0,0,0,0)},   // thrust with a twist
+  "banana",new float[][]{Z,k(.25F,0,.20F,.04F,0,-85,0,0),k(.50F,0,-.10F,-.13F,0,62,0,0),k(.80F,0,-.03F,-.04F,0,18,0,0),k(1,0,0,0,0,0,0,0)});   // overhead bonk
  private static int lastSlot=-1;private static float equipStart=-100F;
  private static boolean suppress=false,wasSwinging=false;private static int lastSwingTime=0;private static float animStart=-1;
  private static final Map<String,Float> ATTACK_TICKS=Map.of("butterfly_knife",8F,"karambit",9F,"xeno_hunter",9F,"hrt3_knife",8F,"banana",9F);
- /** Hits chained within 0.6 s cycle through four different swings (up to the 4th, then back to the first). */
+ /** Hits chained within 1.5 s cycle: 1st swing, 2nd swing (its own animation), finisher, then back to the first. */
  private static int combo;private static float lastSwingAt=-100F;
  private static float[] combo(float[] a,float s){
   float[] o=a.clone();float bump=Mth.sin(s*Mth.PI);
   switch(combo){
-   case 1->{o[0]=-a[0];o[3]=-a[3];o[5]=-a[5];}                                  // backhand: same cut, mirrored
-   case 2->{o[2]=a[2]*1.6F-.06F*bump;o[4]=-a[4]*.8F;o[1]=a[1]+.04F*bump;}      // reverse stab, straight forward
-   case 3->{for(int i=0;i<6;i++)o[i]=a[i]*1.35F;o[5]+=45F*bump;o[1]-=.03F*bump;} // finisher: wide, rolling cut
+   case 2->{for(int i=0;i<6;i++)o[i]=a[i]*1.35F;o[5]+=45F*bump;o[1]-=.03F*bump;} // finisher: wide, rolling cut
    default->{}
   }
   return o;
  }
  private static float[] attack(String id,float s){
-  var keys=ATTACK.get(id);if(keys==null||s<=0)return new float[8];
+  var keys=(combo==1?ATTACK2:ATTACK).get(id);if(keys==null||s<=0)return new float[8];
   for(int i=0;i<keys.length-1;i++){var a=keys[i];var b=keys[i+1];
    if(s>=a[0]&&s<=b[0]){float u=(s-a[0])/(b[0]-a[0]);u=u*u*(3-2*u);float[] o=new float[8];for(int n=1;n<8;n++)o[n-1]=Mth.lerp(u,a[n],b[n]);return o;}}
   return new float[8];
@@ -100,7 +105,7 @@ public final class KnifeHands {
   int sel=player.getInventory().selected;if(sel!=lastSlot){lastSlot=sel;equipStart=now;}
   float equip=1F-sm((now-equipStart)/7F);
   boolean swinging=player.swinging;
-  if((swinging&&!wasSwinging)||(swinging&&player.swingTime<lastSwingTime)){suppress=false;combo=now-lastSwingAt<=12F&&combo<3?combo+1:0;lastSwingAt=now;animStart=now;player.playSound(MareEletrica.KNIFE_SWING.get(),.8F,.9F+player.getRandom().nextFloat()*.3F);}
+  if((swinging&&!wasSwinging)||(swinging&&player.swingTime<lastSwingTime)){suppress=false;combo=now-lastSwingAt<=30F?(combo+1)%3:0;lastSwingAt=now;animStart=now;player.playSound(MareEletrica.KNIFE_SWING.get(),.8F,(combo==2?.75F:combo==1?1.05F:.9F)+player.getRandom().nextFloat()*.2F);}
   wasSwinging=swinging;lastSwingTime=player.swingTime;
   float sw=0F;
   if(animStart>=0){sw=(now-animStart)/ATTACK_TICKS.getOrDefault(id,12F);if(sw>=1F){animStart=-1;sw=0F;}}
