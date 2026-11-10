@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'net.neoforged.moddev' version '2.0.107'
 }
-version = '0.84.1'
+version = '0.85.0'
 group = 'br.mareeletrica'
 base { archivesName = 'mare-eletrica' }
 java {
@@ -177,6 +177,7 @@ if (project.hasProperty('visual053')) {
   systemProperty 'mareeletrica.bomba', project.hasProperty('bomba').toString()
   systemProperty 'mareeletrica.banho084', project.hasProperty('banho084').toString()
   systemProperty 'mareeletrica.snk', project.hasProperty('snk').toString()
+  systemProperty 'mareeletrica.escudo', project.hasProperty('escudo').toString()
   systemProperty 'mareeletrica.bomba.close', project.hasProperty('close').toString()
   systemProperty 'mareeletrica.recarga.guns', project.findProperty('guns')?:''
   systemProperty 'mareeletrica.recarga.inv', project.hasProperty('inv').toString()

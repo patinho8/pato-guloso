@@ -121,13 +121,33 @@ public final class Wounds {
   TAC_CHEST=MareEletrica.ITEMS.register("tactical_chestplate",()->new TacticalArmor(ArmorItem.Type.CHESTPLATE)),
   TAC_LEGS=MareEletrica.ITEMS.register("tactical_leggings",()->new TacticalArmor(ArmorItem.Type.LEGGINGS)),
   TAC_BOOTS=MareEletrica.ITEMS.register("tactical_boots",()->new TacticalArmor(ArmorItem.Type.BOOTS));
+ /** 0.85.0: tactical (ballistic) shield — stops bullets from the front even without raising it; while holding it only pistols can fire */
+ public static final class TacticalShield extends net.minecraft.world.item.ShieldItem {
+  public TacticalShield(Item.Properties p){super(p);}
+  @Override public void appendHoverText(ItemStack s,TooltipContext c,List<Component> t,TooltipFlag f){
+   t.add(Component.literal("§7Para tiros vindos da frente, mesmo sem levantar o escudo."));
+   t.add(Component.literal("§7Cobre cabeça, peito e braços; as pernas ficam expostas."));
+   t.add(Component.literal("§cSegurando ele, só dá para atirar com pistolas."));}
+  @Override public boolean isValidRepairItem(ItemStack a,ItemStack b){return b.is(Items.IRON_INGOT);}}
+ public static final DeferredItem<TacticalShield> TAC_SHIELD=MareEletrica.ITEMS.register("tactical_shield",()->new TacticalShield(new Item.Properties().durability(1200)));
+ public static boolean holdsTacShield(LivingEntity p){return p.getMainHandItem().is(TAC_SHIELD.get())||p.getOffhandItem().is(TAC_SHIELD.get());}
+ /** bullets go through ordinary shields; only the tactical one stops them */
+ @SubscribeEvent public static void shieldBlock(net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent e){
+  var d=e.getDamageSource().getDirectEntity();if(d==null||!bullet(d))return;
+  if(!e.getEntity().getUseItem().is(TAC_SHIELD.get()))e.setBlocked(false);}
+ /** the tactical shield in either hand covers head, chest and arms against bullets coming from the front */
+ static boolean shieldStops(LivingEntity p,Entity direct,int zone){
+  if(!holdsTacShield(p)||zone>=4)return false;
+  Vec3 v=direct.getDeltaMovement();if(v.lengthSqr()<1e-6)v=p.position().subtract(direct.position());
+  Vec3 look=Vec3.directionFromRotation(0,p.getYHeadRot());
+  return v.normalize().dot(look)<-.35;}
  public enum Med {BANDAGE("bandage",60),SYRINGE("syringe",40),MEDKIT("medkit",140);public final String id;public final int ticks;Med(String id,int t){this.id=id;ticks=t;}}
  public static final DeferredItem<MedItem> BANDAGE=med(Med.BANDAGE),SYRINGE=med(Med.SYRINGE),MEDKIT=med(Med.MEDKIT);
  private static DeferredItem<MedItem> med(Med m){return MareEletrica.ITEMS.register(m.id,()->new MedItem(m,new Item.Properties().stacksTo(m==Med.MEDKIT?4:16)));}
  public static final DeferredHolder<SoundEvent,SoundEvent> BREATH_CALM=sound("breath_calm"),BREATH_HEAVY=sound("breath_heavy"),BREATH_GASP=sound("breath_gasp"),HEARTBEAT=sound("heartbeat"),BANDAGE_WRAP=sound("bandage_wrap"),SYRINGE_INJECT=sound("syringe_inject");
  private static DeferredHolder<SoundEvent,SoundEvent> sound(String n){return MareEletrica.SOUNDS.register(n,()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,n)));}
  public static void register(IEventBus bus){MATERIALS.register(bus);bus.addListener(Wounds::packets);}
- public static void creative(net.minecraft.world.item.CreativeModeTab.Output out){out.accept(BANDAGE.get());out.accept(SYRINGE.get());out.accept(MEDKIT.get());out.accept(VEST.get());out.accept(TAC_HELMET.get());out.accept(TAC_CHEST.get());out.accept(TAC_LEGS.get());out.accept(TAC_BOOTS.get());}
+ public static void creative(net.minecraft.world.item.CreativeModeTab.Output out){out.accept(BANDAGE.get());out.accept(SYRINGE.get());out.accept(MEDKIT.get());out.accept(VEST.get());out.accept(TAC_HELMET.get());out.accept(TAC_CHEST.get());out.accept(TAC_LEGS.get());out.accept(TAC_BOOTS.get());out.accept(TAC_SHIELD.get());}
 
  // ---------------- server state ----------------
  private static final Map<UUID,State> STATES=new HashMap<>();
@@ -212,6 +232,12 @@ public final class Wounds {
   var src=e.getSource();var direct=src.getDirectEntity();
   if(direct!=null&&bullet(direct)){
    Vec3 hit=hitPoint(p,direct);Decal d=locate(p,direct,hit);int pts=points(direct,src);
+   if(shieldStops(p,direct,d.zone())){   // 0.85.0: the tactical shield takes it
+    var hand=p.getMainHandItem().is(TAC_SHIELD.get())?net.minecraft.world.InteractionHand.MAIN_HAND:net.minecraft.world.InteractionHand.OFF_HAND;
+    p.getItemInHand(hand).hurtAndBreak(pts>=HEAVY?40:3,p,hand==net.minecraft.world.InteractionHand.MAIN_HAND?EquipmentSlot.MAINHAND:EquipmentSlot.OFFHAND);
+    p.level().playSound(null,p.blockPosition(),SoundEvents.SHIELD_BLOCK,SoundSource.PLAYERS,1F,.8F+p.getRandom().nextFloat()*.3F);
+    if(p.level() instanceof net.minecraft.server.level.ServerLevel sl){Vec3 at=hit;sl.sendParticles(net.minecraft.core.particles.ParticleTypes.CRIT,at.x,at.y,at.z,6,.05,.05,.05,.2);}
+    p.displayClientMessage(Component.literal("§7🛡 O escudo tático segurou o tiro"),true);e.setCanceled(true);return;}
    boolean stopped=false,armored=false;
    // 0.84.1: the sniper ignores vests and armor — head or chest is always a kill, an arm or leg always breaks, at any distance
    boolean sniper=pts>=HEAVY;
@@ -288,6 +314,7 @@ public final class Wounds {
   if(p.isCreative())return null;var s=of(p);
   if(s.armsBroken()==2&&gun(held))return "§cSem os dois braços você não consegue atirar.";
   if(s.anyBroken()&&heavy(held))return "§cMachucado demais para usar uma arma tão pesada.";
+  if(holdsTacShield(p)&&gun(held)){var f=WeaponFamily.of(held);if(f==null||!f.pistol())return "§cCom o escudo tático na mão, só dá para atirar com pistola.";}
   return null;
  }
  public static boolean canFire(ServerPlayer p){var why=blocked(p,p.getMainHandItem());if(why==null)return true;p.displayClientMessage(Component.literal(why),true);return false;}

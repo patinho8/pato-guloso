@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "equipment",
+ "pattern": [
+  "IGI",
+  "IBI",
+  "III"
+ ],
+ "key": {
+  "I": {
+   "item": "minecraft:iron_ingot"
+  },
+  "G": {
+   "item": "minecraft:glass_pane"
+  },
+  "B": {
+   "item": "minecraft:iron_block"
+  }
+ },
+ "result": {
+  "id": "mareeletrica:tactical_shield",
+  "count": 1
+ }
+}
