@@ -69,6 +69,7 @@ public final class ArmoryRenderer {
  static final int FULL=15728880;
  /** the magazine, a drum in its place, or the same magazine stretched downwards (extended) */
  static void mag(ItemStack s,WeaponFamily f,String base,int skin,PoseStack pose,MultiBufferSource buffers,int light){
+  if(f==WeaponFamily.M870||f==WeaponFamily.SPAS12)return;   // 0.81.2: tube-fed, no magazine (the shell under the gun is gone)
   var k=Accessory.mag(s);float[] a=ACC[f.ordinal()];
   if(k==Accessory.Kind.DRUM_MAG){pose.pushPose();pose.translate(0,a[5]/16,a[6]/16);DmtGearLayer.model("acc_drum",pose,buffers,light);pose.popPose();return;}
   if(k==Accessory.Kind.EXTENDED_MAG){pose.pushPose();float top=a[7]/16;pose.translate(0,top,0);pose.scale(1,f.pistol()?1.5F:1.4F,1);pose.translate(0,-top,0);PaintClient.model(s,f,"magazine",base+"magazine_"+skin,pose,buffers,light);pose.popPose();return;}
