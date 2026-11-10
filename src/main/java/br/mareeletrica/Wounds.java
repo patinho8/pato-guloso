@@ -169,7 +169,7 @@ public final class Wounds {
   if(direct instanceof DmtProjectileEntity d&&d.isSniper())return HEAVY;
   return direct instanceof Tracers.Round?8:6;
  }
- static Vec3 hitPoint(Player p,Entity direct){
+ static Vec3 hitPoint(LivingEntity p,Entity direct){
   Vec3 pos=direct.position(),v=direct.getDeltaMovement();AABB box=p.getBoundingBox().inflate(.15);
   if(v.lengthSqr()>1e-6){var hit=box.clip(pos.subtract(v.scale(1.5)),pos.add(v.scale(1.5)));if(hit.isPresent())return hit.get();}
   return new Vec3(Mth.clamp(pos.x,box.minX,box.maxX),Mth.clamp(pos.y,box.minY,box.maxY),Mth.clamp(pos.z,box.minZ,box.maxZ));
@@ -202,18 +202,25 @@ public final class Wounds {
   var d=e.getSource().getDirectEntity();if(d!=null&&bullet(d)&&!e.getEntity().level().isClientSide)SHOT.put(e.getEntity(),e.getEntity().tickCount);}
  @SubscribeEvent public static void shotKnock(net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent e){
   Integer t=SHOT.get(e.getEntity());if(t!=null&&t==e.getEntity().tickCount)e.setStrength(e.getStrength()*.12F);}
+ /** 0.84.1: other creatures (bots, mobs; not bosses): a sniper hit on the upper half of the body is a kill at any distance */
+ @SubscribeEvent public static void sniperMob(LivingIncomingDamageEvent e){
+  var le=e.getEntity();if(le instanceof Player||le.level().isClientSide||le.getType().is(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES))return;
+  var direct=e.getSource().getDirectEntity();if(direct==null||!bullet(direct)||points(direct,e.getSource())<HEAVY)return;
+  Vec3 hit=hitPoint(le,direct);if((hit.y-le.getY())/le.getBbHeight()>=.42)e.setAmount(Math.max(e.getAmount(),10000F));}
  @SubscribeEvent public static void incoming(LivingIncomingDamageEvent e){
   if(!(e.getEntity() instanceof ServerPlayer p)||p.isCreative()||p.isSpectator())return;
   var src=e.getSource();var direct=src.getDirectEntity();
   if(direct!=null&&bullet(direct)){
    Vec3 hit=hitPoint(p,direct);Decal d=locate(p,direct,hit);int pts=points(direct,src);
    boolean stopped=false,armored=false;
-   if(d.zone()==1&&vest(p)){   // the vest takes most of it and the wound doesn't bleed
+   // 0.84.1: the sniper ignores vests and armor — head or chest is always a kill, an arm or leg always breaks, at any distance
+   boolean sniper=pts>=HEAVY;
+   if(!sniper&&d.zone()==1&&vest(p)){   // the vest takes most of it and the wound doesn't bleed
     var chest=p.getItemBySlot(EquipmentSlot.CHEST);e.setAmount(e.getAmount()*(pts>=HEAVY?.55F:.3F));chest.hurtAndBreak(pts>=HEAVY?6:2,p,EquipmentSlot.CHEST);stopped=pts<HEAVY;
     p.level().playSound(null,p.blockPosition(),SoundEvents.SHIELD_BLOCK,SoundSource.PLAYERS,.8F,1.4F);
    }
    // 0.84.0: tactical armor — the piece covering the hit zone soaks most of the bullet and keeps the limb working
-   var piece=tacticalPiece(p,d.zone());
+   var piece=sniper?null:tacticalPiece(p,d.zone());
    if(piece!=null){var it=p.getItemBySlot(piece);boolean heavy=pts>=HEAVY;e.setAmount(e.getAmount()*(heavy?.55F:.25F));it.hurtAndBreak(heavy?4:1,p,piece);
     pts=Math.max(1,Math.round(pts*(heavy?.5F:.35F)));if(!heavy)stopped=true;armored=true;
     p.level().playSound(null,p.blockPosition(),SoundEvents.SHIELD_BLOCK,SoundSource.PLAYERS,.7F,1.6F);}
@@ -221,8 +228,9 @@ public final class Wounds {
    e.setAmount(e.getAmount()*ZONE_DAMAGE[d.zone()]);
    // ONLY the sniper: an arm or leg hit can't take a healthy player down by itself — only chest or head shots are deadly
    // = arm/leg sniper hits only do a little damage (3.5 hearts at most): a healthy player survives, a badly hurt one can still die
-   if(pts>=HEAVY&&d.zone()>=2)e.setAmount(Math.min(e.getAmount(),7F));
-   if(d.zone()>=2){int l=d.zone()-2;boolean was=s.broken(l);s.limb[l]=Math.min(BROKEN_AT,s.limb[l]+pts);if(s.broken(l))s.limb[l]=BROKEN_AT;
+   if(sniper&&d.zone()>=2)e.setAmount(Math.min(e.getAmount(),7F));
+   if(sniper&&d.zone()<=1){e.setAmount(10000F);if(!p.getItemBySlot(EquipmentSlot.CHEST).isEmpty()&&d.zone()==1)p.getItemBySlot(EquipmentSlot.CHEST).hurtAndBreak(8,p,EquipmentSlot.CHEST);}
+   if(d.zone()>=2){int l=d.zone()-2;boolean was=s.broken(l);s.limb[l]=sniper?BROKEN_AT:Math.min(BROKEN_AT,s.limb[l]+pts);if(s.broken(l))s.limb[l]=BROKEN_AT;
     if(!was&&s.broken(l)){p.displayClientMessage(Component.literal("§c§lSua "+LIMB_NAME[l]+" parou de funcionar! §7(volta sozinha em ~1 min)"),false);
      if(s.armsBroken()==2)p.displayClientMessage(Component.literal("§4Sem os dois braços: você não segura nada. Alguém pode usar uma seringa em você."),false);}}
    // what each hit does right away
