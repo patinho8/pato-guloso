@@ -64,7 +64,10 @@ public final class C4 {
   long s=ticks/20;return String.format("%02d:%02d",s/60,s%60);
  }
 
- public static final class C4Block extends BaseEntityBlock {
+ public static final class C4Block extends BaseEntityBlock implements net.minecraft.world.level.block.LiquidBlockContainer {
+  // 0.82.0: water/lava cannot wash the C4 away
+  @Override public boolean canPlaceLiquid(@org.jetbrains.annotations.Nullable Player p,BlockGetter l,BlockPos pos,BlockState st,net.minecraft.world.level.material.Fluid f){return false;}
+  @Override public boolean placeLiquid(net.minecraft.world.level.LevelAccessor l,BlockPos pos,BlockState st,net.minecraft.world.level.material.FluidState f){return false;}
   public static final DirectionProperty FACING=BlockStateProperties.FACING;
   public static final BooleanProperty ARMED=BooleanProperty.create("armed");
   public static final MapCodec<C4Block> CODEC=simpleCodec(C4Block::new);
@@ -74,16 +77,22 @@ public final class C4 {
   @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(FACING,ARMED);}
   @Override public BlockState getStateForPlacement(BlockPlaceContext c){var s=defaultBlockState().setValue(FACING,c.getClickedFace());return s.canSurvive(c.getLevel(),c.getClickedPos())?s:null;}
   @Override protected boolean canSurvive(BlockState state,net.minecraft.world.level.LevelReader level,BlockPos pos){var support=pos.relative(state.getValue(FACING).getOpposite());return level.getBlockState(support).isFaceSturdy(level,support,state.getValue(FACING));}
-  @Override protected BlockState updateShape(BlockState state,Direction dir,BlockState neighbor,net.minecraft.world.level.LevelAccessor level,BlockPos pos,BlockPos neighborPos){return dir==state.getValue(FACING).getOpposite()&&!state.canSurvive(level,pos)?net.minecraft.world.level.block.Blocks.AIR.defaultBlockState():super.updateShape(state,dir,neighbor,level,pos,neighborPos);}
+  @Override protected BlockState updateShape(BlockState state,Direction dir,BlockState neighbor,net.minecraft.world.level.LevelAccessor level,BlockPos pos,BlockPos neighborPos){return dir==state.getValue(FACING).getOpposite()&&!state.getValue(ARMED)&&!state.canSurvive(level,pos)?net.minecraft.world.level.block.Blocks.AIR.defaultBlockState():super.updateShape(state,dir,neighbor,level,pos,neighborPos);}
   @Override protected RenderShape getRenderShape(BlockState state){return RenderShape.MODEL;}
+  // 0.82.0: an armed C4 cannot be broken (hands, explosions, pistons, losing its support) — it has to be defused
+  @Override protected float getDestroyProgress(BlockState state,Player player,BlockGetter level,BlockPos pos){return state.getValue(ARMED)?0F:super.getDestroyProgress(state,player,level,pos);}
+  @Override public boolean onDestroyedByPlayer(BlockState state,Level level,BlockPos pos,Player player,boolean willHarvest,net.minecraft.world.level.material.FluidState fluid){
+   if(state.getValue(ARMED)){if(!level.isClientSide)player.displayClientMessage(Component.literal("§cA C4 armada não quebra. Segure o botão direito nela para desarmar."),true);return false;}
+   return super.onDestroyedByPlayer(state,level,pos,player,willHarvest,fluid);}
+  @Override public float getExplosionResistance(BlockState state,BlockGetter level,BlockPos pos,net.minecraft.world.level.Explosion explosion){return state.getValue(ARMED)?3600000F:super.getExplosionResistance(state,level,pos,explosion);}
+  @Override public net.minecraft.world.level.material.PushReaction getPistonPushReaction(BlockState state){return state.getValue(ARMED)?net.minecraft.world.level.material.PushReaction.BLOCK:null;}
   @Override protected VoxelShape getShape(BlockState state,BlockGetter level,BlockPos pos,CollisionContext ctx){return switch(state.getValue(FACING)){case UP->UP;case DOWN->DOWN;case NORTH->NORTH;case SOUTH->SOUTH;case EAST->EAST;case WEST->WEST;};}
   @Override public BlockEntity newBlockEntity(BlockPos pos,BlockState state){return new C4Entity(pos,state);}
   @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,BlockState state,BlockEntityType<T> type){return level.isClientSide?null:createTickerHelper(type,ENTITY.get(),C4Entity::tick);}
   @Override protected InteractionResult useWithoutItem(BlockState state,Level level,BlockPos pos,Player player,BlockHitResult hit){
    if(!state.getValue(ARMED)){if(level.isClientSide)openScreen.accept(pos);return InteractionResult.sidedSuccess(level.isClientSide);}
    if(!level.isClientSide&&level.getBlockEntity(pos) instanceof C4Entity c4){
-    if(player.getMainHandItem().is(Items.SHEARS)){c4.disarm();level.setBlock(pos,state.setValue(ARMED,false),3);level.playSound(null,pos,SoundEvents.SHEEP_SHEAR,SoundSource.BLOCKS,1F,1F);player.displayClientMessage(Component.literal("C4 desarmada."),true);}
-    else player.displayClientMessage(Component.literal("C4 armada — explode em "+format(c4.remaining())+". Corte o fio com uma tesoura para desarmar."),true);
+    // 0.82.0: defusing is a hold (see C4.Defuse and client/C4Defuse) — a click alone does nothing
    }
    return InteractionResult.sidedSuccess(level.isClientSide);
   }
@@ -120,7 +129,28 @@ public final class C4 {
   public static final StreamCodec<RegistryFriendlyByteBuf,Arm> CODEC=StreamCodec.composite(BlockPos.STREAM_CODEC,Arm::pos,ByteBufCodecs.VAR_INT,Arm::amount,ByteBufCodecs.VAR_INT,Arm::unit,Arm::new);
   @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
  }
+ /** 0.82.0: hold-to-defuse. phase 0 = started, 1 = let go, 2 = finished (the server checks the time itself). */
+ public record Defuse(BlockPos pos,int phase) implements CustomPacketPayload {
+  public static final Type<Defuse> TYPE=new Type<>(ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,"c4_defuse"));
+  public static final StreamCodec<RegistryFriendlyByteBuf,Defuse> CODEC=StreamCodec.composite(BlockPos.STREAM_CODEC,Defuse::pos,ByteBufCodecs.VAR_INT,Defuse::phase,Defuse::new);
+  @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
+ }
+ /** shears: 5 s, bare hands: 10 s */
+ public static int defuseTicks(Player p){return p.getMainHandItem().is(Items.SHEARS)?100:200;}
+ private static final java.util.Map<java.util.UUID,long[]> DEFUSING=new java.util.HashMap<>();
+ static void defuse(ServerPlayer player,Defuse p){
+  var level=player.level();var pos=p.pos();var state=level.getBlockState(pos);long now=level.getGameTime();
+  if(p.phase()==1){DEFUSING.remove(player.getUUID());return;}
+  if(player.distanceToSqr(pos.getCenter())>36||!(state.getBlock() instanceof C4Block)||!state.getValue(C4Block.ARMED)){DEFUSING.remove(player.getUUID());return;}
+  if(p.phase()==0){DEFUSING.put(player.getUUID(),new long[]{pos.asLong(),now,defuseTicks(player)});level.playSound(null,pos,SoundEvents.IRON_TRAPDOOR_OPEN,SoundSource.BLOCKS,.5F,1.8F);return;}
+  var d=DEFUSING.remove(player.getUUID());
+  if(d==null||d[0]!=pos.asLong()||now-d[1]<d[2]-4)return;   // too fast: ignore
+  if(level.getBlockEntity(pos) instanceof C4Entity c4){c4.disarm();level.setBlock(pos,state.setValue(C4Block.ARMED,false),3);
+   level.playSound(null,pos,SoundEvents.SHEEP_SHEAR,SoundSource.BLOCKS,1F,1.1F);level.playSound(null,pos,SoundEvents.NOTE_BLOCK_CHIME.value(),SoundSource.BLOCKS,.8F,1.6F);
+   for(var o:((net.minecraft.server.level.ServerLevel)level).players())if(o.distanceToSqr(pos.getCenter())<48*48)o.displayClientMessage(Component.literal("§a✂ C4 desarmada"+(o==player?"!":" por "+player.getName().getString()+".")),true);}
+ }
  @SubscribeEvent public static void packets(RegisterPayloadHandlersEvent e){
+  e.registrar("5").playToServer(Defuse.TYPE,Defuse.CODEC,(p,c)->{if(c.player() instanceof ServerPlayer player)defuse(player,p);});
   e.registrar("5").playToServer(Arm.TYPE,Arm.CODEC,(p,c)->{
    if(!(c.player() instanceof ServerPlayer player))return;
    var level=player.level();var pos=p.pos();var state=level.getBlockState(pos);
