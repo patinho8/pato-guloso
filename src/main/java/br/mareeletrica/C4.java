@@ -100,6 +100,8 @@ public final class C4 {
 
  public static final class C4Entity extends BlockEntity {
   private long at=-1;
+  /** 0.83.0: bomb of a Bomb-mode match (the terminal's position), or null */
+  public BlockPos match;
   public C4Entity(BlockPos pos,BlockState state){super(ENTITY.get(),pos,state);}
   public void arm(long ticks){at=level.getGameTime()+ticks;sync();}
   public void disarm(){at=-1;sync();}
@@ -112,6 +114,14 @@ public final class C4 {
   public static void tick(Level level,BlockPos pos,BlockState state,C4Entity be){
    if(be.at<0)return;
    long left=be.at-level.getGameTime();
+   if(left<=0&&be.match!=null){   // match bomb: kills everyone near, keeps the map intact
+    be.at=-1;var m=be.match;be.match=null;level.removeBlock(pos,false);double x=pos.getX()+.5,y=pos.getY()+.5,z=pos.getZ()+.5;
+    level.explode(null,null,null,x,y,z,9F,false,Level.ExplosionInteraction.NONE,net.minecraft.core.particles.ParticleTypes.EXPLOSION,net.minecraft.core.particles.ParticleTypes.EXPLOSION_EMITTER,MareEletrica.SILENT);
+    for(var e:level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,new net.minecraft.world.phys.AABB(pos).inflate(14))){double d=Math.sqrt(e.distanceToSqr(x,y,z));if(d<14)e.hurt(level.damageSources().explosion(null,null),(float)(60*(1-d/14)));}
+    level.playSound(null,pos,MareEletrica.C4_BLAST.get(),net.minecraft.sounds.SoundSource.BLOCKS,3F,.85F);
+    if(level instanceof net.minecraft.server.level.ServerLevel sl){sl.sendParticles(net.minecraft.core.particles.ParticleTypes.EXPLOSION_EMITTER,x,y+1,z,8,3,1.5,3,0);sl.sendParticles(net.minecraft.core.particles.ParticleTypes.LARGE_SMOKE,x,y+1,z,200,4,2,4,.08);sl.sendParticles(net.minecraft.core.particles.ParticleTypes.FLAME,x,y,z,120,1.5,.6,1.5,.45);}
+    if(level.getBlockEntity(m) instanceof BombMode.Terminal t)t.exploded();
+    return;}
    if(left<=0){be.at=-1;level.removeBlock(pos,false);double x=pos.getX()+.5,y=pos.getY()+.5,z=pos.getZ()+.5;
     level.explode(null,null,null,x,y,z,13F,false,Level.ExplosionInteraction.TNT,net.minecraft.core.particles.ParticleTypes.EXPLOSION,net.minecraft.core.particles.ParticleTypes.EXPLOSION_EMITTER,MareEletrica.SILENT);
     level.playSound(null,pos,MareEletrica.C4_BLAST.get(),net.minecraft.sounds.SoundSource.BLOCKS,2.5F,.85F);
@@ -119,8 +129,8 @@ public final class C4 {
    long interval=left>1200?100:left>200?40:left>100?20:left>40?10:5;
    if(level.getGameTime()%interval==0)level.playSound(null,pos,SoundEvents.LEVER_CLICK,SoundSource.BLOCKS,.9F,left>200?1.4F:1.9F);
   }
-  @Override protected void saveAdditional(CompoundTag tag,HolderLookup.Provider registries){super.saveAdditional(tag,registries);tag.putLong("At",at);}
-  @Override protected void loadAdditional(CompoundTag tag,HolderLookup.Provider registries){super.loadAdditional(tag,registries);at=tag.contains("At")?tag.getLong("At"):-1;}
+  @Override protected void saveAdditional(CompoundTag tag,HolderLookup.Provider registries){super.saveAdditional(tag,registries);tag.putLong("At",at);if(match!=null)tag.putLong("Match",match.asLong());}
+  @Override protected void loadAdditional(CompoundTag tag,HolderLookup.Provider registries){super.loadAdditional(tag,registries);at=tag.contains("At")?tag.getLong("At"):-1;match=tag.contains("Match")?BlockPos.of(tag.getLong("Match")):null;}
  }
 
  /** Client asks the server to arm the C4 at pos with amount x unit (0 = minutes, 1 = hours, 2 = Minecraft days, 3 = seconds). */
@@ -145,7 +155,8 @@ public final class C4 {
   if(p.phase()==0){DEFUSING.put(player.getUUID(),new long[]{pos.asLong(),now,defuseTicks(player)});level.playSound(null,pos,SoundEvents.IRON_TRAPDOOR_OPEN,SoundSource.BLOCKS,.5F,1.8F);return;}
   var d=DEFUSING.remove(player.getUUID());
   if(d==null||d[0]!=pos.asLong()||now-d[1]<d[2]-4)return;   // too fast: ignore
-  if(level.getBlockEntity(pos) instanceof C4Entity c4){c4.disarm();level.setBlock(pos,state.setValue(C4Block.ARMED,false),3);
+  if(level.getBlockEntity(pos) instanceof C4Entity c4&&c4.match!=null&&BombMode.team(player)==0){player.displayClientMessage(Component.literal("§cTerrorista não desarma a própria bomba."),true);return;}
+  if(level.getBlockEntity(pos) instanceof C4Entity c4){var mt=c4.match;c4.match=null;c4.disarm();level.setBlock(pos,state.setValue(C4Block.ARMED,false),3);if(mt!=null&&level.getBlockEntity(mt) instanceof BombMode.Terminal t)t.defused(player);
    level.playSound(null,pos,SoundEvents.SHEEP_SHEAR,SoundSource.BLOCKS,1F,1.1F);level.playSound(null,pos,SoundEvents.NOTE_BLOCK_CHIME.value(),SoundSource.BLOCKS,.8F,1.6F);
    for(var o:((net.minecraft.server.level.ServerLevel)level).players())if(o.distanceToSqr(pos.getCenter())<48*48)o.displayClientMessage(Component.literal("§a✂ C4 desarmada"+(o==player?"!":" por "+player.getName().getString()+".")),true);}
  }

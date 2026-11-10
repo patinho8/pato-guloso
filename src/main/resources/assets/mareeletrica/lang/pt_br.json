@@ -1616,5 +1616,10 @@
  "item.mareeletrica.acc_extended_mag": "Pente Estendido",
  "item.mareeletrica.acc_drum_mag": "Carregador de Tambor",
  "block.mareeletrica.shower": "Chuveiro",
- "block.mareeletrica.bathtub": "Banheira"
+ "block.mareeletrica.bathtub": "Banheira",
+ "block.mareeletrica.bomb_terminal": "Terminal do Modo Bomba",
+ "item.mareeletrica.bomb_terminal": "Terminal do Modo Bomba",
+ "item.mareeletrica.bomb_map": "Mapa Modo Bomba: Deserto",
+ "item.mareeletrica.match_bomb": "Bomba (Modo Bomba)",
+ "entity.mareeletrica.bomb_bot": "Bot"
 }

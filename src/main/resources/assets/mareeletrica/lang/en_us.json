@@ -1616,5 +1616,10 @@
  "item.mareeletrica.acc_extended_mag": "Extended Magazine",
  "item.mareeletrica.acc_drum_mag": "Drum Magazine",
  "block.mareeletrica.shower": "Shower",
- "block.mareeletrica.bathtub": "Bathtub"
+ "block.mareeletrica.bathtub": "Bathtub",
+ "block.mareeletrica.bomb_terminal": "Bomb Mode Terminal",
+ "item.mareeletrica.bomb_terminal": "Bomb Mode Terminal",
+ "item.mareeletrica.bomb_map": "Bomb Mode Map: Desert",
+ "item.mareeletrica.match_bomb": "Bomb (Bomb Mode)",
+ "entity.mareeletrica.bomb_bot": "Bot"
 }

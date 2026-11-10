@@ -40,7 +40,7 @@ public final class CreativeTabs {
   Knives.creative(s);
  }
  static void defense(Sink s){
-  Grenades.creative(s);s.add(C4.ITEM);s.add(MareEletrica.MACHINES.get(Kind.MORTAR));
+  Grenades.creative(s);s.add(C4.ITEM);BombMode.creative(s::accept);s.add(MareEletrica.MACHINES.get(Kind.MORTAR));
   Barrage.creative(s);/* 0.66.0: batteries + 1000-round ammo crate removed from the tab and recipes (still registered for old worlds) */Wounds.creative(s);s.accept(new ItemStack(Support.RADIO.get()));Missiles.creative(s);Emplacements.creative(s);s.add(MareEletrica.CANNONBALL);s.add(MareEletrica.AIM_REMOTE);
   Flares.creative(s);s.add(WarPlus.MINE_ITEM);s.add(WarPlus.LAUNCHER);s.add(WarPlus.STRIKE);
  }
