@@ -37,8 +37,8 @@ public final class VisualEscudo {
    p.teleportTo(l,o.getX()+.5,o.getY(),o.getZ()+.5,180,0);base=p.position();for(var s:EquipmentSlot.values())if(s.isArmor())p.setItemSlot(s,ItemStack.EMPTY);Wounds.st(p).limb[0]=Wounds.st(p).limb[1]=Wounds.st(p).limb[2]=Wounds.st(p).limb[3]=0;
    z=EntityType.ZOMBIE.create(l);z.moveTo(p.getX(),p.getY()-5,p.getZ()-6,0,0);z.setNoAi(true);z.setInvisible(true);z.setInvulnerable(true);l.addFreshEntity(z);
    p.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);p.setItemInHand(InteractionHand.OFF_HAND,new ItemStack(Items.SHIELD));});
-  if(tick>60&&tick<220&&tick%3==0)srv.execute(()->{var p=sp();if(base!=null&&p.position().distanceToSqr(base)>.01)p.teleportTo(base.x,base.y,base.z);p.setYRot(180);p.setYBodyRot(180);p.setYHeadRot(180);});
-  if(tick>60&&tick<220){mc.player.setYRot(180);mc.player.setXRot(5);}
+  if(tick>60&&tick<186&&tick%3==0)srv.execute(()->{var p=sp();if(base!=null&&p.position().distanceToSqr(base)>.01)p.teleportTo(base.x,base.y,base.z);p.setYRot(180);p.setYBodyRot(180);p.setYHeadRot(180);});
+  if(tick>60&&tick<186){mc.player.setYRot(180);mc.player.setXRot(5);}
   if(tick>=70&&tick<92)mc.options.keyUse.setDown(true);if(tick==92)mc.options.keyUse.setDown(false);
   if(tick==84)srv.execute(()->{log("normal shield raised: blocking="+sp().isBlocking());shoot(0,1.2);});
   if(tick==95)srv.execute(()->{var p=sp();p.setItemInHand(InteractionHand.OFF_HAND,new ItemStack(Wounds.TAC_SHIELD.get()));p.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);log("--- tactical shield (not raised)");});
@@ -50,7 +50,16 @@ public final class VisualEscudo {
   if(tick>=145&&tick<168)mc.options.keyUse.setDown(true);if(tick==168)mc.options.keyUse.setDown(false);
   if(tick==155){shot("levantado");srv.execute(()->{log("tactical raised blocking="+sp().isBlocking());shoot(0,1.2);});}
   if(tick==170){srv.execute(()->sp().stopUsingItem());mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT);}
-  if(tick==185)shot("terceira");
-  if(tick==190){mc.options.setCameraType(CameraType.FIRST_PERSON);log("DONE");}
+  if(tick==178){mc.options.hideGui=true;}if(tick==185)shot("terceira");if(tick==186)srv.execute(()->{var p=sp();p.setYRot(0);p.setYBodyRot(0);});if(tick>186&&tick<200){mc.player.setYRot(0);}if(tick==196)shot("costas");
+  if(tick==200){mc.options.hideGui=false;mc.options.setCameraType(CameraType.FIRST_PERSON);srv.execute(()->{var l=sp().serverLevel();var t=net.minecraft.world.entity.EntityType.TNT.create(l);t.setPos(base.x+3,base.y,base.z-4);t.setFuse(5);l.addFreshEntity(t);});}
+  if(tick==232)srv.execute(()->{var p=sp();var l=p.serverLevel();l.setDayTime(6000);var o=p.blockPosition().above(30);
+   for(int x=-4;x<=4;x++)for(int zz=-4;zz<=4;zz++)l.setBlockAndUpdate(o.offset(x,-1,zz),net.minecraft.world.level.block.Blocks.SMOOTH_STONE.defaultBlockState());
+   for(int i=0;i<2;i++){var a=net.minecraft.world.entity.EntityType.ARMOR_STAND.create(l);a.moveTo(o.getX()+.5+(i==0?-1:1),o.getY(),o.getZ()-2+.5,0,0);a.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(i==0?Wounds.TAC_SHIELD.get():Items.SHIELD));
+    var t=new net.minecraft.nbt.CompoundTag();a.saveWithoutId(t);t.putBoolean("ShowArms",true);a.load(t);l.addFreshEntity(a);}
+   p.teleportTo(l,o.getX()+.5,o.getY(),o.getZ()+1.5,180,15);});
+  if(tick>232&&tick<260){mc.player.setYRot(180);mc.player.setXRot(15);}
+  if(tick==255){mc.options.hideGui=true;shot("vitrine");}
+  if(tick==258)mc.options.hideGui=false;
+  if(tick==262){log("queue "+br.mareeletrica.client.ExplosionSounds.class.getSimpleName()+" ok");log("DONE");}
  }
 }

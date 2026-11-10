@@ -144,7 +144,7 @@ public final class Wounds {
  public enum Med {BANDAGE("bandage",60),SYRINGE("syringe",40),MEDKIT("medkit",140);public final String id;public final int ticks;Med(String id,int t){this.id=id;ticks=t;}}
  public static final DeferredItem<MedItem> BANDAGE=med(Med.BANDAGE),SYRINGE=med(Med.SYRINGE),MEDKIT=med(Med.MEDKIT);
  private static DeferredItem<MedItem> med(Med m){return MareEletrica.ITEMS.register(m.id,()->new MedItem(m,new Item.Properties().stacksTo(m==Med.MEDKIT?4:16)));}
- public static final DeferredHolder<SoundEvent,SoundEvent> BREATH_CALM=sound("breath_calm"),BREATH_HEAVY=sound("breath_heavy"),BREATH_GASP=sound("breath_gasp"),HEARTBEAT=sound("heartbeat"),BANDAGE_WRAP=sound("bandage_wrap"),SYRINGE_INJECT=sound("syringe_inject");
+ public static final DeferredHolder<SoundEvent,SoundEvent> BREATH_CALM=sound("breath_calm"),BREATH_HEAVY=sound("breath_heavy"),BREATH_GASP=sound("breath_gasp"),HEARTBEAT=sound("heartbeat"),EXP_NEAR=sound("explosion_near"),EXP_FAR=sound("explosion_far"),EXP_DEBRIS=sound("explosion_debris"),BANDAGE_WRAP=sound("bandage_wrap"),SYRINGE_INJECT=sound("syringe_inject");
  private static DeferredHolder<SoundEvent,SoundEvent> sound(String n){return MareEletrica.SOUNDS.register(n,()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,n)));}
  public static void register(IEventBus bus){MATERIALS.register(bus);bus.addListener(Wounds::packets);}
  public static void creative(net.minecraft.world.item.CreativeModeTab.Output out){out.accept(BANDAGE.get());out.accept(SYRINGE.get());out.accept(MEDKIT.get());out.accept(VEST.get());out.accept(TAC_HELMET.get());out.accept(TAC_CHEST.get());out.accept(TAC_LEGS.get());out.accept(TAC_BOOTS.get());out.accept(TAC_SHIELD.get());}

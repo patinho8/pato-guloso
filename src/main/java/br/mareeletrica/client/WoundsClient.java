@@ -130,9 +130,7 @@ public final class WoundsClient {
   if(mc.isPaused()||p.isCreative()||p.isSpectator())return;
   int t=tier(p,s);
   if(t>0&&--breathCd<=0){
-   var snd=t==3?Wounds.BREATH_GASP.get():t==2?Wounds.BREATH_HEAVY.get():Wounds.BREATH_CALM.get();
-   float vol=t==3?.9F:t==2?.7F:.45F;
-   mc.getSoundManager().play(SimpleSoundInstance.forUI(snd,.95F+p.getRandom().nextFloat()*.1F,vol));
+   // 0.86.0: no more breathing sounds — only the heartbeat when about to die
    if(t==3)mc.getSoundManager().play(SimpleSoundInstance.forUI(Wounds.HEARTBEAT.get(),1F,.8F));
    breathCd=t==3?34:t==2?48:84;
   }else if(t==0)breathCd=Math.max(breathCd,20);
