@@ -1,0 +1,27 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  "QBQ",
+  "QWQ",
+  "GQG"
+ ],
+ "key": {
+  "Q": {
+   "item": "minecraft:quartz_block"
+  },
+  "B": {
+   "item": "mareeletrica:bathtub"
+  },
+  "W": {
+   "item": "minecraft:water_bucket"
+  },
+  "G": {
+   "item": "minecraft:gold_ingot"
+  }
+ },
+ "result": {
+  "id": "mareeletrica:big_bathtub",
+  "count": 1
+ }
+}

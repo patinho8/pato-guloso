@@ -73,10 +73,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  *  - The hit spots show up on the player as blood decals (works with any skin, incl. Quick Skin). */
 @EventBusSubscriber(modid=MareEletrica.ID)
 public final class Wounds {
- public static final int LA=0,RA=1,LL=2,RL=3,LIMB_HP=24,BLEED_TICKS=6000,MAX_DECALS=24;
+ public static final int LA=0,RA=1,LL=2,RL=3,LIMB_HP=60,BLEED_TICKS=6000,MAX_DECALS=24;
  /** 0.65.2: no bleeding any more — wounds heal by themselves. A broken limb is set to BROKEN_AT and loses 1 point every HEAL_EVERY ticks:
   *  it works again after about 1 minute and is fully healed after about 2.5 minutes. */
- public static final int BROKEN_AT=36,HEAL_EVERY=80;
+ public static final int BROKEN_AT=72,HEAL_EVERY=80;
  /** Damage by where the bullet lands: head ×2, torso ×1, arms ×0.6, legs ×0.7. */
  static final float[] ZONE_DAMAGE={2F,1F,.6F,.6F,.7F,.7F};
  static final String[] ZONE_NAME={"na cabeça","no peito","no braço esquerdo","no braço direito","na perna esquerda","na perna direita"};
@@ -106,13 +106,28 @@ public final class Wounds {
   List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,"bulletproof"))),2F,.1F));
  public static final DeferredItem<ArmorItem> VEST=MareEletrica.ITEMS.register("bulletproof_vest",()->new ArmorItem(VEST_MATERIAL,ArmorItem.Type.CHESTPLATE,new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(30))){
   @Override public void appendHoverText(ItemStack s,TooltipContext c,List<Component> t,TooltipFlag f){t.add(Component.literal("§7Tiros no peito tiram bem menos vida e não sangram."));t.add(Component.literal("§8Não protege braços, pernas nem cabeça. Sniper ainda dói."));}});
+ /** 0.84.0: tactical armor — as tough as diamond against mobs and melee, and very good against bullets (see incoming) */
+ public static final DeferredHolder<ArmorMaterial,ArmorMaterial> TACTICAL_MATERIAL=MATERIALS.register("tactical",()->new ArmorMaterial(
+  Map.of(ArmorItem.Type.HELMET,3,ArmorItem.Type.CHESTPLATE,8,ArmorItem.Type.LEGGINGS,6,ArmorItem.Type.BOOTS,3,ArmorItem.Type.BODY,11),10,SoundEvents.ARMOR_EQUIP_DIAMOND,
+  ()->Ingredient.of(Items.DIAMOND),
+  List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,"tactical"))),2F,0F));
+ public static final class TacticalArmor extends ArmorItem {
+  public TacticalArmor(ArmorItem.Type t){super(TACTICAL_MATERIAL,t,new Item.Properties().durability(t.getDurability(33)));}
+  @Override public void appendHoverText(ItemStack s,TooltipContext c,List<Component> t,TooltipFlag f){
+   t.add(Component.literal("§7Igual a diamante contra mobs e golpes."));
+   t.add(Component.literal("§aSegura tiros: §7"+switch(getType()){case HELMET->"protege a cabeça";case CHESTPLATE->"protege peito e braços";case LEGGINGS->"protege as pernas";default->"ajuda nas pernas (sem a calça)";}));
+   t.add(Component.literal("§8Sniper ainda atravessa um pouco."));}}
+ public static final DeferredItem<TacticalArmor> TAC_HELMET=MareEletrica.ITEMS.register("tactical_helmet",()->new TacticalArmor(ArmorItem.Type.HELMET)),
+  TAC_CHEST=MareEletrica.ITEMS.register("tactical_chestplate",()->new TacticalArmor(ArmorItem.Type.CHESTPLATE)),
+  TAC_LEGS=MareEletrica.ITEMS.register("tactical_leggings",()->new TacticalArmor(ArmorItem.Type.LEGGINGS)),
+  TAC_BOOTS=MareEletrica.ITEMS.register("tactical_boots",()->new TacticalArmor(ArmorItem.Type.BOOTS));
  public enum Med {BANDAGE("bandage",60),SYRINGE("syringe",40),MEDKIT("medkit",140);public final String id;public final int ticks;Med(String id,int t){this.id=id;ticks=t;}}
  public static final DeferredItem<MedItem> BANDAGE=med(Med.BANDAGE),SYRINGE=med(Med.SYRINGE),MEDKIT=med(Med.MEDKIT);
  private static DeferredItem<MedItem> med(Med m){return MareEletrica.ITEMS.register(m.id,()->new MedItem(m,new Item.Properties().stacksTo(m==Med.MEDKIT?4:16)));}
  public static final DeferredHolder<SoundEvent,SoundEvent> BREATH_CALM=sound("breath_calm"),BREATH_HEAVY=sound("breath_heavy"),BREATH_GASP=sound("breath_gasp"),HEARTBEAT=sound("heartbeat"),BANDAGE_WRAP=sound("bandage_wrap"),SYRINGE_INJECT=sound("syringe_inject");
  private static DeferredHolder<SoundEvent,SoundEvent> sound(String n){return MareEletrica.SOUNDS.register(n,()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,n)));}
  public static void register(IEventBus bus){MATERIALS.register(bus);bus.addListener(Wounds::packets);}
- public static void creative(net.minecraft.world.item.CreativeModeTab.Output out){out.accept(BANDAGE.get());out.accept(SYRINGE.get());out.accept(MEDKIT.get());out.accept(VEST.get());}
+ public static void creative(net.minecraft.world.item.CreativeModeTab.Output out){out.accept(BANDAGE.get());out.accept(SYRINGE.get());out.accept(MEDKIT.get());out.accept(VEST.get());out.accept(TAC_HELMET.get());out.accept(TAC_CHEST.get());out.accept(TAC_LEGS.get());out.accept(TAC_BOOTS.get());}
 
  // ---------------- server state ----------------
  private static final Map<UUID,State> STATES=new HashMap<>();
@@ -141,16 +156,17 @@ public final class Wounds {
 
  // ---------------- bullets → body parts ----------------
  public static boolean bullet(Entity direct){return direct instanceof DmtProjectileEntity d&&!d.isSpear()||direct instanceof Tracers.Round||direct instanceof RoverBulletEntity;}
- /** Limb points a hit removes: sniper 24 (1 shot), strong 8 (3), SMG 6 (4), light pistols 3 (8). */
+ /** Limb points a hit removes (limb holds 60): sniper 30 (2 shots), strong 8 (8), SMG 6 (10), light pistols 3 (20). */
+ static final int HEAVY=30;
  static int points(Entity direct,DamageSource src){
   if(direct instanceof DmtProjectileEntity d&&d.isPellet())return 3;
   WeaponFamily f=src.getEntity() instanceof LivingEntity le?WeaponFamily.of(le.getMainHandItem()):null;
   if(f!=null)return switch(f){
-   case SNIPER,BARRETT,SVD->24;
+   case SNIPER,BARRETT,SVD->HEAVY;
    case USP,GLOCK,BERETTA->3;
    case MP5,SMG,MP40,P90,UMP45,UZI,MAC10->6;
    default->8;};
-  if(direct instanceof DmtProjectileEntity d&&d.isSniper())return 24;
+  if(direct instanceof DmtProjectileEntity d&&d.isSniper())return HEAVY;
   return direct instanceof Tracers.Round?8:6;
  }
  static Vec3 hitPoint(Player p,Entity direct){
@@ -174,23 +190,38 @@ public final class Wounds {
   else{zone=1;u=(float)Mth.clamp(.5+lat/.46,.1,.9);v=(float)Mth.clamp((.78-y)/.36,.1,.9);}
   return new Decal(zone,face,u,v);
  }
+ /** which tactical piece covers a zone: helmet → head, chestplate → torso and arms, leggings → legs (boots alone also help the legs) */
+ static EquipmentSlot tacticalPiece(Player p,int zone){
+  EquipmentSlot sl=zone==0?EquipmentSlot.HEAD:zone<=3?EquipmentSlot.CHEST:p.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof TacticalArmor?EquipmentSlot.LEGS:EquipmentSlot.FEET;
+  return p.getItemBySlot(sl).getItem() instanceof TacticalArmor?sl:null;}
  static boolean vest(Player p){return p.getItemBySlot(EquipmentSlot.CHEST).is(VEST.get());}
  static final String[] LIMB_NAME={"braço esquerdo","braço direito","perna esquerda","perna direita"};
+ /** 0.84.0: being shot barely pushes you — remember who was just hit by a bullet, the knockback of that same hit is cut down */
+ static final Map<Entity,Integer> SHOT=new java.util.WeakHashMap<>();
+ @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST) public static void shotMark(LivingIncomingDamageEvent e){
+  var d=e.getSource().getDirectEntity();if(d!=null&&bullet(d)&&!e.getEntity().level().isClientSide)SHOT.put(e.getEntity(),e.getEntity().tickCount);}
+ @SubscribeEvent public static void shotKnock(net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent e){
+  Integer t=SHOT.get(e.getEntity());if(t!=null&&t==e.getEntity().tickCount)e.setStrength(e.getStrength()*.12F);}
  @SubscribeEvent public static void incoming(LivingIncomingDamageEvent e){
   if(!(e.getEntity() instanceof ServerPlayer p)||p.isCreative()||p.isSpectator())return;
   var src=e.getSource();var direct=src.getDirectEntity();
   if(direct!=null&&bullet(direct)){
    Vec3 hit=hitPoint(p,direct);Decal d=locate(p,direct,hit);int pts=points(direct,src);
-   boolean stopped=false;
+   boolean stopped=false,armored=false;
    if(d.zone()==1&&vest(p)){   // the vest takes most of it and the wound doesn't bleed
-    var chest=p.getItemBySlot(EquipmentSlot.CHEST);e.setAmount(e.getAmount()*(pts>=24?.55F:.3F));chest.hurtAndBreak(pts>=24?6:2,p,EquipmentSlot.CHEST);stopped=pts<24;
+    var chest=p.getItemBySlot(EquipmentSlot.CHEST);e.setAmount(e.getAmount()*(pts>=HEAVY?.55F:.3F));chest.hurtAndBreak(pts>=HEAVY?6:2,p,EquipmentSlot.CHEST);stopped=pts<HEAVY;
     p.level().playSound(null,p.blockPosition(),SoundEvents.SHIELD_BLOCK,SoundSource.PLAYERS,.8F,1.4F);
    }
+   // 0.84.0: tactical armor — the piece covering the hit zone soaks most of the bullet and keeps the limb working
+   var piece=tacticalPiece(p,d.zone());
+   if(piece!=null){var it=p.getItemBySlot(piece);boolean heavy=pts>=HEAVY;e.setAmount(e.getAmount()*(heavy?.55F:.25F));it.hurtAndBreak(heavy?4:1,p,piece);
+    pts=Math.max(1,Math.round(pts*(heavy?.5F:.35F)));if(!heavy)stopped=true;armored=true;
+    p.level().playSound(null,p.blockPosition(),SoundEvents.SHIELD_BLOCK,SoundSource.PLAYERS,.7F,1.6F);}
    var s=st(p);
    e.setAmount(e.getAmount()*ZONE_DAMAGE[d.zone()]);
    // ONLY the sniper: an arm or leg hit can't take a healthy player down by itself — only chest or head shots are deadly
    // = arm/leg sniper hits only do a little damage (3.5 hearts at most): a healthy player survives, a badly hurt one can still die
-   if(pts>=24&&d.zone()>=2)e.setAmount(Math.min(e.getAmount(),7F));
+   if(pts>=HEAVY&&d.zone()>=2)e.setAmount(Math.min(e.getAmount(),7F));
    if(d.zone()>=2){int l=d.zone()-2;boolean was=s.broken(l);s.limb[l]=Math.min(BROKEN_AT,s.limb[l]+pts);if(s.broken(l))s.limb[l]=BROKEN_AT;
     if(!was&&s.broken(l)){p.displayClientMessage(Component.literal("§c§lSua "+LIMB_NAME[l]+" parou de funcionar! §7(volta sozinha em ~1 min)"),false);
      if(s.armsBroken()==2)p.displayClientMessage(Component.literal("§4Sem os dois braços: você não segura nada. Alguém pode usar uma seringa em você."),false);}}
@@ -201,7 +232,7 @@ public final class Wounds {
     case 4,5->p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,80,1,false,false));
     default->p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,60,0,false,false));
    }
-   p.displayClientMessage(Component.literal((d.zone()==0?"§4§l":"§c")+"Tiro "+ZONE_NAME[d.zone()]+(stopped?" §7(o colete segurou)":"")),true);
+   p.displayClientMessage(Component.literal((d.zone()==0?"§4§l":"§c")+"Tiro "+ZONE_NAME[d.zone()]+(armored?" §7(a armadura segurou)":stopped?" §7(o colete segurou)":"")),true);
    if(!stopped){s.decals.add(d);while(s.decals.size()>MAX_DECALS)s.decals.remove(0);}
    save(p,s,true);
    PacketDistributor.sendToPlayer(p,new Hit(0,e.getAmount(),d.zone()));
@@ -288,7 +319,7 @@ public final class Wounds {
     Player target=p;var id=PATIENT.remove(p.getUUID());if(id!=null&&level.getPlayerByUUID(id) instanceof ServerPlayer t&&t.distanceToSqr(p)<6*6)target=t;
     var ts=st(target);String msg;
     switch(kind){
-     case BANDAGE->{int worst=0;for(int i=1;i<4;i++)if(ts.limb[i]>ts.limb[worst])worst=i;ts.limb[worst]=Math.max(0,Math.min(ts.limb[worst],LIMB_HP-1)-12);target.heal(4);msg="Ferimento enfaixado: a "+LIMB_NAME[worst]+" melhorou.";}
+     case BANDAGE->{int worst=0;for(int i=1;i<4;i++)if(ts.limb[i]>ts.limb[worst])worst=i;ts.limb[worst]=Math.max(0,Math.min(ts.limb[worst],LIMB_HP-1)-30);target.heal(4);msg="Ferimento enfaixado: a "+LIMB_NAME[worst]+" melhorou.";}
      case SYRINGE->{int worst=-1;for(int i=0;i<4;i++)if(ts.broken(i)&&(worst<0||ts.limb[i]>ts.limb[worst]))worst=i;
       if(worst>=0){ts.limb[worst]=0;msg="A "+LIMB_NAME[worst]+" voltou a funcionar.";}else{for(int i=0;i<4;i++)ts.limb[i]=Math.max(0,ts.limb[i]-8);msg="Adrenalina aplicada.";}
       target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,200,0));target.addEffect(new MobEffectInstance(MobEffects.REGENERATION,100,0));}

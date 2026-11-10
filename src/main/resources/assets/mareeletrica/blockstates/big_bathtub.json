@@ -1,0 +1,742 @@
+{
+ "multipart": [
+  {
+   "when": {
+    "facing": "north",
+    "cell": "0"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_0"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "0",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_0"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "1"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_1"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "1",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_1"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "2"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_2"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "2",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_2"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "3"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_3"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "3",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_3"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "4"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_4"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "4",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_4"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "5"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_5"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "5",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_5"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "6"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_6"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "6",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_6"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "7"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_7"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "7",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_7"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "8"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_8"
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "cell": "8",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_8"
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "0"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_0",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "0",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_0",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "1"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_1",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "1",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_1",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "2"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_2",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "2",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_2",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "3"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_3",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "3",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_3",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "4"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_4",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "4",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_4",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "5"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_5",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "5",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_5",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "6"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_6",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "6",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_6",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "7"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_7",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "7",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_7",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "8"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_8",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "cell": "8",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_8",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "0"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_0",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "0",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_0",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "1"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_1",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "1",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_1",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "2"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_2",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "2",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_2",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "3"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_3",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "3",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_3",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "4"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_4",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "4",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_4",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "5"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_5",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "5",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_5",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "6"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_6",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "6",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_6",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "7"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_7",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "7",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_7",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "8"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_8",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "cell": "8",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_8",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "0"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_0",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "0",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_0",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "1"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_1",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "1",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_1",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "2"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_2",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "2",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_2",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "3"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_3",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "3",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_3",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "4"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_4",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "4",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_4",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "5"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_5",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "5",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_5",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "6"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_6",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "6",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_6",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "7"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_7",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "7",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_7",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "8"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_8",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "cell": "8",
+    "filled": "true"
+   },
+   "apply": {
+    "model": "mareeletrica:block/big_bathtub_water_8",
+    "y": 270
+   }
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+ "type": "minecraft:block",
+ "pools": [
+  {
+   "rolls": 1,
+   "entries": [
+    {
+     "type": "minecraft:item",
+     "name": "mareeletrica:big_bathtub",
+     "conditions": [
+      {
+       "condition": "minecraft:block_state_property",
+       "block": "mareeletrica:big_bathtub",
+       "properties": {
+        "cell": "4"
+       }
+      }
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "condition": "minecraft:survives_explosion"
+    }
+   ]
+  }
+ ]
+}

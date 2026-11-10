@@ -252,8 +252,8 @@ public final class Pato {
     if(p.isShiftKeyDown()){   // onto your head / back down
      if(!client){if(getVehicle()==p)hopOff(p);
       else if(shoulderDucks(p).size()>=2)msg(p,"§e🦆 Os dois ombros já têm pato!");
-      else{setOrderedToSit(false);getNavigation().stop();startRiding(p,true);quack(this,.7F,1.5F);
-       msg(p,"§a🦆 "+getName().getString()+" subiu no seu "+(shoulderDucks(p).indexOf(this)==0?"ombro direito":"ombro esquerdo")+"! §7Ele vigia monstros e plana com você nas quedas • Shift+clique num bloco com a mão vazia: descer");}}
+      else{if(bathTicks>0){flag(BATH,false);setNoGravity(false);bathTicks=0;bathPos=null;bathEntered=false;}setOrderedToSit(false);getNavigation().stop();startRiding(p,true);quack(this,.7F,1.5F);
+       msg(p,"§a🦆 "+getName().getString()+" subiu no seu "+(shoulderDucks(p).indexOf(this)==0?"ombro direito":"ombro esquerdo")+"! §7Ele vigia monstros e plana com você nas quedas • Shift+clique num bloco com a mão vazia: descer • numa banheira cheia: ele entra na água");}}
      return InteractionResult.sidedSuccess(client);}
     if(!client){setHappy(happy()+15);level().broadcastEntityEvent(this,(byte)7);quack(this,.6F,1.5F);if(petCd<=0){addXp(2);petCd=600;}
      msg(p,"§a🦆 "+getName().getString()+" §6Nv "+duckLevel()+" §7("+xpText()+" XP) • fome "+bar(hunger())+" §7• felicidade "+bar(happy())+" §7• "+(isBaby()?"filhote":king()?"§6PATO REI":"adulto")+" §7• modo §e"+MODES[mode()]);}
@@ -278,7 +278,12 @@ public final class Pato {
   public void hopOff(Player p){stopRiding();double yaw=Math.toRadians(p.yBodyRot);moveTo(p.getX()-Math.cos(yaw)*.8,p.getY(),p.getZ()-Math.sin(yaw)*.8,p.getYRot(),0);setDeltaMovement(0,.25,0);quack(this,.7F,1.3F);}
   static void shoulderOff(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock e){
    var p=e.getEntity();if(p.level().isClientSide||!p.isShiftKeyDown()||e.getHand()!=InteractionHand.MAIN_HAND||!p.getMainHandItem().isEmpty())return;
-   var ds=shoulderDucks(p);if(ds.isEmpty())return;for(var d:ds)d.hopOff(p);msg(p,"§7🦆 "+(ds.size()>1?"Os patos desceram":ds.get(0).getName().getString()+" desceu")+" do ombro.");e.setCanceled(true);}
+   var ds=shoulderDucks(p);if(ds.isEmpty())return;
+   // 0.84.0: Shift+click a filled tub with ducks on the shoulder → they go straight into the water
+   var tub=e.getPos();var ts=p.level().getBlockState(tub);
+   if(Bath.filled(ts)){int n=0;for(var d:ds){d.hopOff(p);if(d.putInBath(tub,ts))n++;}
+    msg(p,"§b🛁 "+(n>1?"Os patos foram":ds.get(0).getName().getString()+" foi")+" pra banheira! §7(fica nadando um tempão; Shift+clique nele para pegar de volta)");e.setCanceled(true);return;}
+   for(var d:ds)d.hopOff(p);msg(p,"§7🦆 "+(ds.size()>1?"Os patos desceram":ds.get(0).getName().getString()+" desceu")+" do ombro.");e.setCanceled(true);}
   /** on the shoulder: spreads its wings when the owner falls (slow falling) */
   void shoulderTick(Player p){
    if(level().isClientSide)return;
@@ -392,23 +397,29 @@ public final class Pato {
   // ---------------- bathtub
   int bathWalk;boolean bathWithOwner;
   BlockPos findTub(int r){var at=blockPosition();BlockPos best=null;double bd=1e9;
-   for(var q:BlockPos.betweenClosed(at.offset(-r,-3,-r),at.offset(r,3,r))){var st=level().getBlockState(q);if(st.getBlock() instanceof Bath.BathBlock&&st.getValue(Bath.FILLED)){double d=q.distSqr(at);if(d<bd){bd=d;best=q.immutable();}}}return best;}
+   for(var q:BlockPos.betweenClosed(at.offset(-r,-3,-r),at.offset(r,3,r))){var st=level().getBlockState(q);if(Bath.filled(st)){double d=q.distSqr(at);if(d<bd){bd=d;best=q.immutable();}}}return best;}
   /** off to the tub (with the owner when they get in) */
   public boolean goBath(BlockPos tub,boolean withOwner){
-   if(bathTicks>0||isPassenger()||racer())return false;var st=level().getBlockState(tub);if(!(st.getBlock() instanceof Bath.BathBlock)||!st.getValue(Bath.FILLED))return false;
+   if(bathTicks>0||isPassenger()||racer())return false;var st=level().getBlockState(tub);if(!Bath.filled(st))return false;
    bathPos=tub;bathTicks=withOwner?6000:500+random.nextInt(500);bathWithOwner=withOwner;bathEntered=false;bathWalk=0;flag(SLEEP,false);setTarget(null);return true;}
+  /** put straight into the tub's water (from the shoulder) */
+  public boolean putInBath(BlockPos tub,net.minecraft.world.level.block.state.BlockState st){
+   if(racer()||!Bath.filled(st))return false;bathPos=tub.immutable();bathTicks=12000;bathWithOwner=false;bathWalk=0;flag(SLEEP,false);setTarget(null);
+   Vec3 m=Bath.middle(tub,st);moveTo(m.x+(random.nextFloat()-.5F)*.4,tub.getY()+.3,m.z+(random.nextFloat()-.5F)*.4,getYRot(),0);
+   bathEntered=true;flag(BATH,true);setNoGravity(true);getNavigation().stop();quack(this,1F,1.5F);bathPhase=random.nextFloat()*6;
+   if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.SPLASH,m.x,tub.getY()+.6,m.z,25,.3,.1,.3,.1);return true;}
   boolean bathTick(LivingEntity owner){
    var st=level().getBlockState(bathPos);
-   boolean ok=st.getBlock() instanceof Bath.BathBlock&&st.getValue(Bath.FILLED)&&getTarget()==null&&!isPassenger()&&(owner==null||distanceToSqr(owner)<24*24);
+   boolean ok=Bath.filled(st)&&getTarget()==null&&!isPassenger()&&(owner==null||distanceToSqr(owner)<(bathWithOwner?24*24:64*64));
    if(bathWithOwner&&owner!=null&&!(owner.getVehicle() instanceof Furniture.Seat)&&bathTicks>60)bathTicks=60;
    if(!ok||--bathTicks<=0||!bathEntered&&++bathWalk>400){leaveBath();return false;}
    if(!bathEntered){
-    if(position().distanceToSqr(Vec3.atBottomCenterOf(bathPos))<2.4*2.4){bathEntered=true;flag(BATH,true);setNoGravity(true);getNavigation().stop();quack(this,1F,1.5F);bathPhase=random.nextFloat()*6;
+    if(position().distanceToSqr(Bath.middle(bathPos,st))<(Bath.along(st)>.6?3.4*3.4:2.4*2.4)){bathEntered=true;flag(BATH,true);setNoGravity(true);getNavigation().stop();quack(this,1F,1.5F);bathPhase=random.nextFloat()*6;
      if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.SPLASH,bathPos.getX()+.5,bathPos.getY()+.6,bathPos.getZ()+.5,20,.3,.1,.3,.1);}
     else{if(tickCount%10==0)getNavigation().moveTo(bathPos.getX()+.5,bathPos.getY()+1,bathPos.getZ()+.5,1.25);return false;}}
    // paddle up and down the tub
-   BlockPos o=Bath.BathBlock.other(bathPos,st);Vec3 a=Vec3.atBottomCenterOf(bathPos),b=Vec3.atBottomCenterOf(o),mid=a.add(b).scale(.5),ax=b.subtract(a).normalize(),side=new Vec3(-ax.z,0,ax.x);
-   bathPhase+=.012F;Vec3 p=mid.add(ax.scale(Mth.sin(bathPhase)*.5)).add(side.scale(Mth.sin(bathPhase*1.7F)*.14));Vec3 v=ax.scale(Mth.cos(bathPhase)*.5).add(side.scale(Mth.cos(bathPhase*1.7F)*.24));
+   Vec3 mid=Bath.middle(bathPos,st),ax=Bath.axis(bathPos,st),side=new Vec3(-ax.z,0,ax.x);double al=Bath.along(st),ac=Bath.across(st);
+   bathPhase+=.012F;Vec3 p=mid.add(ax.scale(Mth.sin(bathPhase)*al)).add(side.scale(Mth.sin(bathPhase*1.7F)*ac));Vec3 v=ax.scale(Mth.cos(bathPhase)*al).add(side.scale(Mth.cos(bathPhase*1.7F)*ac*1.7));
    setPos(p.x,bathPos.getY()+.3,p.z);setDeltaMovement(Vec3.ZERO);getNavigation().stop();fallDistance=0;
    if(v.lengthSqr()>1e-4){float yaw=(float)Math.toDegrees(Math.atan2(-v.x,v.z));setYRot(yaw);yBodyRot=yaw;yHeadRot=yaw;}
    if(tickCount%40==0)setHappy(happy()+1);
@@ -417,7 +428,7 @@ public final class Pato {
   void leaveBath(){
    if(bathEntered){flag(BATH,false);setNoGravity(false);addXp(5);setHappy(happy()+10);
     var st=level().getBlockState(bathPos);BlockPos out=null;
-    if(st.getBlock() instanceof Bath.BathBlock)for(BlockPos h:new BlockPos[]{bathPos,Bath.BathBlock.other(bathPos,st)})for(var d:Direction.Plane.HORIZONTAL){var q=h.relative(d);if(out==null&&level().getBlockState(q).isAir()&&level().getBlockState(q.above()).isAir())out=q;}
+    if(Bath.tub(st))for(BlockPos h:Bath.cells(bathPos,st))for(var d:Direction.Plane.HORIZONTAL){var q=h.relative(d);if(out==null&&level().getBlockState(q).isAir()&&level().getBlockState(q.above()).isAir())out=q;}
     if(out!=null)moveTo(out.getX()+.5,out.getY(),out.getZ()+.5);else moveTo(getX(),bathPos.getY()+1,getZ());
     if(level() instanceof ServerLevel sl)sl.sendParticles(ParticleTypes.SPLASH,getX(),getY()+.4,getZ(),25,.25,.2,.25,.15);}
    bathTicks=0;bathPos=null;bathEntered=false;}

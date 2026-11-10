@@ -1621,5 +1621,10 @@
  "item.mareeletrica.bomb_terminal": "Terminal do Modo Bomba",
  "item.mareeletrica.bomb_map": "Mapa Modo Bomba: Deserto",
  "item.mareeletrica.match_bomb": "Bomba (Modo Bomba)",
- "entity.mareeletrica.bomb_bot": "Bot"
+ "entity.mareeletrica.bomb_bot": "Bot",
+ "block.mareeletrica.big_bathtub": "Banheira grande",
+ "item.mareeletrica.tactical_helmet": "Capacete tático",
+ "item.mareeletrica.tactical_chestplate": "Colete tático",
+ "item.mareeletrica.tactical_leggings": "Calça tática",
+ "item.mareeletrica.tactical_boots": "Coturno tático"
 }
