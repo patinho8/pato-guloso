@@ -1630,5 +1630,7 @@
  "item.mareeletrica.tactical_shield": "Escudo tático",
  "item.mareeletrica.rubber_duck": "Patinho de borracha",
  "entity.mareeletrica.rubber_duck": "Patinho de borracha",
- "subtitles.mareeletrica.rubber_squeak": "Patinho de borracha: squeak"
+ "subtitles.mareeletrica.rubber_squeak": "Patinho de borracha: squeak",
+ "block.mareeletrica.ferris_wheel": "Roda-gigante",
+ "entity.mareeletrica.ferris_seat": "Cabine da roda-gigante"
 }

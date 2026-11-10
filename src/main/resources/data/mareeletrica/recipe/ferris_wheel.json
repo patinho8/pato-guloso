@@ -1,0 +1,30 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  "IGI",
+  "RBR",
+  "IWI"
+ ],
+ "key": {
+  "I": {
+   "item": "minecraft:iron_block"
+  },
+  "G": {
+   "item": "minecraft:glowstone"
+  },
+  "R": {
+   "item": "minecraft:red_dye"
+  },
+  "B": {
+   "item": "minecraft:minecart"
+  },
+  "W": {
+   "item": "minecraft:redstone_block"
+  }
+ },
+ "result": {
+  "id": "mareeletrica:ferris_wheel",
+  "count": 1
+ }
+}

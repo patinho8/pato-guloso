@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mareeletrica:block/ferris_wheel"
+  },
+  "facing=east": {
+   "model": "mareeletrica:block/ferris_wheel",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mareeletrica:block/ferris_wheel",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mareeletrica:block/ferris_wheel",
+   "y": 270
+  }
+ }
+}

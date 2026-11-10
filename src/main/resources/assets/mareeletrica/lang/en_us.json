@@ -1630,5 +1630,7 @@
  "item.mareeletrica.tactical_shield": "Tactical shield",
  "item.mareeletrica.rubber_duck": "Rubber duck",
  "entity.mareeletrica.rubber_duck": "Rubber duck",
- "subtitles.mareeletrica.rubber_squeak": "Rubber duck squeaks"
+ "subtitles.mareeletrica.rubber_squeak": "Rubber duck squeaks",
+ "block.mareeletrica.ferris_wheel": "Ferris Wheel",
+ "entity.mareeletrica.ferris_seat": "Ferris wheel gondola"
 }
