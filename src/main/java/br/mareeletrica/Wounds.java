@@ -183,6 +183,7 @@ public final class Wounds {
   WeaponFamily f=src.getEntity() instanceof LivingEntity le?WeaponFamily.of(le.getMainHandItem()):null;
   if(f!=null)return switch(f){
    case SNIPER,BARRETT,SVD->HEAVY;
+   case M249->1;   // 0.87.1: weak spray gun (0.5 damage)
    case USP,GLOCK,BERETTA->3;
    case MP5,SMG,MP40,P90,UMP45,UZI,MAC10->6;
    default->8;};

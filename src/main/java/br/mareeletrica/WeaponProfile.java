@@ -19,7 +19,7 @@ public enum WeaponProfile {
  BERETTA("beretta","Beretta M9",15,4,28,6,20,5,.11F,1.3F,false,true,1,160),
  UZI("uzi","Uzi",32,2,32,2.6F,16,9F,1.5F,.7F,true,false,1,130),
  FAMAS("famas","FAMAS",25,2,40,5.5F,24,6.5F,.5F,1.1F,true,false,1,230),
- M249("m249","M249",100,2,90,6,24,8F,1.2F,1.2F,true,false,1,220),
+ M249("m249","M249",100,2,90,.5F,24,8F,1.2F,1.2F,true,false,1,220),
  BARRETT("barrett","Barrett M82",10,14,60,24,30,9F,.04F,9F,false,false,1,320),
  MAC10("mac10","MAC-10",30,1,30,2.4F,15,10F,1.8F,.8F,true,false,1,120),
  GALIL("galil","Galil ACE",35,3,48,6.5F,23,7F,.45F,1.2F,true,false,1,230),
