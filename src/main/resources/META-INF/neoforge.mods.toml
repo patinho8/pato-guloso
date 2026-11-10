@@ -3,7 +3,7 @@ loaderVersion="[4,)"
 license="MIT"
 [[mods]]
 modId="mareeletrica"
-version="0.86.0"
+version="0.87.0"
 displayName="Maré Elétrica"
 authors="Gustavo — projeto assistido por IA"
 description='''Hidreletricidade com máquinas 3D, energia marinha impura, purificação e núcleos de distribuição.'''
