@@ -1,0 +1,26 @@
+{
+ "parent": "minecraft:item/generated",
+ "textures": {
+  "layer0": "mareeletrica:item/rubber_duck_0"
+ },
+ "overrides": [
+  {
+   "predicate": {
+    "mareeletrica:variant": 0.25
+   },
+   "model": "mareeletrica:item/rubber_duck_1"
+  },
+  {
+   "predicate": {
+    "mareeletrica:variant": 0.5
+   },
+   "model": "mareeletrica:item/rubber_duck_2"
+  },
+  {
+   "predicate": {
+    "mareeletrica:variant": 0.75
+   },
+   "model": "mareeletrica:item/rubber_duck_3"
+  }
+ ]
+}

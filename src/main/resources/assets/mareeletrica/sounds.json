@@ -286,5 +286,22 @@
     "attenuation_distance": 40
    }
   ]
+ },
+ "rubber_squeak": {
+  "subtitle": "subtitles.mareeletrica.rubber_squeak",
+  "sounds": [
+   {
+    "name": "mareeletrica:rubber_squeak1",
+    "attenuation_distance": 16
+   },
+   {
+    "name": "mareeletrica:rubber_squeak2",
+    "attenuation_distance": 16
+   },
+   {
+    "name": "mareeletrica:rubber_squeak3",
+    "attenuation_distance": 16
+   }
+  ]
  }
 }

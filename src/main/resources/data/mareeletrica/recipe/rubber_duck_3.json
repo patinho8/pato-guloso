@@ -1,0 +1,19 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:slime_ball"
+  },
+  {
+   "item": "minecraft:gold_ingot"
+  }
+ ],
+ "result": {
+  "id": "mareeletrica:rubber_duck",
+  "count": 2,
+  "components": {
+   "minecraft:custom_data": "{Variant:3}"
+  }
+ }
+}

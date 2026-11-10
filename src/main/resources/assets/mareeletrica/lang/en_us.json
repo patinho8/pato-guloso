@@ -1627,5 +1627,8 @@
  "item.mareeletrica.tactical_chestplate": "Tactical vest",
  "item.mareeletrica.tactical_leggings": "Tactical pants",
  "item.mareeletrica.tactical_boots": "Tactical boots",
- "item.mareeletrica.tactical_shield": "Tactical shield"
+ "item.mareeletrica.tactical_shield": "Tactical shield",
+ "item.mareeletrica.rubber_duck": "Rubber duck",
+ "entity.mareeletrica.rubber_duck": "Rubber duck",
+ "subtitles.mareeletrica.rubber_squeak": "Rubber duck squeaks"
 }
