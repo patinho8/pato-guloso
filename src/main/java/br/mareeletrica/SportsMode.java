@@ -137,6 +137,16 @@ public final class SportsMode {
   return new Vec3(d.x/t,vy*1.03,d.z/t);
  }
  /** 0.66.0: includes the ball's air drag (it used to fall short of the rim on long shots). */
+ /** 0.83.1: a real basketball shot — softer, higher arc, and the farther you are the more it misses.
+  *  Scatter (blocks at the ring): ~0.2 at 3 blocks, ~0.5 at 7, ~0.8 at 10, ~1.1 at 13. Jump shots are a bit steadier. */
+ public static Vec3 shot(Player p,Vec3 from,Vec3 ring,double skill){
+  double d=ring.subtract(from).horizontalDistance();
+  double sigma=(.08+.022*Math.pow(d,1.5))*skill*(p.onGround()?1:.8)*(p.isSprinting()?1.3:1);
+  var r=p.getRandom();Vec3 aim=ring.add(r.nextGaussian()*sigma,.05+r.nextGaussian()*sigma*.25,r.nextGaussian()*sigma);
+  double t=Math.max(14,Math.min(34,13+d*1.45));   // slower, loftier ball
+  return arc(from,aim,Sports.Kind.BASKET.gravity,t);}
+ /** too far: no aiming help at all */
+ public static final double MAX_SHOT=16;
  public static Vec3 arc(Vec3 from,Vec3 to,double g,double ticks){
   Vec3 d=to.subtract(from);double k=.99,n=Math.max(1,ticks),S=k*(1-Math.pow(k,n))/(1-k);
   return new Vec3(d.x/S,(d.y+g*k/(1-k)*(n-S))/S,d.z/S);}
@@ -233,11 +243,8 @@ public final class SportsMode {
       sound(p,SoundEvents.ANVIL_LAND,1.6F);msg(p,"§6ENTERRADA!");return;
      }
      if(button==0){
-      Vec3 from=held.position();Vec3 target=ring!=null?ring.add(0,.05,0):aimPoint(p);
-      double dist=target.subtract(from).horizontalDistance();double t=Math.max(7,Math.min(22,6+dist*.85));   // 0.66.0: much faster and longer shots
-      Vec3 v=arc(from,target,Sports.Kind.BASKET.gravity,t);
-      double err=p.onGround()?.04:.015;   // jump shot is more accurate
-      v=v.add(p.getRandom().nextGaussian()*err*.3,p.getRandom().nextGaussian()*err*.2,p.getRandom().nextGaussian()*err*.3);
+      Vec3 from=held.position();
+      Vec3 v=ring!=null&&ring.subtract(from).horizontalDistance()<=MAX_SHOT?shot(p,from,ring,1):p.getLookAngle().scale(.75).add(0,.35,0);   // 0.83.1: real misses, softer ball
       held.release(v,p);held.thrownFrom=p.position();sound(p,SoundEvents.SNOWBALL_THROW,.6F);msg(p,"Arremesso");
      }else if(button==2){held.release(flat.scale(1.55).add(0,-.36,0),p);sound(p,SoundEvents.SLIME_BLOCK_FALL,.7F);msg(p,"Passe quicado");}
      else pass(p,held,look);
@@ -366,9 +373,8 @@ public final class SportsMode {
     if(k==2){if(held==null)return true;anim(p,2);held.release(flat.scale(1.55).add(0,-.36,0),p);sound(p,SoundEvents.SLIME_BLOCK_FALL,.7F);msg(p,"Passe quicado");return true;}
     if(k==3){   // three-pointer: jump back and shoot a high arc; very accurate from far
      if(held==null)return true;anim(p,2);jump(p,flat.scale(-.3).add(0,.55,0));
-     Vec3 from=held.position();Vec3 target=ring!=null?ring.add(0,.05,0):aimPoint(p);double dist=target.subtract(from).horizontalDistance();
-     Vec3 v=arc(from,target,Sports.Kind.BASKET.gravity,Math.max(9,Math.min(24,8+dist*.95)));
-     double err=dist>7.5?.006:.03;v=v.add(p.getRandom().nextGaussian()*err*.3,0,p.getRandom().nextGaussian()*err*.3);
+     Vec3 from=held.position();double dist=ring!=null?ring.subtract(from).horizontalDistance():99;
+     Vec3 v=ring!=null&&dist<=MAX_SHOT?shot(p,from,ring,.9):p.getLookAngle().scale(.75).add(0,.35,0);   // 0.83.1: a good 3 is still hard
      held.release(v,p);held.thrownFrom=p.position();sound(p,SoundEvents.SNOWBALL_THROW,.5F);msg(p,dist>7.5?"§6Arremesso de 3!":"Arremesso com fade");return true;}
     if(held!=null){   // crossover: the ball switches hands with a low bounce and you explode to that side (alternates left/right)
      anim(p,2);held.hand=-held.hand;double dir=held.hand;jump(p,side.scale(dir*1.2).add(flat.scale(.55)).add(0,.06,0));

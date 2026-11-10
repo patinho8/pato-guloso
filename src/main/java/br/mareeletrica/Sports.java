@@ -66,7 +66,7 @@ public final class Sports {
    if(!l.isClientSide){
     var b=new SportBall(BALL.get(),l);b.setItem(s.copyWithCount(1));b.setOwner(p);b.thrownFrom=p.position();
     b.setPos(p.getX(),p.getEyeY()-.3,p.getZ());
-    float power=kind==Kind.SOCCER?.75F:p.isShiftKeyDown()?.9F:1.7F;
+    float power=kind==Kind.SOCCER?.75F:kind==Kind.BASKET?(p.isShiftKeyDown()?.6F:1.0F):p.isShiftKeyDown()?.9F:1.7F;   // 0.83.1: basketball thrown softer
     b.shootFromRotation(p,p.getXRot()-(kind==Kind.BASKET?12:0),p.getYRot(),0,power,.4F);
     l.addFreshEntity(b);
     l.playSound(null,p.blockPosition(),SoundEvents.SNOWBALL_THROW,SoundSource.PLAYERS,.5F,.8F);
@@ -113,7 +113,7 @@ public final class Sports {
    Vec3 v;
    switch(kind()){
     case SOCCER->{double pow=p.isSprinting()?1.95:1.3;double lift=Math.max(.13,-p.getXRot()/90.0*1.4+.16);v=flat.scale(pow).add(0,lift,0);}
-    case BASKET->{Vec3 ring=SportsMode.hoop(p);if(ring!=null){double d=ring.subtract(position()).horizontalDistance();v=SportsMode.arc(position(),ring.add(0,.05,0),Kind.BASKET.gravity,Math.max(8,Math.min(24,7+d*1.05)));thrownFrom=p.position();}else v=look.scale(1.2).add(0,.4,0);}
+    case BASKET->{Vec3 ring=SportsMode.hoop(p);if(ring!=null&&ring.subtract(position()).horizontalDistance()<=SportsMode.MAX_SHOT){v=SportsMode.shot(p,position(),ring,1.1);thrownFrom=p.position();}else v=look.scale(.75).add(0,.3,0);}   // 0.83.1: no more perfect shots from anywhere
     default->{boolean spike=getY()>p.getEyeY()-.2&&p.getXRot()>10&&!p.onGround();v=spike?look.scale(1.5).add(0,-.3,0):flat.scale(.45).add(0,.85,0);}
    }
    kick(v,p);
