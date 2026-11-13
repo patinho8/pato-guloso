@@ -68,8 +68,6 @@
   "mareeletrica:explorer_base_part",
   "mareeletrica:monster_exterminator",
   "mareeletrica:monster_exterminator_part",
-  "mareeletrica:water_intake",
-  "mareeletrica:water_outlet",
   "mareeletrica:gas_refiller",
   "mareeletrica:gas_refiller_part",
   "mareeletrica:giant_water_wheel",
@@ -143,6 +141,8 @@
   "mareeletrica:bathtub",
   "mareeletrica:shower",
   "mareeletrica:big_bathtub",
-  "mareeletrica:ferris_wheel"
+  "mareeletrica:ferris_wheel",
+  "mareeletrica:big_pipe",
+  "mareeletrica:water_pump"
  ]
 }

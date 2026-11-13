@@ -1,1 +1,0 @@
-{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": [" C ", "OD "], "key": {"C": {"item": "minecraft:copper_ingot"}, "O": {"item": "minecraft:orange_dye"}, "D": {"item": "minecraft:bucket"}}, "result": {"id": "mareeletrica:water_outlet", "count": 1}}

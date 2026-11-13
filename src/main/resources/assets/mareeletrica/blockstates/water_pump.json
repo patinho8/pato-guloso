@@ -1,0 +1,27 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mareeletrica:block/water_pump"
+  },
+  "facing=east": {
+   "model": "mareeletrica:block/water_pump",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mareeletrica:block/water_pump",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mareeletrica:block/water_pump",
+   "y": 270
+  },
+  "facing=up": {
+   "model": "mareeletrica:block/water_pump",
+   "x": 270
+  },
+  "facing=down": {
+   "model": "mareeletrica:block/water_pump",
+   "x": 90
+  }
+ }
+}

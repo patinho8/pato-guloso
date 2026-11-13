@@ -1,22 +1,24 @@
 {
- "ambientocclusion": true,
  "textures": {
   "pipe": "mareeletrica:block/water_pipe",
   "flange": "mareeletrica:block/water_pipe_flange",
   "joint": "mareeletrica:block/water_pipe_joint",
+  "dark": "mareeletrica:block/dark",
+  "black": "mareeletrica:block/black",
+  "steel": "mareeletrica:block/steel",
   "particle": "mareeletrica:block/water_pipe"
  },
  "elements": [
   {
    "from": [
-    5,
-    5,
-    0
+    3,
+    3,
+    3
    ],
    "to": [
-    11,
-    11,
-    5
+    13,
+    13,
+    13
    ],
    "faces": {
     "east": {
@@ -55,62 +57,6 @@
       12,
       16,
       15
-     ]
-    }
-   }
-  },
-  {
-   "from": [
-    4.5,
-    4.5,
-    0
-   ],
-   "to": [
-    11.5,
-    11.5,
-    0.9
-   ],
-   "faces": {
-    "north": {
-     "texture": "#flange"
-    },
-    "south": {
-     "texture": "#flange"
-    },
-    "east": {
-     "texture": "#flange",
-     "uv": [
-      0,
-      4,
-      1,
-      12
-     ]
-    },
-    "west": {
-     "texture": "#flange",
-     "uv": [
-      0,
-      4,
-      1,
-      12
-     ]
-    },
-    "up": {
-     "texture": "#flange",
-     "uv": [
-      4,
-      0,
-      12,
-      1
-     ]
-    },
-    "down": {
-     "texture": "#flange",
-     "uv": [
-      4,
-      0,
-      12,
-      1
      ]
     }
    }

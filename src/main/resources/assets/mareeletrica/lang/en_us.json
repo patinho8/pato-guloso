@@ -330,8 +330,6 @@
  "block.mareeletrica.monster_exterminator": "Monster Exterminator",
  "hint.mareeletrica.monster_exterminator": "20 gas: 5×5×5 devourer. Hunts hostiles for five minutes.",
  "entity.mareeletrica.exterminator": "Exterminator",
- "block.mareeletrica.water_intake": "Water Intake — Blue",
- "block.mareeletrica.water_outlet": "Water Outlet — Orange",
  "remote.mareeletrica.mode_3": "PLANE",
  "gui.mareeletrica.status_49": "Producing ore batch",
  "block.mareeletrica.gas_refiller": "Gas Refilling Station",
@@ -1631,5 +1629,7 @@
  "entity.mareeletrica.rubber_duck": "Rubber duck",
  "subtitles.mareeletrica.rubber_squeak": "Rubber duck squeaks",
  "block.mareeletrica.ferris_wheel": "Ferris Wheel",
- "entity.mareeletrica.ferris_seat": "Ferris wheel gondola"
+ "entity.mareeletrica.ferris_seat": "Ferris wheel gondola",
+ "block.mareeletrica.big_pipe": "Big Pipe",
+ "block.mareeletrica.water_pump": "Water Pump"
 }

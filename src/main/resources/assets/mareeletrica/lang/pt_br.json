@@ -330,8 +330,6 @@
  "block.mareeletrica.monster_exterminator": "Extermina Monstro",
  "hint.mareeletrica.monster_exterminator": "20 gás: devorador 5×5×5. Persegue hostis durante 5 minutos.",
  "entity.mareeletrica.exterminator": "Exterminador",
- "block.mareeletrica.water_intake": "Entrada de Água — Azul",
- "block.mareeletrica.water_outlet": "Saída de Água — Laranja",
  "remote.mareeletrica.mode_3": "AVIÃO",
  "gui.mareeletrica.status_49": "Produzindo leva de minérios",
  "block.mareeletrica.gas_refiller": "Central de Recarga de Gás",
@@ -1631,5 +1629,7 @@
  "entity.mareeletrica.rubber_duck": "Patinho de borracha",
  "subtitles.mareeletrica.rubber_squeak": "Patinho de borracha: squeak",
  "block.mareeletrica.ferris_wheel": "Roda-gigante",
- "entity.mareeletrica.ferris_seat": "Cabine da roda-gigante"
+ "entity.mareeletrica.ferris_seat": "Cabine da roda-gigante",
+ "block.mareeletrica.big_pipe": "Cano Grande",
+ "block.mareeletrica.water_pump": "Bomba d'Água"
 }

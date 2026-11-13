@@ -1,1 +1,0 @@
-{"type": "minecraft:crafting_shaped", "category": "redstone", "pattern": [" C ", "BD "], "key": {"C": {"item": "mareeletrica:copper_coil"}, "B": {"item": "minecraft:blue_dye"}, "D": {"item": "minecraft:bucket"}}, "result": {"id": "mareeletrica:water_intake", "count": 1}}

@@ -1,1 +1,20 @@
-{"replace": false, "values": ["mareeletrica:monster_exterminator", "mareeletrica:monster_exterminator_part", "mareeletrica:water_intake", "mareeletrica:water_outlet", "mareeletrica:gas_refiller", "mareeletrica:gas_refiller_part", "mareeletrica:giant_water_wheel", "mareeletrica:giant_water_wheel_part", "mareeletrica:current_turbine", "mareeletrica:current_turbine_part", "mareeletrica:waterfall_turbine", "mareeletrica:waterfall_turbine_part", "mareeletrica:pressure_turbine", "mareeletrica:pressure_turbine_part", "mareeletrica:quantum_core", "mareeletrica:purifier_part", "mareeletrica:quantum_core_part"]}
+{
+ "replace": false,
+ "values": [
+  "mareeletrica:monster_exterminator",
+  "mareeletrica:monster_exterminator_part",
+  "mareeletrica:gas_refiller",
+  "mareeletrica:gas_refiller_part",
+  "mareeletrica:giant_water_wheel",
+  "mareeletrica:giant_water_wheel_part",
+  "mareeletrica:current_turbine",
+  "mareeletrica:current_turbine_part",
+  "mareeletrica:waterfall_turbine",
+  "mareeletrica:waterfall_turbine_part",
+  "mareeletrica:pressure_turbine",
+  "mareeletrica:pressure_turbine_part",
+  "mareeletrica:quantum_core",
+  "mareeletrica:purifier_part",
+  "mareeletrica:quantum_core_part"
+ ]
+}
