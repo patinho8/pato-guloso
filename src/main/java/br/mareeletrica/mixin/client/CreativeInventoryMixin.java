@@ -10,7 +10,7 @@ public abstract class CreativeInventoryMixin {
  @Inject(method="selectTab",at=@At("TAIL"))
  private void mare$equipmentPosition(CreativeModeTab tab,CallbackInfo ci){
   if(tab.getType()!=CreativeModeTab.Type.INVENTORY)return;
-  for(var slot:((CreativeModeInventoryScreen)(Object)this).getMenu().slots)if(slot.container==DmtSlot.MARKER){var a=(SlotPositionAccessor)(Object)slot;a.mare$setX(134);a.mare$setY(20);}
+  for(var slot:((CreativeModeInventoryScreen)(Object)this).getMenu().slots)if(slot.container==DmtSlot.MARKER){var a=(SlotPositionAccessor)(Object)slot;a.mare$setX(199);a.mare$setY(80);}
   for(var slot:((CreativeModeInventoryScreen)(Object)this).getMenu().slots)for(int i=0;i<4;i++)if(slot.container==br.mareeletrica.CamoSlot.MARKERS[i]){var a=(SlotPositionAccessor)(Object)slot;a.mare$setX(199);a.mare$setY(8+i*18);}
  }
 }

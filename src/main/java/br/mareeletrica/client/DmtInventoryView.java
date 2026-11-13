@@ -9,14 +9,21 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 @EventBusSubscriber(modid=br.mareeletrica.MareEletrica.ID,value=Dist.CLIENT)
 public final class DmtInventoryView {
+ /** 0.91.1: the DMT slot sits at the bottom of the camouflage column, drawn the same way, without the "D" */
+ @SubscribeEvent public static void background(ScreenEvent.Render.Pre e){
+  if(!(e.getScreen() instanceof InventoryScreen||e.getScreen() instanceof CreativeModeInventoryScreen))return;
+  var screen=(AbstractContainerScreen<?>)e.getScreen();var g=e.getGuiGraphics();
+  for(var s:screen.getMenu().slots)if(s.container==DmtSlot.MARKER&&s.x>=0){
+   int x=screen.getGuiLeft()+s.x,y=screen.getGuiTop()+s.y;
+   g.fill(x-2,y-2,x+18,y+18,0xFFC6C6C6);
+   g.fill(x-1,y-1,x+17,y,0xFF373737);g.fill(x-1,y,x,y+17,0xFF373737);g.fill(x,y+16,x+17,y+17,0xFFFFFFFF);g.fill(x+16,y,x+17,y+16,0xFFFFFFFF);
+   g.fill(x,y,x+16,y+16,0xFF8B8B8B);}
+ }
  @SubscribeEvent public static void render(ScreenEvent.Render.Post e){
   if(!(e.getScreen() instanceof InventoryScreen||e.getScreen() instanceof CreativeModeInventoryScreen))return;
   var screen=(AbstractContainerScreen<?>)e.getScreen();var g=e.getGuiGraphics();var font=Minecraft.getInstance().font;
-  for(var s:screen.getMenu().slots)if(s.container==DmtSlot.MARKER){
+  for(var s:screen.getMenu().slots)if(s.container==DmtSlot.MARKER&&s.x>=0){
    int x=screen.getGuiLeft()+s.x,y=screen.getGuiTop()+s.y;
-   g.fill(x-1,y-1,x+17,y,0xFF373737);g.fill(x-1,y,x,y+17,0xFF373737);g.fill(x,y+16,x+17,y+17,0xFFFFFFFF);g.fill(x+16,y,x+17,y+16,0xFFFFFFFF);
-   if(!s.hasItem()){g.fill(x,y,x+16,y+16,0xFF8B8B8B);g.drawString(font,"D",x+5,y+4,0xFF56686C,false);}
-
    if(!s.hasItem()&&e.getMouseX()>=x&&e.getMouseX()<x+16&&e.getMouseY()>=y&&e.getMouseY()<y+16)g.renderTooltip(font,Component.translatable("gui.mareeletrica.dmt_slot"),e.getMouseX(),e.getMouseY());
   }
  }

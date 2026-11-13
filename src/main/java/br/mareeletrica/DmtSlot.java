@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 public final class DmtSlot extends Slot {
  public static final SimpleContainer MARKER=new SimpleContainer(0);
  private final Player player;
- public DmtSlot(Player player){super(MARKER,0,134,62);this.player=player;}
+ public DmtSlot(Player player){super(MARKER,0,178,80);/* 0.91.1: under the camouflage column */this.player=player;}
  @Override public boolean mayPlace(ItemStack s){return s.is(MareEletrica.DMT.get());}
  @Override public ItemStack getItem(){return DmtEquipment.get(player);}
  @Override public void set(ItemStack s){DmtEquipment.set(player,s);setChanged();}
