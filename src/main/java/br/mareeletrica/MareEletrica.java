@@ -30,7 +30,6 @@ public final class MareEletrica {
     public static final Supplier<PressureWaterFluid.Flowing> FLOWING_PRESSURIZED_WATER=FLUIDS.register("flowing_pressurized_water",PressureWaterFluid.Flowing::new);
     public static final DeferredBlock<PressureWaterBlock> PRESSURIZED_WATER_BLOCK=BLOCKS.register("pressurized_water",()->new PressureWaterBlock(BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.WATER).noLootTable()));
     public static final DeferredBlock<FaucetStreamBlock> FAUCET_STREAM=BLOCKS.register("faucet_stream",()->new FaucetStreamBlock(BlockBehaviour.Properties.of().noCollission().noOcclusion().replaceable().noLootTable().strength(-1F,3600000F)));
-    public static final DeferredBlock<WaterDuctBlock> WATER_DUCT=BLOCKS.register("water_duct",()->new WaterDuctBlock(BlockBehaviour.Properties.of().strength(2).sound(SoundType.METAL).noOcclusion(),0));
     public static final DeferredBlock<WaterDuctBlock> WATER_INTAKE=BLOCKS.register("water_intake",()->new WaterDuctBlock(BlockBehaviour.Properties.of().strength(2).sound(SoundType.METAL).noOcclusion(),1));
     public static final DeferredBlock<WaterDuctBlock> WATER_OUTLET=BLOCKS.register("water_outlet",()->new WaterDuctBlock(BlockBehaviour.Properties.of().strength(2).sound(SoundType.METAL).noOcclusion(),2));
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ID);
@@ -38,7 +37,6 @@ public final class MareEletrica {
     public static final DeferredItem<BlockItem> WATER_SHAFT_ITEM=ITEMS.register("water_shaft",()->new WaterShaftItem(WATER_SHAFT.get(),new Item.Properties()));
     public static final DeferredBlock<LedBedBlock> LED_BED=BLOCKS.register("led_bed",()->new LedBedBlock(BlockBehaviour.Properties.of().strength(.7F).sound(SoundType.WOOD).noOcclusion().pushReaction(PushReaction.BLOCK).lightLevel(s->12)));
     public static final DeferredItem<BlockItem> LED_BED_ITEM=ITEMS.register("led_bed",()->new BlockItem(LED_BED.get(),new Item.Properties().stacksTo(1)));
-    public static final DeferredItem<BlockItem> WATER_DUCT_ITEM=ITEMS.register("water_duct",()->new BlockItem(WATER_DUCT.get(),new Item.Properties()));
     public static final DeferredItem<BlockItem> WATER_INTAKE_ITEM=ITEMS.register("water_intake",()->new BlockItem(WATER_INTAKE.get(),new Item.Properties()));
     public static final DeferredItem<BlockItem> WATER_OUTLET_ITEM=ITEMS.register("water_outlet",()->new BlockItem(WATER_OUTLET.get(),new Item.Properties()));
     public static final DeferredRegister<BlockEntityType<?>> ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, ID);
@@ -58,8 +56,9 @@ public final class MareEletrica {
     }
     public static final Map<Kind, DeferredBlock<LargeMachinePartBlock>> LARGE_PARTS = new EnumMap<>(Kind.class);
     static {
-        for (Kind kind : new Kind[]{Kind.CORE_QUANTUM,Kind.PURIFIER,Kind.GREENHOUSE,Kind.QUARRY,Kind.GEOTHERMAL,Kind.ABYSSAL,Kind.MORTAR,Kind.ROVER_BASE,Kind.EXTERMINATOR,Kind.GAS_REFILL,Kind.GIANT_WHEEL,Kind.CURRENT_TURBINE,Kind.FALL_TURBINE,Kind.PRESSURE_TURBINE}) LARGE_PARTS.put(kind,BLOCKS.register(kind.id+"_part", () -> {
+        for (Kind kind : java.util.stream.Stream.concat(java.util.stream.Stream.of(Kind.CORE_QUANTUM,Kind.PURIFIER,Kind.GREENHOUSE,Kind.QUARRY,Kind.GEOTHERMAL,Kind.ABYSSAL,Kind.MORTAR,Kind.ROVER_BASE,Kind.EXTERMINATOR,Kind.GAS_REFILL,Kind.GIANT_WHEEL,Kind.CURRENT_TURBINE,Kind.FALL_TURBINE,Kind.PRESSURE_TURBINE),java.util.Arrays.stream(Kind.values()).filter(Kind::scalable)).toArray(Kind[]::new)) LARGE_PARTS.put(kind,BLOCKS.register(kind.id+"_part", () -> {
             var properties=BlockBehaviour.Properties.of().strength(3.5F,8F).sound(SoundType.METAL).noOcclusion().noLootTable().pushReaction(PushReaction.BLOCK);
+            if(kind.scalable())return kind.bigSize()==2?new ScaledMachinePartBlock.Two(kind,properties):new ScaledMachinePartBlock.Three(kind,properties);
             return kind==Kind.PURIFIER||kind==Kind.CORE_QUANTUM?new CompactMachinePartBlock(kind,properties):kind==Kind.GIANT_WHEEL?new HydroMachinePartBlock.Giant(kind,properties):kind.waterStructure()?new HydroMachinePartBlock(kind,properties):new LargeMachinePartBlock(kind,properties);
         }));
     }

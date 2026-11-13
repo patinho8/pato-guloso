@@ -13,11 +13,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 /** Every cell uses a local 0..16 mesh and the same clipped collision geometry. */
 public final class LargeMachineStructure {
     private static final Map<Kind,VoxelShape[][]> SHAPES=new EnumMap<>(Kind.class);
+    private static final Map<Kind,VoxelShape> COMPACT=new java.util.concurrent.ConcurrentHashMap<>();
     private static final VoxelShape[][] LEGACY_WHEEL=make(HydroGeometry.GIANT_WHEEL,3,27);
     private static final VoxelShape[][] LEGACY_DOCK=make(LargeGeometry.LEGACY_DOCK,1,1);
     private static final VoxelShape[][] LEGACY=make(LargeGeometry.LEGACY_QUARRY,3,36);
     static { for(Kind kind:Kind.values()) if(kind.large())SHAPES.put(kind,make(geometry(kind),kind.structureWidth(),kind.structureParts())); }
     private static double[][] geometry(Kind kind) {
+        if(kind.scalable())return scaled(MachineBlock.baseBoxes(kind),kind.bigSize());
         return switch(kind) { case CORE_QUANTUM->QuantumGeometry.BOXES;case PURIFIER->PurifierGeometry.BOXES;case GIANT_WHEEL->QuantumGeometry.WHEEL;case CURRENT_TURBINE->HydroGeometry.CURRENT_TURBINE;case FALL_TURBINE->HydroGeometry.FALL_TURBINE;case PRESSURE_TURBINE->HydroGeometry.PRESSURE_TURBINE;case GAS_REFILL->scaled(GasRefillerGeometry.BOXES,.6);case EXTERMINATOR->scaled(GuardianGeometry.BOXES,.6);case QUARRY->LargeGeometry.QUARRY;case GEOTHERMAL->LargeGeometry.GEOTHERMAL;case ABYSSAL->LargeGeometry.ABYSSAL;case MORTAR->LargeGeometry.MORTAR;case ROVER_BASE->LargeGeometry.ROVER_BASE;default->LargeGeometry.GREENHOUSE; };
     }
     /** The exterminator base and the gas refiller were designed 5x5x5; since 0.42.0 they are built 3x3x3 (same design, 60%). */
@@ -35,12 +37,12 @@ public final class LargeMachineStructure {
     public static boolean wide(BlockState s){return s.hasProperty(MachineBlock.WIDE)&&s.getValue(MachineBlock.WIDE);}
     public static int width(Kind k,boolean expanded){return width(k,expanded,false);}
     public static int width(Kind k,BlockState s){return width(k,s.getValue(MachineBlock.EXPANDED),wide(s));}
-    public static int width(Kind k,boolean e,boolean wide){return k==Kind.GIANT_WHEEL?(wide?7:e?3:5):(k==Kind.CORE_QUANTUM||k==Kind.PURIFIER)&&!e?1:k==Kind.ROVER_BASE&&!e?1:k==Kind.QUARRY&&!e?3:k.structureWidth();}
+    public static int width(Kind k,boolean e,boolean wide){if(k.scalable())return e?k.bigSize():1;return k==Kind.GIANT_WHEEL?(wide?7:e?3:5):(k==Kind.CORE_QUANTUM||k==Kind.PURIFIER)&&!e?1:k==Kind.ROVER_BASE&&!e?1:k==Kind.QUARRY&&!e?3:k.structureWidth();}
     public static int parts(Kind k,boolean e){return parts(k,e,false);}
     public static int parts(Kind k,BlockState s){return parts(k,s.getValue(MachineBlock.EXPANDED),wide(s));}
-    public static int parts(Kind k,boolean e,boolean wide){return k==Kind.GIANT_WHEEL?(wide?343:e?27:125):(k==Kind.CORE_QUANTUM||k==Kind.PURIFIER)&&!e?1:k==Kind.ROVER_BASE&&!e?1:k==Kind.QUARRY&&!e?36:k.structureParts();}
+    public static int parts(Kind k,boolean e,boolean wide){if(k.scalable())return e?k.structureParts():1;return k==Kind.GIANT_WHEEL?(wide?343:e?27:125):(k==Kind.CORE_QUANTUM||k==Kind.PURIFIER)&&!e?1:k==Kind.ROVER_BASE&&!e?1:k==Kind.QUARRY&&!e?36:k.structureParts();}
     public static VoxelShape shape(Kind k,int part,Direction facing,boolean e){return shape(k,part,facing,e,false);}
-    public static VoxelShape shape(Kind k,int part,Direction facing,boolean e,boolean wide){if((k==Kind.PURIFIER||k==Kind.CORE_QUANTUM)&&!e)return Block.box(1,0,1,15,15,15);var shapes=k==Kind.GIANT_WHEEL&&!wide?LEGACY_WHEEL:k==Kind.ROVER_BASE&&!e?LEGACY_DOCK:k==Kind.QUARRY&&!e?LEGACY:SHAPES.get(k);return part<shapes.length?shapes[part][PotabilizerStructure.turn(facing)]:Shapes.empty();}
+    public static VoxelShape shape(Kind k,int part,Direction facing,boolean e,boolean wide){if(k.scalable()&&!e)return COMPACT.computeIfAbsent(k,kk->{VoxelShape v=Shapes.empty();for(double[] b:MachineBlock.baseBoxes(kk))v=Shapes.or(v,Block.box(b[0],b[1],b[2],b[3],b[4],b[5]));return v.optimize();});if((k==Kind.PURIFIER||k==Kind.CORE_QUANTUM)&&!e)return Block.box(1,0,1,15,15,15);var shapes=k==Kind.GIANT_WHEEL&&!wide?LEGACY_WHEEL:k==Kind.ROVER_BASE&&!e?LEGACY_DOCK:k==Kind.QUARRY&&!e?LEGACY:SHAPES.get(k);return part<shapes.length?shapes[part][PotabilizerStructure.turn(facing)]:Shapes.empty();}
     public static BlockPos position(BlockPos root,Direction f,int part,Kind k,boolean e){return position(root,f,part,k,e,false);}
     public static BlockPos position(BlockPos root,Direction f,int part,Kind k,boolean e,boolean wide){int[] o=LargeMachineLayout.offset(part,PotabilizerStructure.turn(f),width(k,e,wide));return root.offset(o[0],o[1],o[2]);}
     public static BlockPos position(MachineEntity m,int part){var s=m.getBlockState();return position(m.getBlockPos(),s.getValue(MachineBlock.FACING),part,m.kind,s.getValue(MachineBlock.EXPANDED),wide(s));}
@@ -52,7 +54,7 @@ public final class LargeMachineStructure {
             && wide(state)==wide && state.getValue(MachineBlock.EXPANDED)==expanded && LargeMachinePartBlock.part(state)==part && state.getValue(MachineBlock.FACING)==facing;
     }
     public static boolean hasSpace(Level level,BlockPos root,Direction facing,Kind kind,boolean includeRoot) {
-        return hasSpace(level,root,facing,kind,includeRoot,kind==Kind.QUARRY||kind==Kind.ROVER_BASE||kind==Kind.GIANT_WHEEL||kind==Kind.PURIFIER||kind==Kind.CORE_QUANTUM,kind==Kind.GIANT_WHEEL);
+        return hasSpace(level,root,facing,kind,includeRoot,kind.scalable()||kind==Kind.QUARRY||kind==Kind.ROVER_BASE||kind==Kind.GIANT_WHEEL||kind==Kind.PURIFIER||kind==Kind.CORE_QUANTUM,kind==Kind.GIANT_WHEEL);
     }
     private static boolean hasSpace(Level level,BlockPos root,Direction facing,Kind kind,boolean includeRoot,boolean expanded,boolean wide) {
         for (int part=includeRoot?0:1;part<parts(kind,expanded,wide);part++) {

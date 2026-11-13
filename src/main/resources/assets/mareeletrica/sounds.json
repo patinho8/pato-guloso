@@ -228,65 +228,6 @@
    }
   ]
  },
- "explosion_near": {
-  "subtitle": "subtitles.entity.generic.explode",
-  "sounds": [
-   {
-    "name": "mareeletrica:explosion_near1",
-    "stream": false,
-    "attenuation_distance": 96
-   },
-   {
-    "name": "mareeletrica:explosion_near2",
-    "stream": false,
-    "attenuation_distance": 96
-   },
-   {
-    "name": "mareeletrica:explosion_near3",
-    "stream": false,
-    "attenuation_distance": 96
-   },
-   {
-    "name": "mareeletrica:explosion_near4",
-    "stream": false,
-    "attenuation_distance": 96
-   }
-  ]
- },
- "explosion_far": {
-  "subtitle": "subtitles.entity.generic.explode",
-  "sounds": [
-   {
-    "name": "mareeletrica:explosion_far1",
-    "stream": false,
-    "attenuation_distance": 240
-   },
-   {
-    "name": "mareeletrica:explosion_far2",
-    "stream": false,
-    "attenuation_distance": 240
-   },
-   {
-    "name": "mareeletrica:explosion_far3",
-    "stream": false,
-    "attenuation_distance": 240
-   }
-  ]
- },
- "explosion_debris": {
-  "sounds": [
-   {
-    "name": "mareeletrica:explosion_debris1",
-    "stream": false,
-    "attenuation_distance": 40
-   },
-   {
-    "name": "mareeletrica:explosion_debris2",
-    "stream": false,
-    "attenuation_distance": 40
-   }
-  ]
- },
  "rubber_squeak": {
   "subtitle": "subtitles.mareeletrica.rubber_squeak",
   "sounds": [

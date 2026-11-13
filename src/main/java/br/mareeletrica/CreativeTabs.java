@@ -26,7 +26,7 @@ public final class CreativeTabs {
   machines(s,CreativeTabs::energyKind);
   s.add(MareEletrica.CABLE_ITEM);s.add(MareEletrica.CYBER_CABLE_ITEM);s.add(MareEletrica.WIND_CABLE_ITEM);MareEletrica.TRANSFORMER_ITEMS.forEach(s::add);
   MareEletrica.WIRELESS_PLATES.forEach(s::add);s.add(MareEletrica.PORTABLE_BATTERY);s.add(CrankBlocks.HAND_CRANK_ITEM);
-  s.add(MareEletrica.WATER_SHAFT_ITEM);s.add(MareEletrica.WATER_DUCT_ITEM);s.add(MareEletrica.WATER_INTAKE_ITEM);s.add(MareEletrica.WATER_OUTLET_ITEM);
+  s.add(MareEletrica.WATER_SHAFT_ITEM);s.add(MareEletrica.WATER_INTAKE_ITEM);s.add(MareEletrica.WATER_OUTLET_ITEM);
  }
  static void machinesTab(Sink s){
   machines(s,k->!energyKind(k)&&k!=Kind.MORTAR&&k!=Kind.TURRET&&k!=Kind.ARMOR_STATION&&k!=Kind.HANGAR&&k!=Kind.SHIELD);

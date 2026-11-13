@@ -43,7 +43,11 @@ public final class ControlMachines {
   }
   return true;
  }
- public static MachineEntity wheelNear(Level level,MachineEntity from){return wheelAt(level,from.getBlockPos());}
+ public static MachineEntity wheelNear(Level level,MachineEntity from){
+  // 0.90.0: the big crank motor touches the wheel with any of its blocks
+  int n=from.kind.large()?LargeMachineStructure.parts(from.kind,from.getBlockState()):1;
+  for(int i=0;i<n;i++){var w=wheelAt(level,i==0?from.getBlockPos():LargeMachineStructure.position(from,i));if(w!=null)return w;}
+  return null;}
  public static MachineEntity wheelAt(Level level,net.minecraft.core.BlockPos pos){
   for(Direction d:Direction.values()){
    var e=PotabilizerStructure.machineAt(level,pos.relative(d));

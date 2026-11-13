@@ -88,9 +88,21 @@ public enum Kind {
     }
     public boolean hydro() { return this==GIANT_WHEEL||this==CURRENT_TURBINE||this==FALL_TURBINE||this==PRESSURE_TURBINE; }
     public boolean waterStructure(){return hydro()||this==ABYSSAL;}
-    public boolean large() { return this==CORE_QUANTUM||this==PURIFIER||hydro() || this == GAS_REFILL || this == EXTERMINATOR || this == GREENHOUSE || this == QUARRY || this == GEOTHERMAL || this == ABYSSAL || this == MORTAR || this == ROVER_BASE; }
-    public int structureHeight() { return this==GIANT_WHEEL?7:this == EXTERMINATOR || this == GAS_REFILL ? 3 : this == QUARRY ? 8 : this == MORTAR ? 2 : 3; }
-    public int structureWidth() { return this==GIANT_WHEEL?7:this == EXTERMINATOR || this == GAS_REFILL ? 3 : this == QUARRY ? 6 : 3; }
+    /** 0.90.0: how many blocks wide/tall the machine is built when there is room (1 = classic single block). */
+    public int bigSize() {
+        return switch(this) {
+            case FURNACE,CRUSHER,HEALER,MAGNET,COOKER,RECYCLER,STONE_GENERATOR,OXYGEN_STATION,HARVESTER,PLANTER,FISHER,ORE_SCANNER,CHARGER,XP_COLLECTOR,TURRET,
+                 PRESS,SAWMILL,FREEZER,REPAIRER,DISENCHANTER,ANIMAL_FEEDER,SHEARER,EXTINGUISHER,ASSEMBLER,COMPACTOR,BUCKET_FILLER,EFFECT_CLEANSER,FOOD_STATION,
+                 APIARY_EXTRACTOR,CORE_MEDIUM,POWER_CONTROLLER -> 2;
+            case WEATHER_CONTROLLER,CORE_LARGE,ARMOR_STATION,HANGAR,BUILDER,LEVELER,AUTO_CRANK -> 3;
+            default -> 1;
+        };
+    }
+    /** built as a bigSize() cube when there is room, otherwise as the classic single block */
+    public boolean scalable() { return bigSize()>1; }
+    public boolean large() { return scalable()||this==CORE_QUANTUM||this==PURIFIER||hydro() || this == GAS_REFILL || this == EXTERMINATOR || this == GREENHOUSE || this == QUARRY || this == GEOTHERMAL || this == ABYSSAL || this == MORTAR || this == ROVER_BASE; }
+    public int structureHeight() { return scalable()?bigSize():this==GIANT_WHEEL?7:this == EXTERMINATOR || this == GAS_REFILL ? 3 : this == QUARRY ? 8 : this == MORTAR ? 2 : 3; }
+    public int structureWidth() { return scalable()?bigSize():this==GIANT_WHEEL?7:this == EXTERMINATOR || this == GAS_REFILL ? 3 : this == QUARRY ? 6 : 3; }
     public int structureParts() { return structureWidth()*structureWidth()*structureHeight(); }
     public boolean core() { return this == CORE_SMALL || this == CORE_MEDIUM || this == CORE_LARGE || this==CORE_QUANTUM || this==WIND_BATTERY || this==WIND_INVERTER; }
     /** Output voltage of a core: 1 low, 2 medium, 3 high, 4 extreme. 0 = not a core. */

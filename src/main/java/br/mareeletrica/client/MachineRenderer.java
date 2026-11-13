@@ -20,6 +20,14 @@ public final class MachineRenderer implements BlockEntityRenderer<MachineEntity>
     @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(MachineEntity machine) {if(machine.kind!=null&&machine.kind.large()){int r=Math.max(machine.kind.structureWidth(),machine.kind.structureHeight())+1;return new net.minecraft.world.phys.AABB(machine.getBlockPos()).inflate(r);}if(machine.kind==Kind.SHIELD)return new net.minecraft.world.phys.AABB(machine.getBlockPos()).inflate(br.mareeletrica.BaseControl.SHIELD_RADIUS+1);if(machine.kind!=null&&machine.kind.wind())return new net.minecraft.world.phys.AABB(machine.getBlockPos()).inflate(machine.kind==Kind.WIND_GIANT?8:3).expandTowards(0,machine.kind==Kind.WIND_GIANT?10:2,0);return new net.minecraft.world.phys.AABB(machine.getBlockPos()).inflate(1);}
     @Override public void render(MachineEntity machine, float partialTick, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         WirelessRenderer.render(machine,pose,buffers,light);
+        // 0.90.0: big versions draw the same moving parts, scaled up around the middle of the structure
+        if(machine.kind.scalable()&&machine.getBlockState().getValue(MachineBlock.EXPANDED)){
+            float s=machine.kind.bigSize();int turn=br.mareeletrica.PotabilizerStructure.turn(machine.getBlockState().getValue(MachineBlock.FACING));
+            pose.pushPose();pose.translate(.5,0,.5);pose.mulPose(Axis.YP.rotationDegrees(-turn*90));pose.translate(s/2F-.5F,0,s/2F-.5F);pose.mulPose(Axis.YP.rotationDegrees(turn*90));
+            pose.scale(s,s,s);pose.translate(-.5,0,-.5);body(machine,partialTick,pose,buffers,light,overlay);pose.popPose();return;}
+        body(machine,partialTick,pose,buffers,light,overlay);
+    }
+    private void body(MachineEntity machine, float partialTick, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         if(machine.kind.hydro()){HydroRenderer.render(machine,partialTick,pose,buffers,light);return;}
         if(machine.kind==Kind.CORE_QUANTUM&&machine.getBlockState().getValue(MachineBlock.EXPANDED)){pose.pushPose();pose.translate(.5,0,.5);pose.mulPose(Axis.YP.rotationDegrees(-br.mareeletrica.PotabilizerStructure.turn(machine.getBlockState().getValue(MachineBlock.FACING))*90));pose.translate(1,1.5,1);pose.mulPose(Axis.YP.rotationDegrees(machine.angle+partialTick*3));pose.scale(2.6F,2.6F,2.6F);pose.translate(-.5,-.5,-.5);DmtGearLayer.model("quantum_crystal",pose,buffers,light);pose.popPose();return;}
         if(machine.kind==Kind.GAS_REFILL){

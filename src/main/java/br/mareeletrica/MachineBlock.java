@@ -41,22 +41,35 @@ public class MachineBlock extends Block implements EntityBlock, SimpleWaterlogge
     private final VoxelShape shape;
     public MachineBlock(Kind kind, Properties properties) {
         super(properties); this.kind = kind;
-        shape = switch(kind) {
-            case LIFT, TELEPORT_PAD -> box(1, 0, 1, 15, 3, 15);
-            case WATER_WHEEL -> Shapes.or(box(1, 0, 2, 15, 3, 14), box(2, 3, 2, 14, 15, 14));
-            case SEA_TURBINE -> Shapes.or(box(1, 0, 1, 15, 3, 15), box(3, 3, 3, 13, 16, 13));
-            case CORE_SMALL, CORE_MEDIUM, CORE_LARGE, CORE_QUANTUM -> Shapes.or(box(1, 0, 1, 15, 3, 15), box(3, 3, 3, 13, 15, 13));
-            case IRRIGATOR, LAMP, REPELLER -> Shapes.or(box(3, 0, 3, 13, 3, 13), box(6, 3, 6, 10, 13, 10), box(2, 13, 2, 14, 16, 14));
-            case SOLAR_PANEL -> Shapes.or(box(3, 0, 3, 13, 3, 13), box(6, 3, 6, 10, 8, 10), box(0, 8, 0, 16, 11, 16));
-            case PRESENCE_SENSOR, MINING_BOOSTER -> Shapes.or(box(3, 0, 3, 13, 3, 13), box(6, 3, 6, 10, 13, 10), box(3, 10, 3, 13, 16, 13));
-            default -> Shapes.or(box(1, 0, 1, 15, 3, 15), box(2, 3, 2, 14, 14, 14));
-        };
+        VoxelShape built=Shapes.empty();for(double[] b:baseBoxes(kind))built=Shapes.or(built,box(b[0],b[1],b[2],b[3],b[4],b[5]));shape=built;
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ACTIVE, false).setValue(WATERLOGGED, false).setValue(EXPANDED,false));
     }
+    /** the single-block outline in pixels; also scaled up for the big versions (0.90.0) */
+    public static double[][] baseBoxes(Kind kind){
+        return switch(kind) {
+            case LIFT, TELEPORT_PAD -> new double[][]{{1, 0, 1, 15, 3, 15}};
+            case WATER_WHEEL -> new double[][]{{1, 0, 2, 15, 3, 14},{2, 3, 2, 14, 15, 14}};
+            case SEA_TURBINE -> new double[][]{{1, 0, 1, 15, 3, 15},{3, 3, 3, 13, 16, 13}};
+            case CORE_SMALL, CORE_MEDIUM, CORE_LARGE, CORE_QUANTUM -> new double[][]{{1, 0, 1, 15, 3, 15},{3, 3, 3, 13, 15, 13}};
+            case IRRIGATOR, LAMP, REPELLER -> new double[][]{{3, 0, 3, 13, 3, 13},{6, 3, 6, 10, 13, 10},{2, 13, 2, 14, 16, 14}};
+            case SOLAR_PANEL -> new double[][]{{3, 0, 3, 13, 3, 13},{6, 3, 6, 10, 8, 10},{0, 8, 0, 16, 11, 16}};
+            case PRESENCE_SENSOR, MINING_BOOSTER -> new double[][]{{3, 0, 3, 13, 3, 13},{6, 3, 6, 10, 13, 10},{3, 10, 3, 13, 16, 13}};
+            default -> new double[][]{{1, 0, 1, 15, 3, 15},{2, 3, 2, 14, 14, 14}};
+        };
+    }
+    public VoxelShape baseShape(){return shape;}
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, ACTIVE, WATERLOGGED, EXPANDED);
     }
     @Override public BlockState getStateForPlacement(BlockPlaceContext context) {
+        if (kind.scalable()) {
+            Direction facing=context.getHorizontalDirection().getOpposite();
+            boolean big=LargeMachineStructure.hasSpace(context.getLevel(),context.getClickedPos(),facing,kind,true);
+            if(!big&&!context.getLevel().isClientSide&&context.getPlayer()!=null)
+                context.getPlayer().displayClientMessage(Component.literal("§eSem espaço para a versão grande ("+kind.bigSize()+"×"+kind.bigSize()+"×"+kind.bigSize()+"): colocada compacta."),true);
+            return defaultBlockState().setValue(FACING,facing).setValue(EXPANDED,big)
+                .setValue(WATERLOGGED,!big&&context.getLevel().getFluidState(context.getClickedPos()).getType()==Fluids.WATER);
+        }
         if (kind.large()) {
             Direction facing=context.getHorizontalDirection().getOpposite();
             if (!LargeMachineStructure.hasSpace(context.getLevel(),context.getClickedPos(),facing,kind,true)) {
@@ -119,8 +132,12 @@ public class MachineBlock extends Block implements EntityBlock, SimpleWaterlogge
     @Override protected net.minecraft.world.ItemInteractionResult useItemOn(ItemStack stack,BlockState state,Level level,BlockPos pos,Player player,net.minecraft.world.InteractionHand hand,BlockHitResult hit){if(stack.is(net.minecraft.world.item.Items.IRON_BLOCK)&&level.getBlockEntity(pos) instanceof MachineEntity hm&&hm.burnt){if(!level.isClientSide){hm.repair();if(!player.isCreative())stack.shrink(1);level.playSound(null,pos,net.minecraft.sounds.SoundEvents.ANVIL_USE,net.minecraft.sounds.SoundSource.BLOCKS,1F,1.2F);player.displayClientMessage(net.minecraft.network.chat.Component.literal("Máquina consertada. Deixe esfriar antes de forçar de novo."),true);}return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide);}if(kind==Kind.POWER_CONTROLLER&&(stack.is(MareEletrica.CONTROL_MODULE.get())||stack.is(ControlLinks.PENDRIVE.get()))){if(!level.isClientSide&&player instanceof net.minecraft.server.level.ServerPlayer sp&&level.getBlockEntity(pos) instanceof MachineEntity m){if(stack.is(ControlLinks.PENDRIVE.get()))ControlLinks.link(sp,m,stack);else ControlLinks.open(sp,m);}return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide);}if(stack.getItem() instanceof WirelessPlateItem || stack.getItem() instanceof WaterShaftItem || stack.is(MareEletrica.MACHINES.get(Kind.GIANT_WHEEL).get().asItem()))return net.minecraft.world.ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;return super.useItemOn(stack,state,level,pos,player,hand,hit);}
     @Override protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if(kind==Kind.GIANT_WHEEL)return ControlMachines.turnCrank(level,pos,player)?InteractionResult.sidedSuccess(level.isClientSide):InteractionResult.PASS;
-        if (kind == Kind.POTABILIZER || kind.large()) {
+        if (kind == Kind.POTABILIZER || kind.large()&&!kind.scalable()) {
             PotabilizerStructure.interact(level,pos,player);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        if (kind.scalable()&&state.getValue(EXPANDED)&&player.isShiftKeyDown()) {
+            if(!level.isClientSide)player.displayClientMessage(Component.translatable("gui.mareeletrica.large_rotate"),true);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         if(kind==Kind.POWER_CONTROLLER&&!player.isShiftKeyDown()){if(!level.isClientSide&&player instanceof net.minecraft.server.level.ServerPlayer sp&&level.getBlockEntity(pos) instanceof MachineEntity m)ControlLinks.open(sp,m);return InteractionResult.sidedSuccess(level.isClientSide);}

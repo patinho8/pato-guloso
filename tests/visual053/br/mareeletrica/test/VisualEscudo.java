@@ -60,6 +60,6 @@ public final class VisualEscudo {
   if(tick>232&&tick<260){mc.player.setYRot(180);mc.player.setXRot(15);}
   if(tick==255){mc.options.hideGui=true;shot("vitrine");}
   if(tick==258)mc.options.hideGui=false;
-  if(tick==262){log("queue "+br.mareeletrica.client.ExplosionSounds.class.getSimpleName()+" ok");log("DONE");}
+  if(tick==262){log("DONE");}
  }
 }

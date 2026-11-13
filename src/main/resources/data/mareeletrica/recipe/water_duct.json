@@ -1,1 +1,0 @@
-{"type":"minecraft:crafting_shaped","category":"redstone","pattern":["III","GGG","III"],"key":{"I":{"item":"minecraft:iron_nugget"},"G":{"item":"minecraft:glass"}},"result":{"id":"mareeletrica:water_duct","count":8}}

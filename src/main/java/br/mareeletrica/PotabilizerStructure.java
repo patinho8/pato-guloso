@@ -103,6 +103,7 @@ public final class PotabilizerStructure {
         MachineEntity m = machineAt(level,pos);
         if (m == null || m.kind == Kind.GIANT_WHEEL) return;
         if (player.isShiftKeyDown()) player.displayClientMessage(Component.translatable(m.kind.large()?"gui.mareeletrica.large_rotate":"gui.mareeletrica.potabilizer_rotate"),true);
+        else if(m.kind==Kind.POWER_CONTROLLER&&player instanceof net.minecraft.server.level.ServerPlayer sp)ControlLinks.open(sp,m);
         else player.openMenu(m);
     }
 }

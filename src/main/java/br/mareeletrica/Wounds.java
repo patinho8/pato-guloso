@@ -144,7 +144,7 @@ public final class Wounds {
  public enum Med {BANDAGE("bandage",60),SYRINGE("syringe",40),MEDKIT("medkit",140);public final String id;public final int ticks;Med(String id,int t){this.id=id;ticks=t;}}
  public static final DeferredItem<MedItem> BANDAGE=med(Med.BANDAGE),SYRINGE=med(Med.SYRINGE),MEDKIT=med(Med.MEDKIT);
  private static DeferredItem<MedItem> med(Med m){return MareEletrica.ITEMS.register(m.id,()->new MedItem(m,new Item.Properties().stacksTo(m==Med.MEDKIT?4:16)));}
- public static final DeferredHolder<SoundEvent,SoundEvent> BREATH_CALM=sound("breath_calm"),BREATH_HEAVY=sound("breath_heavy"),BREATH_GASP=sound("breath_gasp"),HEARTBEAT=sound("heartbeat"),EXP_NEAR=sound("explosion_near"),EXP_FAR=sound("explosion_far"),EXP_DEBRIS=sound("explosion_debris"),BANDAGE_WRAP=sound("bandage_wrap"),SYRINGE_INJECT=sound("syringe_inject");
+ public static final DeferredHolder<SoundEvent,SoundEvent> BREATH_CALM=sound("breath_calm"),BREATH_HEAVY=sound("breath_heavy"),BREATH_GASP=sound("breath_gasp"),HEARTBEAT=sound("heartbeat"),BANDAGE_WRAP=sound("bandage_wrap"),SYRINGE_INJECT=sound("syringe_inject");
  private static DeferredHolder<SoundEvent,SoundEvent> sound(String n){return MareEletrica.SOUNDS.register(n,()->SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MareEletrica.ID,n)));}
  public static void register(IEventBus bus){MATERIALS.register(bus);bus.addListener(Wounds::packets);}
  public static void creative(net.minecraft.world.item.CreativeModeTab.Output out){out.accept(BANDAGE.get());out.accept(SYRINGE.get());out.accept(MEDKIT.get());out.accept(VEST.get());out.accept(TAC_HELMET.get());out.accept(TAC_CHEST.get());out.accept(TAC_LEGS.get());out.accept(TAC_BOOTS.get());out.accept(TAC_SHIELD.get());}
@@ -223,11 +223,16 @@ public final class Wounds {
   var d=e.getSource().getDirectEntity();if(d!=null&&bullet(d)&&!e.getEntity().level().isClientSide)SHOT.put(e.getEntity(),e.getEntity().tickCount);}
  @SubscribeEvent public static void shotKnock(net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent e){
   Integer t=SHOT.get(e.getEntity());if(t!=null&&t==e.getEntity().tickCount)e.setStrength(e.getStrength()*.12F);}
- /** 0.84.1: other creatures (bots, mobs; not bosses): a sniper hit on the upper half of the body is a kill at any distance */
- @SubscribeEvent public static void sniperMob(LivingIncomingDamageEvent e){
-  var le=e.getEntity();if(le instanceof Player||le.level().isClientSide||le.getType().is(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES))return;
+ /** 0.84.1: other creatures (bots, mobs): a sniper hit on the upper half of the body hits for the full 60.
+  *  0.90.0: never more than 60 — it used to be 10000, which one-shot bosses with hundreds of health. */
+ public static final float SNIPER_MOB_DAMAGE=60F;
+ @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST) public static void sniperMob(LivingIncomingDamageEvent e){
+  var le=e.getEntity();if(le instanceof Player||le.level().isClientSide)return;
   var direct=e.getSource().getDirectEntity();if(direct==null||!bullet(direct)||points(direct,e.getSource())<HEAVY)return;
-  Vec3 hit=hitPoint(le,direct);if((hit.y-le.getY())/le.getBbHeight()>=.42)e.setAmount(Math.max(e.getAmount(),10000F));}
+  boolean boss=le.getType().is(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES)||le.getMaxHealth()>100;
+  Vec3 hit=hitPoint(le,direct);
+  if(!boss&&(hit.y-le.getY())/le.getBbHeight()>=.42)e.setAmount(SNIPER_MOB_DAMAGE);
+  e.setAmount(Math.min(e.getAmount(),SNIPER_MOB_DAMAGE));}
  @SubscribeEvent public static void incoming(LivingIncomingDamageEvent e){
   if(!(e.getEntity() instanceof ServerPlayer p)||p.isCreative()||p.isSpectator())return;
   var src=e.getSource();var direct=src.getDirectEntity();

@@ -42,8 +42,11 @@ public final class WaterDuctBlock extends Block implements SimpleWaterloggedBloc
  public static boolean transfer(ServerLevel level,BlockPos intake,BlockState state){
   BlockPos source=intake.relative(state.getValue(FACING));if(!level.hasChunkAt(source))return false;
   boolean artificial=WaterOrigin.artificial(level,source);BlockState before=level.getBlockState(source);if(!before.is(Blocks.WATER)||!before.getFluidState().isSource())return false;
-  var queue=new ArrayDeque<BlockPos>();Set<BlockPos> visited=new HashSet<>();queue.add(intake);int scans=0;
-  while(!queue.isEmpty()&&scans++<768&&visited.size()<256){BlockPos pos=queue.removeFirst();if(!level.hasChunkAt(pos)||pos.distManhattan(intake)>64||!visited.add(pos))continue;BlockState duct=level.getBlockState(pos);if(!(duct.getBlock() instanceof WaterDuctBlock b))continue;
+  // 0.90.0: no more pipes — the intake feeds the nearest working outlet within 12 blocks
+  var outlets=new java.util.ArrayList<BlockPos>();
+  for(BlockPos q:BlockPos.betweenClosed(intake.offset(-12,-12,-12),intake.offset(12,12,12))){if(!level.hasChunkAt(q))continue;var bs=level.getBlockState(q);if(bs.getBlock() instanceof WaterDuctBlock wb&&wb.port==2)outlets.add(q.immutable());}
+  outlets.sort(java.util.Comparator.comparingDouble(q->q.distSqr(intake)));
+  for(BlockPos pos:outlets){BlockState duct=level.getBlockState(pos);if(!(duct.getBlock() instanceof WaterDuctBlock b))continue;
    if(b.port==2&&!level.hasNeighborSignal(pos)){
     BlockPos mouth=pos.relative(duct.getValue(FACING)),dest=FaucetFill.deposit(level,mouth);if(dest!=null&&!dest.equals(source)&&level.hasChunkAt(dest)&&!level.isOutsideBuildHeight(dest)&&level.getWorldBorder().isWithinBounds(dest)&&level.getBlockEntity(dest)==null){
      var actor=FakePlayerFactory.getMinecraft(level);if(!level.mayInteract(actor,source)||!level.mayInteract(actor,dest))continue;
@@ -57,7 +60,6 @@ public final class WaterDuctBlock extends Block implements SimpleWaterloggedBloc
      if(artificial)WaterOrigin.mark(level,dest);else WaterOrigin.clear(level,dest);FaucetFill.stream(level,mouth,duct.getValue(FACING));level.sendParticles(net.minecraft.core.particles.ParticleTypes.SPLASH,dest.getX()+.5,dest.getY()+.8,dest.getZ()+.5,4,.2,.1,.2,0);return true;
     }
    }
-   for(Direction d:Direction.values())queue.addLast(pos.relative(d));
   }return false;
  }
 }
